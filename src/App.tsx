@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Link, Routes, Route } from "react-router-dom";
+
+import HomePage from "./components/HomePage";
+import MapsPage from "./components/MapsPage";
+import HistoryPage from "./components/HistoryPage";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <header className="bg-slate-900">
+        <nav>
+          <ul>
+            <Link className="text-white hover:text-cyan-400" to="/">
+              <li className="inline-block p-4">Home</li>
+            </Link>{" "}
+            <Link className="text-white hover:text-cyan-400" to="/maps">
+              <li className="inline-block p-4">Maps</li>
+            </Link>
+            <Link className="text-white hover:text-cyan-400" to="/history">
+              <li className="inline-block p-4">Historical Data</li>{" "}
+            </Link>
+          </ul>
+        </nav>
+      </header>
+      <main>
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="/maps" element={<MapsPage />} />
+          <Route path="/history" element={<HistoryPage />} />
+        </Routes>
+      </main>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
