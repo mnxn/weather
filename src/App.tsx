@@ -7,18 +7,18 @@ import HistoryPage from "./components/HistoryPage";
 function App() {
   return (
     <>
-      <header>
+      <header className="bg-slate-900">
         <nav>
           <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/maps">Maps</Link>
-            </li>
-            <li>
-              <Link to="/history">Historical Data</Link>
-            </li>
+            <Link className="text-white hover:text-cyan-400" to="/">
+              <li className="inline-block p-4">Home</li>
+            </Link>{" "}
+            <Link className="text-white hover:text-cyan-400" to="/maps">
+              <li className="inline-block p-4">Maps</li>
+            </Link>
+            <Link className="text-white hover:text-cyan-400" to="/history">
+              <li className="inline-block p-4">Historical Data</li>{" "}
+            </Link>
           </ul>
         </nav>
       </header>

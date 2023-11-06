@@ -1,0 +1,27 @@
+#dashboard {
+  grid-template-areas:
+    "location location weather weather map map map"
+    "hourly hourly hourly hourly hourly hourly hourly"
+    "daily daily daily daily daily daily daily"
+    "preview preview preview preview preview preview preview";
+}
+
+#dashboard #current-location {
+  grid-area: location;
+}
+
+#dashboard #current-weather {
+  grid-area: weather;
+}
+
+#dashboard #map {
+  grid-area: map;
+}
+
+#dashboard #hourly-forecast {
+  grid-area: hourly;
+}
+
+#dashboard #history-preview {
+  grid-area: preview;
+}
