@@ -3,25 +3,24 @@ import { Link, Routes, Route } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import MapsPage from "./components/MapsPage";
 import HistoryPage from "./components/HistoryPage";
+import { AppBar, Button, Toolbar } from "@mui/material";
 
 function App() {
   return (
     <>
-      <header className="bg-slate-900">
-        <nav>
-          <ul>
-            <Link className="text-white hover:text-cyan-400" to="/">
-              <li className="inline-block p-4">Home</li>
-            </Link>{" "}
-            <Link className="text-white hover:text-cyan-400" to="/maps">
-              <li className="inline-block p-4">Maps</li>
-            </Link>
-            <Link className="text-white hover:text-cyan-400" to="/history">
-              <li className="inline-block p-4">Historical Data</li>{" "}
-            </Link>
-          </ul>
-        </nav>
-      </header>
+      <AppBar position="static">
+        <Toolbar>
+          <Button color="inherit" component={Link} to="/">
+            Home
+          </Button>
+          <Button color="inherit" component={Link} to="/maps">
+            Maps
+          </Button>
+          <Button color="inherit" component={Link} to="/history">
+            Historical Data
+          </Button>
+        </Toolbar>
+      </AppBar>
       <main>
         <Routes>
           <Route index element={<HomePage />} />
