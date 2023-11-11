@@ -8,7 +8,7 @@ import { AppBar, Button, Toolbar } from "@mui/material";
 function App() {
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: "#0f172a" }}>
         <Toolbar>
           <Button color="inherit" component={Link} to="/">
             Home
