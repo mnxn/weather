@@ -14,6 +14,11 @@ const theme = createTheme({
       default: "#94a3b8",
     },
   },
+  typography: {
+    button: {
+      textTransform: "none",
+    },
+  },
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
