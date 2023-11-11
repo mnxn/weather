@@ -6,23 +6,26 @@ import DailyForecast from "./DailyForecast";
 import HistoryPreview from "./HistoryPreview";
 
 import "./HomePage.css";
+import { Box, Container } from "@mui/material";
 
 function HomePage() {
   return (
-    <div id="dashboard" className="container p-5 mx-auto grid gap-4 h-[600px]">
-      <CurrentLocation id="current-location" />
-      <CurrentWeather id="current-weather" />
-      <Map id="map" />
-      <HourlyForecast id="hourly-forecast" />
-      <DailyForecast />
-      <DailyForecast />
-      <DailyForecast />
-      <DailyForecast />
-      <DailyForecast />
-      <DailyForecast />
-      <DailyForecast />
-      <HistoryPreview id="history-preview" />
-    </div>
+    <Container>
+      <Box id="dashboard" display="grid" gap={2} padding={2} height={600}>
+        <CurrentLocation id="current-location" />
+        <CurrentWeather id="current-weather" />
+        <Map id="map" />
+        <HourlyForecast id="hourly-forecast" />
+        <DailyForecast />
+        <DailyForecast />
+        <DailyForecast />
+        <DailyForecast />
+        <DailyForecast />
+        <DailyForecast />
+        <DailyForecast />
+        <HistoryPreview id="history-preview" />
+      </Box>
+    </Container>
   );
 }
 
