@@ -1,10 +1,11 @@
 import SearchInput from "./SearchInput";
 import Box from "@mui/material/Box";
 
-function CurrentLocation() {
+function CurrentLocation(props: { id?: string }) {
   const handleSearch = (searchTerm: string) => {
     console.log("Search term:", searchTerm);
   };
+  
 
   return (
     <Box
@@ -15,6 +16,7 @@ function CurrentLocation() {
         borderRadius: 1,
         padding: 2,
       }}
+      id={props.id}
     >
       <SearchInput onSearch={handleSearch} />
 

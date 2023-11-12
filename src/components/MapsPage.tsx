@@ -59,7 +59,8 @@ function MapsPage() {
           </Marker>
         ))}
         {/* Display the name of the selected city, if available */}
-        {selectedCity && <p>Selected City: {selectedCity}</p>}
+        {selectedCity}
+        <p>Selected City: {selectedCity}</p>
       </MapContainer>
     </Box>
   );
