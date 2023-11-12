@@ -16,7 +16,13 @@ function HomePage() {
         <CurrentLocation id="current-location" />
         <CurrentWeather id="current-weather" />
         <Map id="map" />
-        <HourlyForecast id="hourly-forecast" />
+        <HourlyForecast
+          id="hourly-forecast"
+          times={["1", "2", "3", "4", "5", "6", "7"]}
+          temperature={[20, 10, 30, 15, 25, 35, 30]}
+          humidity={[90, 85, 60, 30, 40, 45, 70]}
+          precipitation={[5, 20, 75, 90, 30, 60, 40]}
+        />
         <Stack id="daily-forecast" direction="row" gap={1}>
           <DailyForecast
             date={11}
