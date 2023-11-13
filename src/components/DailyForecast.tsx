@@ -1,11 +1,18 @@
+import { Box } from "@mui/material";
+
 function DailyForecast(props: { id?: string }) {
   return (
-    <div
-      className="bg-white rounded text-center flex justify-center items-center"
+    <Box
       id={props.id}
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      textAlign="center"
+      bgcolor="white"
+      borderRadius={1}
     >
       Daily Forecast
-    </div>
+    </Box>
   );
 }
 
