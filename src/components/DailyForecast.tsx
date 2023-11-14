@@ -2,14 +2,14 @@ import { Box, Divider, Paper, Stack, Tooltip } from "@mui/material";
 import { WmoCode, weatherDescription, weatherIconClass } from "./WmoCode";
 import { blue, red } from "@mui/material/colors";
 
-type DailyForecastProps = {
+export interface DailyForecastProps {
   date: number;
   day: string;
   weather: WmoCode;
   high: number;
   low: number;
   id?: string;
-};
+}
 
 function DailyForecast(props: DailyForecastProps) {
   return (
