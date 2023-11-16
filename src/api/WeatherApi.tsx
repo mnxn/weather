@@ -1,4 +1,4 @@
-interface WeatherResponse {
+export interface WeatherResponse {
     location: {
       name: string;
       region: string;
@@ -6,6 +6,7 @@ interface WeatherResponse {
     };
     current: {
       temp_c: number;
+      temp_f: number;
       condition: {
         text: string;
         icon: string;
@@ -13,7 +14,7 @@ interface WeatherResponse {
     };
   }
   
-  interface WeatherForecastResponse {
+  export interface WeatherForecastResponse {
     location: {
       name: string;
       region: string;
