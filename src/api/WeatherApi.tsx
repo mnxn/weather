@@ -34,7 +34,7 @@ interface WeatherResponse {
     };
   }
   
-  const API_KEY = import.meta.env.Vite_WeatherApi_Key;
+  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
   const BASE_URL = "http://api.weatherapi.com/v1";
   
   // Function to fetch current weather by city name
