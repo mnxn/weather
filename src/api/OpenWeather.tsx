@@ -1,5 +1,5 @@
 const API_BASE_URL = "https://api.openweathermap.org/data/2.5";
-const API_KEY = process.env.OpeanWeatherApiKey;
+const API_KEY = import.meta.env.Vite_OpenWeatherApi_Key;
 interface CurrentWeather {
   temperature: number;
   humidity: number;
