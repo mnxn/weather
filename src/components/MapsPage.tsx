@@ -6,7 +6,7 @@ import {
   Popup,
 } from "react-leaflet";
 import {LatLngExpression } from "leaflet";
-
+import "leaflet/dist/leaflet.css";
 import { useState } from "react";
 import tileLayer from "./TileLayer";
 
@@ -58,9 +58,9 @@ function MapsPage() {
             <Popup>{city.name}</Popup>
           </Marker>
         ))}
-        {/* Display the name of the selected city, if available */}
-        {selectedCity && <p>Selected City: {selectedCity}</p>}
       </MapContainer>
+      {/* Display the name of the selected city, if available */}
+      {selectedCity && <p>Selected City: {selectedCity}</p>}
     </Box>
   );
 }

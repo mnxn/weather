@@ -22,6 +22,10 @@
   grid-area: hourly;
 }
 
+#dashboard #daily-forecast {
+  grid-area: daily;
+}
+
 #dashboard #history-preview {
   grid-area: preview;
 }
