@@ -2,11 +2,17 @@ export interface WeatherResponse {
     location: {
       name: string;
       region: string;
+      localtime: string;
+      lat: number;
+      lon: number;
       country: string;
     };
     current: {
+      cloud: number;
       temp_c: number;
       temp_f: number;
+      wind_kph: number;
+      humidity: number;
       condition: {
         text: string;
         icon: string;

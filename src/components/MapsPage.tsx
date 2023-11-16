@@ -6,7 +6,7 @@ import {
   Popup,
   useMap
 } from "react-leaflet";
-import {LatLngExpression } from "leaflet";
+import {LatLngExpression, LatLng } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useState, useEffect } from "react";
 import tileLayer from "./TileLayer";
@@ -16,11 +16,16 @@ import { Icon } from "leaflet";
 import {
   WeatherResponse,
   getWeatherByCity,
+  getWeatherByCoordinates
 } from '../api/WeatherApi';
 
 
 
-const MapView = () => {
+const MapView = ({
+  onMapClicked,
+}: {
+  onMapClicked: (latlng: LatLng) => void;
+}) => {
   const center = { lat: 45.5152, lng: -122.676483 };
   
   return (
@@ -39,7 +44,7 @@ const MapView = () => {
       scrollWheelZoom={false}
     >
     <TileLayer {...tileLayer} />
-    <MyCities />
+    <InteractiveMap onMapClicked={onMapClicked} />
     </MapContainer>
     );
   };
@@ -68,27 +73,23 @@ const ShowCities = ({cities: cities}: {
   });
 };
     
-const MyCities = () => {
+const InteractiveMap = ({
+  onMapClicked,
+}: {
+  onMapClicked: (latlng: LatLng) => void;
+}) => {
   const map = useMap();
-  const cityList: { name: string; position: LatLngExpression }[] = [
-    { name: "Portland", position: [45.5152, -122.676483] },
-    { name: "City 2", position: [51.51, -0.1] },
-    { name: "City 3", position: [51.515, -0.11] },
-  ];
-
-  const [cities, setCities] =
-  useState<{ name: string; position: LatLngExpression }[]>(cityList);
 
   useEffect(() => {
   if (!map) return;
 
   map.on("click", (e) => {
     const latlng = e.latlng;
-    setCities((mar) => [...mar, { name: `${latlng}`, position: latlng }]);
+    latlng && onMapClicked(latlng);
   });
-  }, [map]);
+}, [map]);
 
-  return cities.length > 0 ? <ShowCities cities={cities} /> : null;
+  return null;
 };
 
 const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
@@ -111,17 +112,45 @@ const MajorCityBox = ({ data }: { data ?: WeatherResponse } ) => {
       }}
     >
       <Typography variant="h6" gutterBottom>
-        {location.name}
+        {location?.name}
       </Typography>
       <img
-        src={`https:${current.condition.icon}`}
-        alt={current.condition.text}
+        src={`https:${current?.condition?.icon}`}
+        alt={current?.condition?.text}
         style={{ width: "64px", height: "64px" }}
       />
       <Typography>
-        Temperature: {current.temp_c}°C ({current.temp_f}°F)
+      Temperature: {current?.temp_c}°C ({current?.temp_f}°F))
       </Typography>
-      <Typography>Condition: {current.condition.text}</Typography>
+      <Typography>Condition: {current?.condition?.text}</Typography>
+    </Box>
+  );
+};
+
+const LocationBox = ({ data }: { data: WeatherResponse }) => {
+  const { location, current } = data;
+
+  return (
+    <Box
+      sx={{
+        border: "1px solid #e0e0e0",
+        borderRadius: "8px",
+        width: "fit-content",
+        px: 3,
+        py: 2,
+        mb: 3,
+      }}
+    >
+      <Typography variant="h6" gutterBottom>
+        {location?.name}
+      </Typography>
+      <Typography>
+        {location?.lat} , {location?.lon}
+      </Typography>
+      <Typography>{location?.country}</Typography>
+      <Typography>{location?.region}</Typography>
+
+      <Typography>{location?.localtime}</Typography>
     </Box>
   );
 };
@@ -150,7 +179,7 @@ const MajorCitiesConditions = () => {
     <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
       {cityNames.map((city) => (
         <Box key={city}>
-          <MajorCityBox data={weatherData[city]} />
+          {weatherData[city] && <MajorCityBox data={weatherData[city]} />}
         </Box>
       ))}
     </Stack>
@@ -158,7 +187,24 @@ const MajorCitiesConditions = () => {
 };
 
 function MapsPage() {
-  const [selectedCity] = useState<string | null>("Portland");
+  const [selectedLocation, setSelectedLocation] = useState<LatLng | null>();
+  const [locationWeatherData, setLocationWeatherData] =
+    useState<WeatherResponse>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selectedLocation !== undefined) {
+        const weatherByCity = await getWeatherByCoordinates(
+          selectedLocation?.lat ?? 0,
+          selectedLocation?.lng ?? 0
+        );
+
+        setLocationWeatherData(weatherByCity);
+      }
+    };
+
+    fetchData();
+  }, [selectedLocation]);
 
   return (
     <Stack
@@ -170,22 +216,16 @@ function MapsPage() {
       }}
       direction = "column"
     >
-    <Typography
-      sx={{
-        border: "1px solid #e0e0e0",
-        borderRadius: "8px",
-        width: "fit-content",
-        px: 3,
-        py: 2,
-        mb: 3,
+    {locationWeatherData && <LocationBox data={locationWeatherData} />}
+      <MapView
+        onMapClicked={(latLng: LatLng) => {
+          setSelectedLocation(latLng);
       }}
-    >
-    </Typography>
-    <MapView />
+    />
 
     <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
       <ListItemText
-        primary={selectedCity}
+       primary={`${locationWeatherData?.current?.temp_c ?? 0}°C`}
         secondary="Temperature"
         sx={{
           border: "1px solid #e0e0e0",
@@ -198,7 +238,7 @@ function MapsPage() {
         />
 
       <ListItemText
-        primary={selectedCity}
+        primary={locationWeatherData?.current?.cloud}
         secondary="Clouds"
         sx={{
           border: "1px solid #e0e0e0",
@@ -210,8 +250,8 @@ function MapsPage() {
         }}
       />
       <ListItemText
-        primary={selectedCity}
-        secondary="Precipitation"
+        primary={locationWeatherData?.current?.humidity}
+        secondary="Humidity"
         sx={{
           border: "1px solid #e0e0e0",
           borderRadius: "8px",
@@ -222,7 +262,7 @@ function MapsPage() {
         }}
       />
       <ListItemText
-        primary={selectedCity}
+        primary={`${locationWeatherData?.current?.wind_kph} KM/H`}
         secondary="Wind"
         sx={{
           border: "1px solid #e0e0e0",
