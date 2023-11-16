@@ -41,7 +41,8 @@ function MapsPage() {
   return (
     <Stack
       sx={{
-        height: "100vh",
+        height: "100%",
+        minHeight: "100vh",
         width: "100%",
         backgroundColor: "white",
         padding: 3,
@@ -71,8 +72,8 @@ const MapView = ({
   const center = { lat: 45.5152, lng: -122.676483 };
   
   return (
-    <MapContainer
-      style={{
+    <Box
+      sx={{
         height: "500px",
         width: "100%",
         zIndex: "0",
@@ -81,13 +82,22 @@ const MapView = ({
         overflow: "hidden",
         marginBottom: "24px",
       }}
-      center={center}
-      zoom={13}
-      scrollWheelZoom={false}
     >
-    <TileLayer {...tileLayer} />
-    <InteractiveMap onMapClicked={onMapClicked} />
-    </MapContainer>
+      <MapContainer
+        style={{
+          height: "100%",
+          width: "100%",
+          zIndex: "0",
+          overflow: "hidden",
+        }}
+        center={center}
+        zoom={13}
+        scrollWheelZoom={false}
+      >
+        <TileLayer {...tileLayer} />
+        <InteractiveMap onMapClicked={onMapClicked} />
+      </MapContainer>
+    </Box>
     );
   };
 
