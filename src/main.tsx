@@ -8,7 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
 
-import "weathericons/css/weather-icons.min.css";
+import "./weather-icons/weather-icons.min.css";
 
 const theme = createTheme({
   palette: {
