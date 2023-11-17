@@ -1,10 +1,6 @@
-import {Box, ListItemText, Stack, Typography } from "@mui/material";
-import {
-  MapContainer,
-  TileLayer,
-  useMap
-} from "react-leaflet";
-import {LatLng } from "leaflet";
+import { Box, ListItemText, Stack, Typography } from "@mui/material";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { LatLng } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useState, useEffect } from "react";
 import tileLayer from "./TileLayer";
@@ -12,8 +8,8 @@ import tileLayer from "./TileLayer";
 import {
   WeatherResponse,
   getWeatherByCity,
-  getWeatherByCoordinates
-} from '../api/WeatherApi';
+  getWeatherByCoordinates,
+} from "../api/WeatherApi";
 
 const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
 
@@ -63,14 +59,13 @@ function MapsPage() {
   );
 }
 
-
 const MapView = ({
   onMapClicked,
 }: {
   onMapClicked: (latlng: LatLng) => void;
 }) => {
   const center = { lat: 45.5152, lng: -122.676483 };
-  
+
   return (
     <Box
       sx={{
@@ -98,10 +93,9 @@ const MapView = ({
         <InteractiveMap onMapClicked={onMapClicked} />
       </MapContainer>
     </Box>
-    );
-  };
+  );
+};
 
-    
 const InteractiveMap = ({
   onMapClicked,
 }: {
@@ -110,20 +104,20 @@ const InteractiveMap = ({
   const map = useMap();
 
   useEffect(() => {
-  if (!map) return;
+    if (!map) return;
 
-  // Listen for map clicks and invoke onMapClicked callback
-  map.on("click", (e) => {
-    const latlng = e.latlng;
-    latlng && onMapClicked(latlng);
-  });
-}, [map]);
+    // Listen for map clicks and invoke onMapClicked callback
+    map.on("click", (e) => {
+      const latlng = e.latlng;
+      latlng && onMapClicked(latlng);
+    });
+  }, [map]);
 
   return null;
 };
 
 // Component to display weather information for a major city
-const MajorCityBox = ({ data }: { data ?: WeatherResponse } ) => {
+const MajorCityBox = ({ data }: { data?: WeatherResponse }) => {
   if (!data) {
     return <p>No data available</p>;
   }
@@ -149,7 +143,7 @@ const MajorCityBox = ({ data }: { data ?: WeatherResponse } ) => {
         style={{ width: "64px", height: "64px" }}
       />
       <Typography>
-      Temperature: {current?.temp_c}°C ({current?.temp_f}°F))
+        Temperature: {current?.temp_c}°C ({current?.temp_f}°F))
       </Typography>
       <Typography>Condition: {current?.condition?.text}</Typography>
     </Box>
@@ -187,7 +181,6 @@ const LocationCondition = ({ data }: { data: WeatherResponse }) => {
 };
 
 // Component to display location details for the selected location
-
 const LocationBox = ({ data }: { data: WeatherResponse }) => {
   const { location } = data;
 
@@ -248,6 +241,5 @@ const MajorCitiesConditions = () => {
     </Stack>
   );
 };
-
 
 export default MapsPage;
