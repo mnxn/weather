@@ -78,6 +78,8 @@ function DataSelectorChip(props: DataSelectorChipProps) {
       variant="outlined"
       icon={
         props.enabled ? (
+          // The icon color only changes if specificity is increased with "&&"
+          // See https://github.com/mui/material-ui/issues/26676
           <ShowChart sx={{ "&&": { color: props.color } }} />
         ) : undefined
       }
