@@ -75,7 +75,7 @@ function DataSelectorChip(props: DataSelectorChipProps) {
   return (
     <Chip
       label={props.label}
-      variant="outlined"
+      variant={props.enabled ? "filled" : "outlined"}
       icon={
         props.enabled ? (
           // The icon color only changes if specificity is increased with "&&"
