@@ -4,6 +4,7 @@ import { LatLng } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useState, useEffect } from "react";
 import tileLayer from "./TileLayer";
+import { useScreenSize } from "../utils/useScreenSize";
 
 import {
   WeatherResponse,
@@ -12,9 +13,10 @@ import {
 } from "../api/WeatherApi";
 
 const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
+const center = { lat: 45.5152, lng: -122.676483 };
 
 function MapsPage() {
-  const [selectedLocation, setSelectedLocation] = useState<LatLng | null>();
+  const [selectedLocation, setSelectedLocation] = useState<LatLng | null>( center as LatLng);
   const [locationWeatherData, setLocationWeatherData] =
     useState<WeatherResponse>();
 
@@ -41,7 +43,7 @@ function MapsPage() {
         minHeight: "100vh",
         width: "100%",
         backgroundColor: "white",
-        padding: 3,
+        padding: 6,
       }}
       direction="column"
     >
@@ -64,7 +66,6 @@ const MapView = ({
 }: {
   onMapClicked: (latlng: LatLng) => void;
 }) => {
-  const center = { lat: 45.5152, lng: -122.676483 };
 
   return (
     <Box
@@ -126,7 +127,7 @@ const MajorCityBox = ({ data }: { data?: WeatherResponse }) => {
       sx={{
         border: "1px solid #e0e0e0",
         borderRadius: "8px",
-        width: "fit-content",
+        width: "100%",
         px: 3,
         py: 2,
         mb: 3,
@@ -160,7 +161,6 @@ const WeatherItem: React.FC<WeatherItemProps> = ({ primary, secondary }) => (
     sx={{
       border: "1px solid #e0e0e0",
       borderRadius: "8px",
-      width: "fit-content",
       px: 3,
       py: 2,
       mb: 3,
@@ -171,9 +171,14 @@ const WeatherItem: React.FC<WeatherItemProps> = ({ primary, secondary }) => (
 // Component to display weather conditions for the selected location
 const LocationCondition = ({ data }: { data: WeatherResponse }) => {
   const { current } = data;
+  const { isXMobileScreen } = useScreenSize();
 
   return (
-    <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+    <Stack
+      direction={isXMobileScreen ? "column" : "row"}
+      spacing={2}
+      sx={{ mb: 3 }}
+    >
       <WeatherItem
         primary={`${current?.temp_c ?? 0}°C`}
         secondary="Temperature"
@@ -216,6 +221,8 @@ const LocationBox = ({ data }: { data: WeatherResponse }) => {
 
 // Component to display weather conditions for major cities
 const MajorCitiesConditions = () => {
+  const { isXMobileScreen } = useScreenSize();
+
   // State to store weather data for major cities
   const [weatherData, setWeatherData] = useState<{
     [key: string]: WeatherResponse;
@@ -237,9 +244,13 @@ const MajorCitiesConditions = () => {
   }, []);
 
   return (
-    <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+    <Stack
+      direction={isXMobileScreen ? "column" : "row"}
+      spacing={2}
+      sx={{ mb: 3, justifyContent: "center", width: "100%" }}
+    >
       {cityNames.map((city) => (
-        <Box key={city}>
+        <Box key={city} sx={{ width: "100%" }}>
           {weatherData[city] && <MajorCityBox data={weatherData[city]} />}
         </Box>
       ))}
