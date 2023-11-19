@@ -7,7 +7,7 @@ interface SearchInputProps {
   onSearch: (searchTerm: string) => void;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ onSearch }) => {
+const SearchInput = ({ onSearch }: SearchInputProps) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = () => {
