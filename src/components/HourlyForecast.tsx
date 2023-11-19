@@ -1,4 +1,4 @@
-import { Box, Paper, alpha } from "@mui/material";
+import { Box, Chip, Paper, Stack, alpha } from "@mui/material";
 import { blue, common, red } from "@mui/material/colors";
 import { Line } from "react-chartjs-2";
 import {
@@ -11,6 +11,8 @@ import {
   Filler,
   Tooltip,
 } from "chart.js";
+import { ShowChart } from "@mui/icons-material";
+import { useState } from "react";
 
 ChartJS.register(
   LineController,
@@ -62,7 +64,37 @@ export type HourlyForecast = {
   id?: string;
 };
 
+interface DataSelectorChipProps {
+  label: string;
+  color: string;
+  enabled: boolean;
+  setEnabled: (value: boolean) => void;
+}
+
+function DataSelectorChip(props: DataSelectorChipProps) {
+  return (
+    <Chip
+      label={props.label}
+      variant={props.enabled ? "filled" : "outlined"}
+      icon={
+        props.enabled ? (
+          // The icon color only changes if specificity is increased with "&&"
+          // See https://github.com/mui/material-ui/issues/26676
+          <ShowChart sx={{ "&&": { color: props.color } }} />
+        ) : undefined
+      }
+      onClick={() => {
+        props.setEnabled(!props.enabled);
+      }}
+    />
+  );
+}
+
 function HourlyForecast(props: HourlyForecast) {
+  const [temperatureEnabled, setTemperatureEnabled] = useState(true);
+  const [humidityEnabled, setHumidityEnabled] = useState(true);
+  const [precipitationEnabled, setPrecipitationEnabled] = useState(true);
+
   const data = {
     labels: props.times,
     datasets: [
@@ -72,6 +104,7 @@ function HourlyForecast(props: HourlyForecast) {
         borderColor: red[500],
         backgroundColor: red[500],
         yAxisID: "temperature",
+        hidden: !temperatureEnabled,
       },
       {
         label: "Humidity",
@@ -79,6 +112,7 @@ function HourlyForecast(props: HourlyForecast) {
         borderColor: common.black,
         backgroundColor: common.black,
         yAxisID: "percent",
+        hidden: !humidityEnabled,
       },
       {
         label: "Precipitation Probability",
@@ -86,6 +120,7 @@ function HourlyForecast(props: HourlyForecast) {
         borderColor: blue[500],
         backgroundColor: alpha(blue[500], 0.35),
         yAxisID: "percent",
+        hidden: !precipitationEnabled,
         fill: true,
       },
     ],
@@ -93,12 +128,43 @@ function HourlyForecast(props: HourlyForecast) {
 
   return (
     <Paper id={props.id} elevation={1}>
-      <Box height={300} padding={2}>
-        <Line
-          data={data}
-          options={chartOptions}
-          style={{ position: "absolute" }}
-        ></Line>
+      <Box padding={2}>
+        <Box height={300}>
+          <Line
+            data={data}
+            options={chartOptions}
+            style={{ position: "absolute" }}
+          />
+        </Box>
+
+        <Stack
+          direction="row"
+          width="100%"
+          justifyContent="center"
+          spacing={2}
+          marginBlock={1}
+        >
+          <DataSelectorChip
+            label="Temperature"
+            color={red[500]}
+            enabled={temperatureEnabled}
+            setEnabled={setTemperatureEnabled}
+          />
+
+          <DataSelectorChip
+            label="Relative Humidity"
+            color={common.black}
+            enabled={humidityEnabled}
+            setEnabled={setHumidityEnabled}
+          />
+
+          <DataSelectorChip
+            label="Precipitation Probability"
+            color={blue[500]}
+            enabled={precipitationEnabled}
+            setEnabled={setPrecipitationEnabled}
+          />
+        </Stack>
       </Box>
     </Paper>
   );
