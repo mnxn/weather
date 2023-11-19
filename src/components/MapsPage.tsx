@@ -104,12 +104,10 @@ const InteractiveMap = ({
   const map = useMap();
 
   useEffect(() => {
-    if (!map) return;
-
     // Listen for map clicks and invoke onMapClicked callback
-    map.on("click", (e) => {
+    map?.on("click", (e) => {
       const latlng = e.latlng;
-      latlng && onMapClicked(latlng);
+      if (latlng) onMapClicked(latlng);
     });
   }, [map]);
 
@@ -151,7 +149,11 @@ const MajorCityBox = ({ data }: { data?: WeatherResponse }) => {
 };
 
 // Reusable function to render a ListItemText component with provided content
-const renderWeatherItem = (primary: string, secondary: string) => (
+interface WeatherItemProps {
+  primary: string;
+  secondary: string;
+}
+const WeatherItem: React.FC<WeatherItemProps> = ({ primary, secondary }) => (
   <ListItemText
     primary={primary}
     secondary={secondary}
@@ -172,10 +174,13 @@ const LocationCondition = ({ data }: { data: WeatherResponse }) => {
 
   return (
     <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
-      {renderWeatherItem(`${current?.temp_c ?? 0}°C`, "Temperature")}
-      {renderWeatherItem(`${current?.cloud}`, "Clouds")}
-      {renderWeatherItem(`${current?.humidity}`, "Humidity")}
-      {renderWeatherItem(`${current?.wind_kph} KM/H`, "Wind")}
+      <WeatherItem
+        primary={`${current?.temp_c ?? 0}°C`}
+        secondary="Temperature"
+      />
+      <WeatherItem primary={`${current?.cloud}`} secondary="Clouds" />
+      <WeatherItem primary={`${current?.humidity}`} secondary="Humidity" />
+      <WeatherItem primary={`${current?.wind_kph} KM/H`} secondary="Wind" />
     </Stack>
   );
 };
