@@ -4,13 +4,13 @@ import { LatLng } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useState, useEffect } from "react";
 import tileLayer from "./TileLayer";
-import { useScreenSize } from "../utils/useScreenSize";
+import { useScreenSize } from "../../utils/useScreenSize";
 
 import {
   WeatherResponse,
   getWeatherByCity,
   getWeatherByCoordinates,
-} from "../api/WeatherApi";
+} from "../../api/WeatherApi";
 
 const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
 const center = { lat: 45.5152, lng: -122.676483 };
@@ -39,10 +39,6 @@ function MapsPage() {
   return (
     <Stack
       sx={{
-        height: "100%",
-        minHeight: "100vh",
-        width: "100%",
-        backgroundColor: "white",
         padding: 6,
       }}
       direction="column"
@@ -125,8 +121,8 @@ const MajorCityBox = ({ data }: { data?: WeatherResponse }) => {
   return (
     <Box
       sx={{
-        border: "1px solid #e0e0e0",
-        borderRadius: "8px",
+        backgroundColor: "white",
+        borderRadius: 2,
         width: "100%",
         px: 3,
         py: 2,
@@ -141,10 +137,10 @@ const MajorCityBox = ({ data }: { data?: WeatherResponse }) => {
         alt={current?.condition?.text}
         style={{ width: "64px", height: "64px" }}
       />
+      <Typography>{current?.condition?.text}</Typography>
       <Typography>
-        Temperature: {current?.temp_c}°C ({current?.temp_f}°F))
+      {current?.temp_c}°C ({current?.temp_f}°F)
       </Typography>
-      <Typography>Condition: {current?.condition?.text}</Typography>
     </Box>
   );
 };
@@ -159,8 +155,8 @@ const WeatherItem: React.FC<WeatherItemProps> = ({ primary, secondary }) => (
     primary={primary}
     secondary={secondary}
     sx={{
-      border: "1px solid #e0e0e0",
-      borderRadius: "8px",
+      backgroundColor: "white",
+      borderRadius: 2,
       px: 3,
       py: 2,
       mb: 3,
@@ -197,8 +193,8 @@ const LocationBox = ({ data }: { data: WeatherResponse }) => {
   return (
     <Box
       sx={{
-        border: "1px solid #e0e0e0",
-        borderRadius: "8px",
+        backgroundColor: "white",
+        borderRadius: 2,
         width: "fit-content",
         px: 3,
         py: 2,
@@ -208,13 +204,12 @@ const LocationBox = ({ data }: { data: WeatherResponse }) => {
       <Typography variant="h6" gutterBottom>
         {location?.name}
       </Typography>
+      <Typography>{location?.localtime}</Typography>
+      <Typography>{location?.country}</Typography>
+      <Typography>{location?.region}</Typography>
       <Typography>
         {location?.lat} , {location?.lon}
       </Typography>
-      <Typography>{location?.country}</Typography>
-      <Typography>{location?.region}</Typography>
-
-      <Typography>{location?.localtime}</Typography>
     </Box>
   );
 };
