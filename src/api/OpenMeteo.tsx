@@ -1,4 +1,3 @@
-
 // Weather Data Fetcher
 //
 // This module provides a function to fetch weather data from the open-meteo.com API.
@@ -9,6 +8,7 @@
 // @returns A Promise that resolves to an object containing weather data.
 
 const API_URL = "https://api.open-meteo.com/v1/forecast";
+const ARCHIVE_API_URL = "https://archive-api.open-meteo.com/v1/archive";
 
 interface WeatherData {
   temperature: number;
@@ -37,6 +37,33 @@ export async function fetchWeatherData(
       // Map more fields as needed
     };
     return weatherData;
+  } else {
+    throw new Error("Failed to fetch data");
+  }
+}
+
+export interface SunsetData {
+  time: string[];
+  sunrise: string[];
+  sunset: string[];
+}
+
+export async function fetchSunsetData(
+  latitude: number,
+  longitude: number,
+  year: number
+): Promise<SunsetData> {
+  // Construct the API URL based on the provided latitude and longitude
+  const url = `${ARCHIVE_API_URL}?latitude=${latitude}&longitude=${longitude}&start_date=${year}-01-01&end_date=${year}-12-31&daily=sunrise,sunset&timezone=GMT`;
+
+  // Make an asynchronous HTTP GET request to the API
+  // Force cache because data from the previous year will not change.
+  const response = await fetch(url, { cache: "force-cache" });
+
+  if (response.ok) {
+    const data = await response.json();
+
+    return data.daily;
   } else {
     throw new Error("Failed to fetch data");
   }
