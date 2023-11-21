@@ -56,7 +56,7 @@ export const PieChartContainer = ({
             datasets: [
               {
                 data,
-                backgroundColor: ["#EBCF60", "#60EBDC", "#EB60E0"],
+                backgroundColor: ["#F4E869", "#5CD2E6", "#B4B4B3"],
                 borderWidth: 1,
               },
             ],
