@@ -1,39 +1,49 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import { Autocomplete, debounce } from "@mui/material";
+import { CityLocation, fetchCityLocations } from "../../api/OpenMeteo";
 
-interface SearchInputProps {
-  onSearch: (searchTerm: string) => void;
-}
+const SearchInput = () => {
+  const [options, setOptions] = useState<CityLocation[]>([]);
 
-const SearchInput = ({ onSearch }: SearchInputProps) => {
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleSearch = () => {
-    onSearch(searchTerm);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
+  const fetchData = React.useMemo(
+    () =>
+      debounce(async (searchTerm: string) => {
+        const data = await fetchCityLocations(searchTerm);
+        data.sort(
+          (a, b) =>
+            a.country?.localeCompare(b.country ?? "") ||
+            a.name.localeCompare(b.name) ||
+            a.admin1?.localeCompare(b.admin1 ?? "") ||
+            0
+        );
+        setOptions(data);
+      }, 500),
+    []
+  );
 
   return (
     <Box sx={{ display: "flex", flexDirection: "row" }}>
-      <TextField
-        label="Search"
-        variant="outlined"
+      <Autocomplete
         fullWidth
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        onKeyPress={handleKeyPress}
-        sx={{ mr: 2 }}
+        noOptionsText="No cities found"
+        options={options}
+        getOptionLabel={(city) => city.name}
+        groupBy={(city) => city.country ?? ""}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
+        onChange={(_event, city) => {
+          console.log(city);
+        }}
+        onInputChange={(_event, value) => fetchData(value)}
+        renderOption={(props, city) => (
+          <li {...props} key={city.id}>
+            {city.name}
+            {city.admin1 && `, ${city.admin1}`}
+          </li>
+        )}
+        renderInput={(props) => <TextField {...props} label="City" fullWidth />}
       />
-      <Button variant="contained" color="primary" onClick={handleSearch}>
-        Search
-      </Button>
     </Box>
   );
 };
