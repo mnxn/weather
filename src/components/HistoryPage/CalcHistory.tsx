@@ -1,4 +1,5 @@
 import { HistoricalWeatherData } from "../../api/OpenMeteo";
+import { WmoCode } from "../WmoCode";
 
 interface MonthlyData {
   labels: string[];
@@ -17,43 +18,71 @@ export interface FormattedData {
 }
 
 // Function to calculate monthly temperature data
-const calculateMonthlyData = (dailyData: HistoricalWeatherData["daily"]): MonthlyData => {
+const calculateMonthlyData = (
+  dailyData: HistoricalWeatherData["daily"]
+): MonthlyData => {
   const times = dailyData.time;
-  const highestTemps = dailyData.temperature_2m_max.slice(0, 12);
-  const lowestTemps = dailyData.temperature_2m_min.slice(0, 12);
-    
-  const uniqueYearMonths = new Set();
+  const highestTemps = dailyData.temperature_2m_max;
+  const lowestTemps = dailyData.temperature_2m_min;
 
-  times.forEach((date) => {
+  // Create arrays to store monthly temperature data
+  const labels: string[] = [];
+  const monthlyHighestTemps: number[] = [];
+  const monthlyLowestTemps: number[] = [];
+
+  times.forEach((date, index) => {
     const yearMonth = date.slice(0, 7);
-    uniqueYearMonths.add(yearMonth);
+
+    // If the month doesn't exist in the arrays, initialize it
+    if (!labels.includes(yearMonth)) {
+      labels.push(yearMonth);
+      monthlyHighestTemps.push(-Infinity);
+      monthlyLowestTemps.push(Infinity);
+    }
+
+    // Update the highest and lowest temperatures for the month
+    const monthIndex = labels.indexOf(yearMonth);
+    monthlyHighestTemps[monthIndex] = Math.max(
+      monthlyHighestTemps[monthIndex],
+      highestTemps[index]
+    );
+    monthlyLowestTemps[monthIndex] = Math.min(
+      monthlyLowestTemps[monthIndex],
+      lowestTemps[index]
+    );
   });
 
-  // Convert organized data into arrays for Chart.js
-  const labels = Array.from(uniqueYearMonths) as string[];
-
-  return { labels, highestTemps, lowestTemps };
+  return {
+    labels,
+    highestTemps: monthlyHighestTemps,
+    lowestTemps: monthlyLowestTemps,
+  };
 };
 
 // Function to calculate weather distribution data
 const calculateWeatherDistributionData = (
   dailyData: HistoricalWeatherData["daily"]
 ): WeatherDistributionData => {
-   //Code 1: Clear sky
-  //Code 3: Showers of rain      Code 55: Rain and snow mixed      Code 73: Thunderstorm with rain
-  //Code 51: Drizzle      Code 61: Cloudy sky      Code 63: Overcast 
   const weatherDistribution: { [weather: string]: number } = {
-    sunny: dailyData.weather_code.filter((code) => code === 0 || code === 1)
-      .length,
+    sunny: dailyData.weather_code.filter(
+      (code) => code === WmoCode.ClearSky || code === WmoCode.MainlyClear
+    ).length,
     rainy: dailyData.weather_code.filter(
-      (code) => code === 3 || code === 55 || code === 73
+      (code) =>
+        code === WmoCode.RainHeavy ||
+        code === WmoCode.RainModerate ||
+        code === WmoCode.RainShowersModerate ||
+        code === WmoCode.RainShowersViolent ||
+        code === WmoCode.RainShowersSlight ||
+        code === WmoCode.RainSlight
     ).length,
     cloudy: dailyData.weather_code.filter(
-      (code) => code === 51 || code === 61 || code === 71
+      (code) =>
+        code === WmoCode.DrizzleLight ||
+        code === WmoCode.PartlyCloudy ||
+        code === WmoCode.Overcast
     ).length,
   };
-
-  
 
   // Convert organized data into arrays for Chart.js
   const labels = Object.keys(weatherDistribution);
@@ -61,7 +90,6 @@ const calculateWeatherDistributionData = (
 
   return { labels, data };
 };
-
 
 export const formatChartData = (data: HistoricalWeatherData): FormattedData => {
   // Calculate temperature and weather distribution data

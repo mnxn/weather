@@ -4,11 +4,13 @@ import {
   ChartType,
   ArcElement,
   Tooltip,
+  PieController,
+  Legend,
 } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
-ChartJS.register(ArcElement, Tooltip);
+ChartJS.register(ArcElement, Tooltip, PieController, Legend);
 
 interface PieChartContainerProps {
   title: string;

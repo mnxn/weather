@@ -2,7 +2,7 @@ import { Link, Routes, Route } from "react-router-dom";
 
 import HomePage from "./components/HomePage";
 import MapsPage from "./components/MapsPage/MapsPage";
-import HistoryPage from "./components/HistoryPage/HistoryPage";
+import HistoryPage from "./components/HistoryPage";
 import { AppBar, Button, Toolbar } from "@mui/material";
 
 function App() {

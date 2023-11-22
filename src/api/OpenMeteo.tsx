@@ -7,6 +7,8 @@
 // @param latitude - The latitude of the location.
 // @param longitude - The longitude of the location.
 // @returns A Promise that resolves to an object containing weather data.
+import { WmoCode } from "../components/WmoCode";
+
 
 const API_URL = "https://api.open-meteo.com/v1/forecast";
 const ARCHIVE_API_URL = "https://archive-api.open-meteo.com/v1/archive";
@@ -16,7 +18,8 @@ export interface DailyData {
   time: string[];
   temperature_2m_max: number[];
   temperature_2m_min: number[];
-  weather_code: number[];
+  weather_code: WmoCode[];
+  //weather_code: number;
 }
 
 interface WeatherData {

@@ -7,9 +7,13 @@ import {
   LinearScale,
   BarElement,
   ChartOptions,
+  BarController,
+  Legend,
+  Tooltip,
 } from "chart.js";
+//import { tooltip } from "leaflet";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement);
+ChartJS.register(CategoryScale, LinearScale, BarElement, BarController, Legend, Tooltip);
 
 interface BarChartContainerProps {
   title: string;
