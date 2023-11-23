@@ -1,7 +1,16 @@
+import { WeatherLocationProps } from "../../WeatherLocation";
 import SearchInput from "./SearchInput";
 import Box from "@mui/material/Box";
 
-function CurrentLocation(props: { id?: string }) {
+export interface CurrentLocationProps extends WeatherLocationProps {
+  id?: string;
+}
+
+function CurrentLocation({
+  id,
+  weatherLocation,
+  setWeatherLocation,
+}: CurrentLocationProps) {
   return (
     <Box
       sx={{
@@ -11,9 +20,12 @@ function CurrentLocation(props: { id?: string }) {
         borderRadius: 1,
         padding: 2,
       }}
-      id={props.id}
+      id={id}
     >
-      <SearchInput />
+      <SearchInput
+        weatherLocation={weatherLocation}
+        setWeatherLocation={setWeatherLocation}
+      />
     </Box>
   );
 }

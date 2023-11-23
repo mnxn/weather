@@ -8,12 +8,20 @@ import HistoryPreview from "./HistoryPreview";
 import "./HomePage.css";
 import { Box, Container, Stack } from "@mui/material";
 import { WmoCode } from "./WmoCode";
+import { WeatherLocationProps } from "../WeatherLocation";
 
-function HomePage() {
+function HomePage({
+  weatherLocation,
+  setWeatherLocation,
+}: WeatherLocationProps) {
   return (
     <Container>
       <Box id="dashboard" display="grid" gap={2} padding={2}>
-        <CurrentLocation id="current-location" />
+        <CurrentLocation
+          id="current-location"
+          weatherLocation={weatherLocation}
+          setWeatherLocation={setWeatherLocation}
+        />
         <CurrentWeather id="current-weather" />
         <Map id="map" />
         <HourlyForecast

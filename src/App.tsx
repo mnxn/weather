@@ -4,8 +4,15 @@ import HomePage from "./components/HomePage";
 import MapsPage from "./components/MapsPage/MapsPage";
 import HistoryPage from "./components/HistoryPage";
 import { AppBar, Button, Toolbar } from "@mui/material";
+import { useState } from "react";
+import { WeatherLocation } from "./WeatherLocation";
+
+const center: WeatherLocation = { latitude: 45.5152, longitude: -122.676483 };
 
 function App() {
+  const [weatherLocation, setWeatherLocation] =
+    useState<WeatherLocation>(center);
+
   return (
     <>
       <AppBar position="static" sx={{ bgcolor: "#0f172a" }}>
@@ -23,8 +30,24 @@ function App() {
       </AppBar>
       <main>
         <Routes>
-          <Route index element={<HomePage />} />
-          <Route path="/maps" element={<MapsPage />} />
+          <Route
+            index
+            element={
+              <HomePage
+                weatherLocation={weatherLocation}
+                setWeatherLocation={setWeatherLocation}
+              />
+            }
+          />
+          <Route
+            path="/maps"
+            element={
+              <MapsPage
+                weatherLocation={weatherLocation}
+                setWeatherLocation={setWeatherLocation}
+              />
+            }
+          />
           <Route path="/history" element={<HistoryPage />} />
         </Routes>
       </main>
