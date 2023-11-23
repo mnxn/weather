@@ -10,6 +10,11 @@ import { createTheme } from "@mui/material";
 
 import "weathericons/css/weather-icons.min.css";
 
+if (process.env.NODE_ENV !== "production") {
+  const axe = await import("@axe-core/react");
+  axe.default(React, ReactDOM, 1000);
+}
+
 const theme = createTheme({
   palette: {
     background: {
