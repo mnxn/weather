@@ -1,7 +1,8 @@
-import countries from "i18n-iso-countries";
 import { fetchReverseCityLocations } from "./api/OpenWeather";
+import countries from "i18n-iso-countries";
+import enLocale from "i18n-iso-countries/langs/en.json";
 
-countries.registerLocale(await import("i18n-iso-countries/langs/en.json"));
+countries.registerLocale(enLocale);
 
 export interface WeatherLocation {
   city?: string;
