@@ -14,6 +14,9 @@ import {
 function getDevicePosition(): Promise<GeolocationPosition> {
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject, {
+      // Infinity is the default value, but setting it explicitly seems to make
+      // the position resolve more consistently in Firefox on Windows.
+      maximumAge: Infinity,
       timeout: 5000,
     });
   });
