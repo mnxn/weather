@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import React, { useState, useEffect } from "react";
 import tileLayer from "./TileLayer";
 import { useScreenSize } from "../../utils/useScreenSize";
+import countries from "i18n-iso-countries";
 
 import {
   WeatherResponse,
@@ -46,9 +47,11 @@ function MapsPage({
           setWeatherLocation({
             city: firstResult.name,
             state: firstResult.state,
-            country: firstResult.country,
-            latitude: firstResult.lat,
-            longitude: firstResult.lon,
+            country:
+              countries.getName(firstResult.country, "en") ??
+              firstResult.country,
+            latitude: latLng.lat, // use original coordinates
+            longitude: latLng.lng,
           });
         }
       }, 500),
