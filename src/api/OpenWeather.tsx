@@ -1,12 +1,23 @@
 const API_BASE_URL = "https://api.openweathermap.org/data/2.5";
 const API_KEY = import.meta.env.VITE_OPEN_WEATHER_API_KEY;
+
+interface OpenWeatherMapResponse {
+  list: {
+    dt_txt: string;
+    main: {
+      temp_max: number;
+      temp_min: number;
+    };
+  }[];
+}
+
 interface CurrentWeather {
   temperature: number;
   humidity: number;
   weatherDescription: string;
 }
 
-interface FiveDayForecast {
+export interface FiveDayForecast {
   temperature: number;
   humidity: number;
   weatherDescription: string;
@@ -15,11 +26,31 @@ interface FiveDayForecast {
 interface UVIndex {
   value: number;
 }
-interface HistoricalWeather {
-  temperature: number;
-  humidity: number;
-  weatherDescription: string;
+interface DailyTemperature {
+  day: number;
+  min: number;
+  max: number;
+  night: number;
+  eve: number;
+  morn: number;
 }
+interface WeatherCondition {
+  id: number;
+  main: string;
+  description: string;
+}
+export interface DailyData {
+  dt: number;
+  temp: DailyTemperature;
+  weather: WeatherCondition[];
+  sunrise: number;
+  sunset: number;
+}
+
+export interface HistoricalWeather {
+  daily: DailyData[];
+}
+
 interface DailyForecast {
   temperature: {
     day: number;
@@ -53,6 +84,25 @@ export async function fetchCurrentWeather(
   } else {
     throw new Error(
       `Failed to fetch current weather data from OpenWeatherMap API for endpoint: ${endpoint}`
+    );
+  }
+}
+
+export async function fetchForecastByCityTwoWeeks(
+  city: string
+): Promise<OpenWeatherMapResponse> {
+  const endpoint = "/forecast";
+  const apiUrl = `${API_BASE_URL}${endpoint}?q=${city}&cnt=16&appid=${API_KEY}`;
+  const response = await fetch(apiUrl);
+
+  if (response.ok) {
+    const data = await response.json();
+
+    const forecast: OpenWeatherMapResponse = { list: data.list };
+    return forecast;
+  } else {
+    throw new Error(
+      `Failed to fetch forecast data from OpenWeatherMap API for endpoint: ${endpoint}`
     );
   }
 }
@@ -103,28 +153,22 @@ export async function fetchUVIndex(
 }
 
 export async function fetchAllWeather(
-    latitude: number,
-    longitude: number
-  ): Promise<HistoricalWeather> {
-    const endpoint = "/onecall";
-    const apiUrl = `${API_BASE_URL}${endpoint}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
-    const response = await fetch(apiUrl);
-  
-    if (response.ok) {
-      const data = await response.json();
-      // Extract historical weather data from the API response
-      const historicalWeather: HistoricalWeather = {
-        temperature: data.current.temp,
-        humidity: data.current.humidity,
-        weatherDescription: data.current.weather[0].description,
-      };
-      return historicalWeather;
-    } else {
-      throw new Error(
-        `Failed to fetch historical weather data from OpenWeatherMap API for endpoint: ${endpoint}`
-      );
-    }
+  latitude: number,
+  longitude: number
+): Promise<HistoricalWeather> {
+  const endpoint = "/onecall";
+  const apiUrl = `${API_BASE_URL}${endpoint}?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely&appid=${API_KEY}`;
+  const response = await fetch(apiUrl);
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    throw new Error(
+      `Failed to fetch historical weather data from OpenWeatherMap API for endpoint: ${endpoint}`
+    );
   }
+}
 
 export async function fetchHistoricalWeather(
   latitude: number,
@@ -137,13 +181,7 @@ export async function fetchHistoricalWeather(
 
   if (response.ok) {
     const data = await response.json();
-    // Extract historical weather data from the API response
-    const historicalWeather: HistoricalWeather = {
-      temperature: data.current.temp,
-      humidity: data.current.humidity,
-      weatherDescription: data.current.weather[0].description,
-    };
-    return historicalWeather;
+    return data;
   } else {
     throw new Error(
       `Failed to fetch historical weather data from OpenWeatherMap API for endpoint: ${endpoint}`
