@@ -1,8 +1,8 @@
-import { Box, ListItemText, Stack, Typography } from "@mui/material";
+import { Box, ListItemText, Stack, Typography, debounce } from "@mui/material";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { LatLng } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import tileLayer from "./TileLayer";
 import { useScreenSize } from "../../utils/useScreenSize";
 
@@ -12,6 +12,7 @@ import {
   getWeatherByCoordinates,
 } from "../../api/WeatherApi";
 import { WeatherLocationProps } from "../../WeatherLocation";
+import { fetchReverseCityLocations } from "../../api/OpenWeather";
 
 const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
 
@@ -36,6 +37,24 @@ function MapsPage({
     fetchData();
   }, [weatherLocation]);
 
+  const fetchWeatherLocation = React.useMemo(
+    () =>
+      debounce(async (latLng: LatLng) => {
+        const data = await fetchReverseCityLocations(latLng.lat, latLng.lng);
+        if (data.length >= 1) {
+          const firstResult = data[0];
+          setWeatherLocation({
+            city: firstResult.name,
+            state: firstResult.state,
+            country: firstResult.country,
+            latitude: firstResult.lat,
+            longitude: firstResult.lon,
+          });
+        }
+      }, 500),
+    [setWeatherLocation]
+  );
+
   return (
     <Stack
       sx={{
@@ -47,10 +66,7 @@ function MapsPage({
       <MapView
         center={new LatLng(weatherLocation.latitude, weatherLocation.longitude)}
         onMapClicked={(latLng: LatLng) => {
-          setWeatherLocation({
-            latitude: latLng.lat,
-            longitude: latLng.lng,
-          });
+          fetchWeatherLocation(latLng);
         }}
       />
 

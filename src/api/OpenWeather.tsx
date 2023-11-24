@@ -1,4 +1,5 @@
 const API_BASE_URL = "https://api.openweathermap.org/data/2.5";
+const API_GEOCODING_URL = "https://api.openweathermap.org/geo/1.0";
 const API_KEY = import.meta.env.VITE_OPEN_WEATHER_API_KEY;
 
 interface OpenWeatherMapResponse {
@@ -62,6 +63,17 @@ interface DailyForecast {
   };
   humidity: number;
   weatherDescription: string;
+}
+
+export interface CityLocation {
+  name: string;
+  local_names: {
+    [language: string]: string;
+  };
+  lat: number;
+  lon: number;
+  country: string;
+  state?: string;
 }
 
 export async function fetchCurrentWeather(
@@ -212,6 +224,23 @@ export async function fetchDailyForecast(
       weatherDescription: data.list[0].weather[0].description,
     };
     return dailyForecast;
+  } else {
+    throw new Error(
+      `Failed to fetch daily forecast data from OpenWeatherMap API for endpoint: ${endpoint}`
+    );
+  }
+}
+
+export async function fetchReverseCityLocations(
+  latitude: number,
+  longitude: number
+): Promise<CityLocation[]> {
+  const endpoint = "/reverse";
+  const apiUrl = `${API_GEOCODING_URL}${endpoint}?lat=${latitude}&lon=${longitude}&limit=1&appid=${API_KEY}`;
+  const response = await fetch(apiUrl);
+
+  if (response.ok) {
+    return await response.json();
   } else {
     throw new Error(
       `Failed to fetch daily forecast data from OpenWeatherMap API for endpoint: ${endpoint}`
