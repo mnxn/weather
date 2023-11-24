@@ -4,12 +4,13 @@ import {
   MyLocation,
 } from "@mui/icons-material";
 import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { debounce } from "chart.js/helpers";
 import {
   WeatherLocationProps,
   reverseWeatherLocation,
 } from "../../WeatherLocation";
+import { LocationState } from "./LocationState";
 
 function getDevicePosition(): Promise<GeolocationPosition> {
   return new Promise((resolve, reject) => {
@@ -22,13 +23,7 @@ function getDevicePosition(): Promise<GeolocationPosition> {
   });
 }
 
-enum LocationState {
-  Ready,
-  Loading,
-  Error,
-}
-
-function LocationIcon(props: { state: LocationState }) {
+export function LocationIcon(props: { state: LocationState }) {
   switch (props.state) {
     case LocationState.Ready:
       return <MyLocation />;
@@ -39,13 +34,16 @@ function LocationIcon(props: { state: LocationState }) {
   }
 }
 
-export default function LocationButton({
-  setWeatherLocation,
-}: WeatherLocationProps) {
-  const [locationState, setLocationState] = useState<LocationState>(
-    LocationState.Ready
-  );
+export interface LocationButtonProps extends WeatherLocationProps {
+  locationState: LocationState;
+  setLocationState: (locationState: LocationState) => void;
+}
 
+export default function LocationButton({
+  locationState,
+  setLocationState,
+  setWeatherLocation,
+}: LocationButtonProps) {
   const fetchWeatherLocation = React.useMemo(
     () =>
       debounce(async () => {
@@ -63,7 +61,7 @@ export default function LocationButton({
           console.error(e);
         }
       }, 500),
-    [setWeatherLocation]
+    [setLocationState, setWeatherLocation]
   );
 
   return (

@@ -4,6 +4,7 @@ import {
   CardContent,
   CardHeader,
   Chip,
+  LinearProgress,
   Stack,
   Tooltip,
 } from "@mui/material";
@@ -16,6 +17,8 @@ import {
 } from "../../WeatherLocation";
 import SearchInput from "./SearchInput";
 import LocationButton from "./LocationButton";
+import { useState } from "react";
+import { LocationState } from "./LocationState";
 
 function getLocationTitle({ city, state }: WeatherLocation): string {
   if (city && state) {
@@ -32,6 +35,10 @@ function CurrentLocation({
   weatherLocation,
   setWeatherLocation,
 }: WeatherLocationProps) {
+  const [locationState, setLocationState] = useState<LocationState>(
+    LocationState.Ready
+  );
+
   return (
     <Card>
       <CardHeader
@@ -66,8 +73,11 @@ function CurrentLocation({
         <LocationButton
           weatherLocation={weatherLocation}
           setWeatherLocation={setWeatherLocation}
+          locationState={locationState}
+          setLocationState={setLocationState}
         />
       </CardActions>
+      {locationState === LocationState.Loading && <LinearProgress />}
     </Card>
   );
 }
