@@ -53,7 +53,14 @@ const SearchInput = ({ setWeatherLocation }: WeatherLocationProps) => {
           {city.admin1 && `, ${city.admin1}`}
         </li>
       )}
-      renderInput={(props) => <TextField {...props} label="Search" fullWidth />}
+      renderInput={(props) => (
+        <TextField
+          {...props}
+          label="Search"
+          placeholder="City, Country"
+          fullWidth
+        />
+      )}
     />
   );
 };
