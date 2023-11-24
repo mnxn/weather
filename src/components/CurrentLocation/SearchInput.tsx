@@ -27,13 +27,13 @@ const SearchInput = ({ setWeatherLocation }: WeatherLocationProps) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "row" }}>
       <Autocomplete
-        value={options.length >= 1 ? options[0] : null}
         fullWidth
+        clearOnBlur={true}
+        blurOnSelect={true}
         noOptionsText="No cities found"
         options={options}
         getOptionLabel={(city) => city.name}
         groupBy={(city) => city.country ?? ""}
-        isOptionEqualToValue={(option, value) => option.id === value.id}
         onChange={(_event, city) => {
           if (city) {
             setWeatherLocation({
@@ -42,17 +42,23 @@ const SearchInput = ({ setWeatherLocation }: WeatherLocationProps) => {
               country: city.country,
               latitude: city.latitude,
               longitude: city.longitude,
+              elevation: city.elevation,
             });
           }
         }}
         onInputChange={(_event, value) => fetchData(value)}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
+        filterSelectedOptions={false}
+        filterOptions={(x) => x} // show all results from server
         renderOption={(props, city) => (
           <li {...props} key={city.id}>
             {city.name}
             {city.admin1 && `, ${city.admin1}`}
           </li>
         )}
-        renderInput={(props) => <TextField {...props} label="City" fullWidth />}
+        renderInput={(props) => (
+          <TextField {...props} label="Search" fullWidth />
+        )}
       />
     </Box>
   );

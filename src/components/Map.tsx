@@ -1,9 +1,8 @@
 import { Box } from "@mui/material";
 
-function Map(props: { id?: string }) {
+function Map() {
   return (
     <Box
-      id={props.id}
       display="flex"
       justifyContent="center"
       alignItems="center"

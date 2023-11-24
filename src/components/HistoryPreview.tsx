@@ -1,9 +1,8 @@
 import { Box } from "@mui/material";
 
-function HistoryPreview(props: { id?: string }) {
+function HistoryPreview() {
   return (
     <Box
-      id={props.id}
       display="flex"
       justifyContent="center"
       alignItems="center"

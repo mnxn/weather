@@ -1,32 +1,66 @@
-import { WeatherLocationProps } from "../../WeatherLocation";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Chip,
+  Stack,
+  Tooltip,
+} from "@mui/material";
+import {
+  WeatherLocation,
+  WeatherLocationProps,
+  formatLatitude,
+  formatElevation,
+  formatLongitude,
+} from "../../WeatherLocation";
 import SearchInput from "./SearchInput";
-import Box from "@mui/material/Box";
 
-export interface CurrentLocationProps extends WeatherLocationProps {
-  id?: string;
+function getLocationTitle({ city, state }: WeatherLocation): string {
+  if (city && state) {
+    return `${city}, ${state}`;
+  } else if (city) {
+    return city;
+  } else if (state) {
+    return state;
+  }
+  return "Unknown Location";
 }
 
 function CurrentLocation({
-  id,
   weatherLocation,
   setWeatherLocation,
-}: CurrentLocationProps) {
+}: WeatherLocationProps) {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: "white",
-        borderRadius: 1,
-        padding: 2,
-      }}
-      id={id}
-    >
-      <SearchInput
-        weatherLocation={weatherLocation}
-        setWeatherLocation={setWeatherLocation}
+    <Card>
+      <CardHeader
+        title={getLocationTitle(weatherLocation)}
+        subheader={weatherLocation.country}
       />
-    </Box>
+      <CardContent sx={{ paddingTop: 0 }}>
+        <Stack gap={2}>
+          <Stack direction="row" gap={1}>
+            <Tooltip title="Latitude">
+              <Chip label={formatLatitude(weatherLocation.latitude)} />
+            </Tooltip>
+
+            <Tooltip title="Longitude">
+              <Chip label={formatLongitude(weatherLocation.longitude)} />
+            </Tooltip>
+
+            {weatherLocation.elevation && (
+              <Tooltip title="Elevation">
+                <Chip label={formatElevation(weatherLocation.elevation)} />
+              </Tooltip>
+            )}
+          </Stack>
+
+          <SearchInput
+            weatherLocation={weatherLocation}
+            setWeatherLocation={setWeatherLocation}
+          />
+        </Stack>
+      </CardContent>
+    </Card>
   );
 }
 

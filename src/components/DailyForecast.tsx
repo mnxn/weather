@@ -8,18 +8,12 @@ export interface DailyForecastProps {
   weather: WmoCode;
   high: number;
   low: number;
-  id?: string;
 }
 
 function DailyForecast(props: DailyForecastProps) {
   return (
     <Paper elevation={1} sx={{ flex: 1 }}>
-      <Stack
-        id={props.id}
-        alignItems="center"
-        textAlign="center"
-        paddingBlock={1}
-      >
+      <Stack alignItems="center" textAlign="center" paddingBlock={1}>
         {props.date}
         <h3 style={{ margin: 0 }}>{props.day}</h3>
         <Box

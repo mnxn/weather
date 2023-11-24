@@ -61,7 +61,6 @@ export type HourlyForecast = {
   temperature: number[];
   humidity: number[];
   precipitation: number[];
-  id?: string;
 };
 
 interface DataSelectorChipProps {
@@ -127,7 +126,7 @@ function HourlyForecast(props: HourlyForecast) {
   };
 
   return (
-    <Paper id={props.id} elevation={1}>
+    <Paper elevation={1}>
       <Box padding={2}>
         <Box height={300}>
           <Line
