@@ -1,5 +1,6 @@
 import {
   Card,
+  CardActions,
   CardContent,
   CardHeader,
   Chip,
@@ -14,6 +15,7 @@ import {
   formatLongitude,
 } from "../../WeatherLocation";
 import SearchInput from "./SearchInput";
+import LocationButton from "./LocationButton";
 
 function getLocationTitle({ city, state }: WeatherLocation): string {
   if (city && state) {
@@ -36,7 +38,7 @@ function CurrentLocation({
         title={getLocationTitle(weatherLocation)}
         subheader={weatherLocation.country}
       />
-      <CardContent sx={{ paddingTop: 0 }}>
+      <CardContent>
         <Stack gap={2}>
           <Stack direction="row" gap={1}>
             <Tooltip title="Latitude">
@@ -47,7 +49,7 @@ function CurrentLocation({
               <Chip label={formatLongitude(weatherLocation.longitude)} />
             </Tooltip>
 
-            {weatherLocation.elevation && (
+            {weatherLocation.elevation !== undefined && (
               <Tooltip title="Elevation">
                 <Chip label={formatElevation(weatherLocation.elevation)} />
               </Tooltip>
@@ -60,6 +62,12 @@ function CurrentLocation({
           />
         </Stack>
       </CardContent>
+      <CardActions>
+        <LocationButton
+          weatherLocation={weatherLocation}
+          setWeatherLocation={setWeatherLocation}
+        />
+      </CardActions>
     </Card>
   );
 }
