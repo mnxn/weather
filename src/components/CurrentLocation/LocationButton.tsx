@@ -5,10 +5,11 @@ import {
 } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import React, { useState } from "react";
-import countries from "i18n-iso-countries";
-import { fetchReverseCityLocations } from "../../api/OpenWeather";
 import { debounce } from "chart.js/helpers";
-import { WeatherLocationProps } from "../../WeatherLocation";
+import {
+  WeatherLocationProps,
+  reverseWeatherLocation,
+} from "../../WeatherLocation";
 
 function getDevicePosition(): Promise<GeolocationPosition> {
   return new Promise((resolve, reject) => {
@@ -48,22 +49,11 @@ export default function LocationButton({
         try {
           setLocationState(LocationState.Loading);
           const { coords } = await getDevicePosition();
-          const data = await fetchReverseCityLocations(
+          const reversedLocation = await reverseWeatherLocation(
             coords.latitude,
             coords.longitude
           );
-          if (data.length >= 1) {
-            const firstResult = data[0];
-            setWeatherLocation({
-              city: firstResult.name,
-              state: firstResult.state,
-              country:
-                countries.getName(firstResult.country, "en") ??
-                firstResult.country,
-              latitude: coords.latitude, // use original coordinates
-              longitude: coords.longitude,
-            });
-          }
+          setWeatherLocation(reversedLocation);
           setLocationState(LocationState.Ready);
         } catch (e) {
           setLocationState(LocationState.Error);

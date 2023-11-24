@@ -5,15 +5,16 @@ import "leaflet/dist/leaflet.css";
 import React, { useState, useEffect } from "react";
 import tileLayer from "./TileLayer";
 import { useScreenSize } from "../../utils/useScreenSize";
-import countries from "i18n-iso-countries";
 
 import {
   WeatherResponse,
   getWeatherByCity,
   getWeatherByCoordinates,
 } from "../../api/WeatherApi";
-import { WeatherLocationProps } from "../../WeatherLocation";
-import { fetchReverseCityLocations } from "../../api/OpenWeather";
+import {
+  WeatherLocationProps,
+  reverseWeatherLocation,
+} from "../../WeatherLocation";
 
 const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
 
@@ -41,19 +42,11 @@ function MapsPage({
   const fetchWeatherLocation = React.useMemo(
     () =>
       debounce(async (latLng: LatLng) => {
-        const data = await fetchReverseCityLocations(latLng.lat, latLng.lng);
-        if (data.length >= 1) {
-          const firstResult = data[0];
-          setWeatherLocation({
-            city: firstResult.name,
-            state: firstResult.state,
-            country:
-              countries.getName(firstResult.country, "en") ??
-              firstResult.country,
-            latitude: latLng.lat, // use original coordinates
-            longitude: latLng.lng,
-          });
-        }
+        const reversedLocation = await reverseWeatherLocation(
+          latLng.lat,
+          latLng.lng
+        );
+        setWeatherLocation(reversedLocation);
       }, 500),
     [setWeatherLocation]
   );
