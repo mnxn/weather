@@ -40,6 +40,11 @@ function CurrentLocation({
       />
       <CardContent>
         <Stack gap={2}>
+          <SearchInput
+            weatherLocation={weatherLocation}
+            setWeatherLocation={setWeatherLocation}
+          />
+
           <Stack direction="row" gap={1}>
             <Tooltip title="Latitude">
               <Chip label={formatLatitude(weatherLocation.latitude)} />
@@ -55,11 +60,6 @@ function CurrentLocation({
               </Tooltip>
             )}
           </Stack>
-
-          <SearchInput
-            weatherLocation={weatherLocation}
-            setWeatherLocation={setWeatherLocation}
-          />
         </Stack>
       </CardContent>
       <CardActions>
