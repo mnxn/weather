@@ -12,11 +12,7 @@ import { Container, Stack } from "@mui/material";
 
 // Generic function to return every Nth element of an array.
 // Can be used to shrink a years worth of daily data to values every N days.
-function everyNth<T>(array: T[] | undefined, n: number): T[] {
-  if (array === undefined) {
-    return [];
-  }
-
+function everyNth<T>(array: T[], n: number): T[] {
   return array.filter((_, index) => index % n == 0);
 }
 
@@ -35,7 +31,11 @@ const HistoryPage = () => {
     },
   });
 
-  const [sunsetData, setSunsetData] = useState<SunsetData | null>(null);
+  const [sunsetData, setSunsetData] = useState<SunsetData>({
+    time: [],
+    sunrise: [],
+    sunset: [],
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,9 +91,9 @@ const HistoryPage = () => {
         />
 
         <SunsetHistory
-          times={everyNth(sunsetData?.time, DAYS)}
-          sunrise={everyNth(sunsetData?.sunrise, DAYS)}
-          sunset={everyNth(sunsetData?.sunset, DAYS)}
+          times={everyNth(sunsetData.time, DAYS)}
+          sunrise={everyNth(sunsetData.sunrise, DAYS)}
+          sunset={everyNth(sunsetData.sunset, DAYS)}
         />
       </Stack>
     </Container>
