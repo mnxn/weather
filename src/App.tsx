@@ -48,7 +48,15 @@ function App() {
               />
             }
           />
-          <Route path="/history" element={<HistoryPage />} />
+          <Route
+            path="/history"
+            element={
+              <HistoryPage
+                weatherLocation={weatherLocation}
+                setWeatherLocation={setWeatherLocation}
+              />
+            }
+          />
         </Routes>
       </main>
     </>

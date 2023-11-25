@@ -9,6 +9,7 @@ import { PieChartContainer } from "./PieChart";
 import { BarChartContainer } from "./BarChart";
 import SunsetHistory from "./SunsetHistory";
 import { Container, Stack } from "@mui/material";
+import { WeatherLocationProps } from "../../WeatherLocation";
 
 // Generic function to return every Nth element of an array.
 // Can be used to shrink a years worth of daily data to values every N days.
@@ -18,7 +19,7 @@ function everyNth<T>(array: T[], n: number): T[] {
 
 const DAYS: number = 7;
 
-const HistoryPage = () => {
+const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
   const [chartData, setChartData] = useState<FormattedData>({
     monthly: {
       labels: [],
@@ -40,8 +41,8 @@ const HistoryPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const weatherData = await fetchHistoricalWeatherData(
-        45.5152,
-        -122.676483,
+        weatherLocation.latitude,
+        weatherLocation.longitude,
         2023
       );
       const formattedData = formatChartData(weatherData);
@@ -49,16 +50,20 @@ const HistoryPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [weatherLocation]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchSunsetData(45.52345, -122.67621, 2022);
+      const data = await fetchSunsetData(
+        weatherLocation.latitude,
+        weatherLocation.longitude,
+        2022
+      );
       setSunsetData(data);
     };
 
     fetchData();
-  }, []);
+  }, [weatherLocation]);
 
   return (
     <Container>
