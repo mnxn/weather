@@ -31,6 +31,7 @@ const chartOptions: ChartOptions<"bar"> = {
     duration: 0,
   },
   interaction: {
+    // highlight the entire column of sunrise, sunset, and midnight segments
     mode: "x",
   },
   plugins: {
@@ -38,8 +39,10 @@ const chartOptions: ChartOptions<"bar"> = {
       display: false,
     },
     tooltip: {
-      mode: "index", // show information about entire column
+      // show tooltip information about entire column
+      mode: "index",
       callbacks: {
+        // read the original date value to display the local time of day
         label(item: TooltipItem<"bar">) {
           const point = item.raw as TimePoint;
           const formattedTime = point.date.toLocaleString(undefined, {
@@ -49,13 +52,19 @@ const chartOptions: ChartOptions<"bar"> = {
 
           return `${item.dataset.label}: ${formattedTime}`;
         },
+
+        // only show month and day for the tooltip header
         title(items: TooltipItem<"bar">[]) {
+          if (items.length === 0) return undefined;
+
           const point = items[0].raw as TimePoint;
           return point.date.toLocaleString(undefined, {
             month: "long",
             day: "numeric",
           });
         },
+
+        // reverse segment colors so sunrise has the light color and sunset has the dark color
         labelColor(tooltipItem: TooltipItem<"bar">): TooltipLabelStyle {
           return {
             backgroundColor:
@@ -65,6 +74,8 @@ const chartOptions: ChartOptions<"bar"> = {
           };
         },
       },
+
+      // disable tooltip information about the midnight segment because it does not store a date object
       filter(item: TooltipItem<"bar">): boolean {
         return item.dataset.label !== "Midnight";
       },
@@ -74,6 +85,7 @@ const chartOptions: ChartOptions<"bar"> = {
     x: {
       stacked: true,
       ticks: {
+        // only show month and day along x axis
         callback(value: string | number): string {
           if (typeof value === "string") return value;
 
@@ -91,6 +103,7 @@ const chartOptions: ChartOptions<"bar"> = {
       min: 0,
       max: 24,
       ticks: {
+        // only show time of day along y axis
         callback(value: string | number): string {
           if (typeof value === "string") return value;
 
@@ -111,7 +124,9 @@ export type SunsetHistoryProps = {
 
 function getTimePoints(labels: string[], data: string[]): TimePoint[] {
   return data.map((time, index) => {
-    const date = new Date(time + "Z"); // Z suffix for GMT timezone
+    // Z suffix for GMT timezone
+    const date = new Date(time + "Z");
+    // transform time of day to a decimal value between 0 and 24
     const y = date.getHours() + date.getMinutes() / 60;
     return {
       x: labels[index],
