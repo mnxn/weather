@@ -124,8 +124,7 @@ export type SunsetHistoryProps = {
 
 function getTimePoints(labels: string[], data: string[]): TimePoint[] {
   return data.map((time, index) => {
-    // Z suffix for GMT timezone
-    const date = new Date(time + "Z");
+    const date = new Date(time);
     // transform time of day to a decimal value between 0 and 24
     const y = date.getHours() + date.getMinutes() / 60;
     return {

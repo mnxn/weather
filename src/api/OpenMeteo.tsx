@@ -101,7 +101,7 @@ export async function fetchSunsetData(
   year: number
 ): Promise<SunsetData> {
   // Construct the API URL based on the provided latitude and longitude
-  const url = `${ARCHIVE_API_URL}?latitude=${latitude}&longitude=${longitude}&start_date=${year}-01-01&end_date=${year}-12-31&daily=sunrise,sunset&timezone=GMT`;
+  const url = `${ARCHIVE_API_URL}?latitude=${latitude}&longitude=${longitude}&start_date=${year}-01-01&end_date=${year}-12-31&daily=sunrise,sunset&timezone=auto`;
 
   // Make an asynchronous HTTP GET request to the API
   // Force cache because data from the previous year will not change.
