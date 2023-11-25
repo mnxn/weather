@@ -30,6 +30,9 @@ const chartOptions: ChartOptions<"bar"> = {
   animation: {
     duration: 0,
   },
+  interaction: {
+    mode: "x",
+  },
   plugins: {
     legend: {
       display: false,
