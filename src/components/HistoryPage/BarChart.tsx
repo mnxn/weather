@@ -13,7 +13,14 @@ import {
 } from "chart.js";
 //import { tooltip } from "leaflet";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, BarController, Legend, Tooltip);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  BarController,
+  Legend,
+  Tooltip
+);
 
 interface BarChartContainerProps {
   title: string;
@@ -25,7 +32,7 @@ interface BarChartContainerProps {
     borderColor: string;
     borderWidth: number;
   }[];
-  options?: ChartOptions;
+  options?: ChartOptions<"bar">;
 }
 
 export const BarChartContainer = ({
@@ -34,7 +41,7 @@ export const BarChartContainer = ({
   datasets,
   options,
 }: BarChartContainerProps) => {
-  const chartOptions: ChartOptions = {
+  const chartOptions: ChartOptions<"bar"> = {
     maintainAspectRatio: false,
     plugins: {
       legend: {
@@ -66,7 +73,7 @@ export const BarChartContainer = ({
             labels,
             datasets,
           }}
-          options={chartOptions as ChartOptions}
+          options={chartOptions}
           style={{ position: "absolute" }}
         />
       </Box>

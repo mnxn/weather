@@ -1,7 +1,6 @@
 import {
   Chart as ChartJS,
   ChartOptions,
-  ChartType,
   ArcElement,
   Tooltip,
   PieController,
@@ -16,7 +15,7 @@ interface PieChartContainerProps {
   title: string;
   labels: string[];
   data: number[];
-  options?: ChartOptions<ChartType>;
+  options?: ChartOptions<"pie">;
 }
 
 export const PieChartContainer = ({
@@ -25,7 +24,7 @@ export const PieChartContainer = ({
   data,
   options,
 }: PieChartContainerProps) => {
-  const chartOptions: ChartOptions = {
+  const chartOptions: ChartOptions<"pie"> = {
     maintainAspectRatio: false,
     plugins: {
       legend: {
@@ -63,7 +62,7 @@ export const PieChartContainer = ({
               },
             ],
           }}
-          options={chartOptions as ChartOptions}
+          options={chartOptions}
           style={{ position: "absolute" }}
         />
       </Box>
