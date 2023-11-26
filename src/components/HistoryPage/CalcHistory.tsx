@@ -18,7 +18,7 @@ export interface FormattedData {
 }
 
 // Function to calculate monthly temperature data
-const calculateMonthlyData = (
+export const calculateMonthlyData = (
   dailyData: HistoricalWeatherData["daily"]
 ): MonthlyData => {
   const times = dailyData.time;
@@ -60,7 +60,7 @@ const calculateMonthlyData = (
 };
 
 // Function to calculate weather distribution data
-const calculateWeatherDistributionData = (
+export const calculateWeatherDistributionData = (
   dailyData: HistoricalWeatherData["daily"]
 ): WeatherDistributionData => {
   const weatherDistribution: { [weather: string]: number } = {
