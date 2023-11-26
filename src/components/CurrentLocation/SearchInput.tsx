@@ -58,6 +58,7 @@ const SearchInput = ({ setWeatherLocation }: WeatherLocationProps) => {
             latitude: city.latitude,
             longitude: city.longitude,
             elevation: city.elevation,
+            timeZone: city.timezone,
           });
         }
       }}

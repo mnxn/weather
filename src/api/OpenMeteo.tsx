@@ -72,6 +72,24 @@ export interface CityLocation {
   admin4_id?: number;
 }
 
+export async function fetchTimeZone(
+  latitude: number,
+  longitude: number
+): Promise<string> {
+  // Construct the API URL based on the provided latitude and longitude
+  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&timezone=auto`;
+
+  // Make an asynchronous HTTP GET request to the API
+  const response = await fetch(url);
+
+  if (response.ok) {
+    const data = await response.json();
+    return data.timezone;
+  } else {
+    throw new Error("Failed to fetch data");
+  }
+}
+
 export async function fetchWeatherData(
   latitude: number,
   longitude: number
@@ -125,7 +143,7 @@ export async function fetchSunsetData(
   year: number
 ): Promise<SunsetData> {
   // Construct the API URL based on the provided latitude and longitude
-  const url = `${API_ARCHIVE_URL}?latitude=${latitude}&longitude=${longitude}&start_date=${year}-01-01&end_date=${year}-12-31&daily=sunrise,sunset&timezone=auto`;
+  const url = `${API_ARCHIVE_URL}?latitude=${latitude}&longitude=${longitude}&start_date=${year}-01-01&end_date=${year}-12-31&daily=sunrise,sunset&timezone=GMT`;
 
   // Make an asynchronous HTTP GET request to the API
   // Force cache because data from the previous year will not change.

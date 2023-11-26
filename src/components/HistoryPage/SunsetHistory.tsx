@@ -117,14 +117,25 @@ const chartOptions: ChartOptions<"bar"> = {
 };
 
 export type SunsetHistoryProps = {
+  timezone: string;
   times: string[];
   sunrise: string[];
   sunset: string[];
 };
 
-function getTimePoints(labels: string[], data: string[]): TimePoint[] {
+function getTimePoints(
+  timeZone: string,
+  labels: string[],
+  data: string[]
+): TimePoint[] {
   return data.map((time, index) => {
-    const date = new Date(time);
+    // Use the "Z" suffix for original GMT timezone and convert to local date
+    // and time based on the time zone.
+    const localDateString = new Date(time + "Z").toLocaleString(undefined, {
+      timeZone,
+    });
+    const date = new Date(localDateString);
+
     // transform time of day to a decimal value between 0 and 24
     const y = date.getHours() + date.getMinutes() / 60;
     return {
@@ -141,14 +152,14 @@ function SunsetHistory(props: SunsetHistoryProps) {
     datasets: [
       {
         label: "Sunrise",
-        data: getTimePoints(props.times, props.sunrise),
+        data: getTimePoints(props.timezone, props.times, props.sunrise),
         backgroundColor: nightColor,
         categoryPercentage: 1,
         barPercentage: 1,
       },
       {
         label: "Sunset",
-        data: getTimePoints(props.times, props.sunset),
+        data: getTimePoints(props.timezone, props.times, props.sunset),
         backgroundColor: dayColor,
         categoryPercentage: 1,
         barPercentage: 1,

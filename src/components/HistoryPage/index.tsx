@@ -96,6 +96,7 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
         />
 
         <SunsetHistory
+          timezone={weatherLocation.timeZone}
           times={everyNth(sunsetData.time, DAYS)}
           sunrise={everyNth(sunsetData.sunrise, DAYS)}
           sunset={everyNth(sunsetData.sunset, DAYS)}

@@ -1,3 +1,4 @@
+import { fetchTimeZone } from "./api/OpenMeteo";
 import { fetchReverseCityLocations } from "./api/OpenWeather";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
@@ -11,6 +12,7 @@ export interface WeatherLocation {
   latitude: number;
   longitude: number;
   elevation?: number;
+  timeZone: string;
 }
 
 export interface WeatherLocationProps {
@@ -24,6 +26,7 @@ export const defaultLocation: WeatherLocation = {
   country: "United States of America",
   latitude: 45.5152,
   longitude: -122.6784,
+  timeZone: "America/Los_Angeles",
 };
 
 export function formatLatitude(latitude: number): string {
@@ -62,11 +65,14 @@ export async function reverseWeatherLocation(
   }
 
   const firstResult = data[0];
+  const timeZone = await fetchTimeZone(latitude, longitude);
+  console.log(timeZone);
   return {
     city: firstResult.name,
     state: firstResult.state,
     country: getFullCountryName(firstResult.country, firstResult.country),
     latitude, // use original coordinates
     longitude,
+    timeZone,
   };
 }
