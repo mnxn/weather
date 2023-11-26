@@ -18,6 +18,14 @@ export interface WeatherLocationProps {
   setWeatherLocation: (location: WeatherLocation) => void;
 }
 
+export const defaultLocation: WeatherLocation = {
+  city: "Portland",
+  state: "Oregon",
+  country: "United States of America",
+  latitude: 45.5152,
+  longitude: -122.6784,
+};
+
 export function formatLatitude(latitude: number): string {
   const direction = latitude > 0 ? "N" : "S";
   return `${Math.abs(latitude).toFixed(2)} °${direction}`;

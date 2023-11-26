@@ -5,13 +5,11 @@ import MapsPage from "./components/MapsPage/MapsPage";
 import HistoryPage from "./components/HistoryPage";
 import { AppBar, Button, Toolbar } from "@mui/material";
 import { useState } from "react";
-import { WeatherLocation } from "./WeatherLocation";
-
-const center: WeatherLocation = { latitude: 45.5152, longitude: -122.676483 };
+import { WeatherLocation, defaultLocation } from "./WeatherLocation";
 
 function App() {
   const [weatherLocation, setWeatherLocation] =
-    useState<WeatherLocation>(center);
+    useState<WeatherLocation>(defaultLocation);
 
   return (
     <>
