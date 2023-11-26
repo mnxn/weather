@@ -40,6 +40,16 @@ export function formatElevation(elevation: number): string {
   return `${elevation.toFixed(1)} ft`;
 }
 
+export function getFullCountryName(
+  code: string | undefined,
+  fallback?: string
+): string | undefined {
+  if (code === undefined) {
+    return fallback;
+  }
+  return countries.getName(code, "en") ?? fallback;
+}
+
 export async function reverseWeatherLocation(
   latitude: number,
   longitude: number
@@ -55,8 +65,7 @@ export async function reverseWeatherLocation(
   return {
     city: firstResult.name,
     state: firstResult.state,
-    country:
-      countries.getName(firstResult.country, "en") ?? firstResult.country,
+    country: getFullCountryName(firstResult.country, firstResult.country),
     latitude, // use original coordinates
     longitude,
   };
