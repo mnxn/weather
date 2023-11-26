@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
+
 import { Autocomplete, debounce } from "@mui/material";
-import { CityLocation, fetchCityLocations } from "../../api/OpenMeteo";
+import TextField from "@mui/material/TextField";
+
 import {
   WeatherLocationProps,
   getFullCountryName,
 } from "../../WeatherLocation";
+import { CityLocation, fetchCityLocations } from "../../api/OpenMeteo";
 
 function normalizeCities(cities: CityLocation[]): void {
   // Rewrite country field for consistency with weather locations acquired
@@ -13,7 +15,7 @@ function normalizeCities(cities: CityLocation[]): void {
   for (let i = 0; i < cities.length; i++) {
     cities[i].country = getFullCountryName(
       cities[i].country_code,
-      cities[i].country
+      cities[i].country,
     );
   }
 
@@ -24,7 +26,7 @@ function normalizeCities(cities: CityLocation[]): void {
       a.country?.localeCompare(b.country ?? "") ||
       a.name.localeCompare(b.name) ||
       a.admin1?.localeCompare(b.admin1 ?? "") ||
-      0
+      0,
   );
 }
 
@@ -38,7 +40,7 @@ const SearchInput = ({ setWeatherLocation }: WeatherLocationProps) => {
         normalizeCities(data);
         setOptions(data);
       }, 500),
-    []
+    [],
   );
 
   return (

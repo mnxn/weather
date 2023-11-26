@@ -1,16 +1,18 @@
-import { Bar } from "react-chartjs-2";
-import Box from "@mui/material/Box";
-import { Paper, Typography } from "@mui/material";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ChartOptions,
   BarController,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  ChartOptions,
   Legend,
+  LinearScale,
   Tooltip,
 } from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+import { Paper, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+
 //import { tooltip } from "leaflet";
 
 ChartJS.register(
@@ -19,7 +21,7 @@ ChartJS.register(
   BarElement,
   BarController,
   Legend,
-  Tooltip
+  Tooltip,
 );
 
 interface BarChartContainerProps {

@@ -74,7 +74,7 @@ export interface CityLocation {
 
 export async function fetchTimeZone(
   latitude: number,
-  longitude: number
+  longitude: number,
 ): Promise<string> {
   // Construct the API URL based on the provided latitude and longitude
   const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&timezone=auto`;
@@ -92,7 +92,7 @@ export async function fetchTimeZone(
 
 export async function fetchWeatherData(
   latitude: number,
-  longitude: number
+  longitude: number,
 ): Promise<WeatherData> {
   // Construct the API URL based on the provided latitude and longitude
   const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
@@ -118,7 +118,7 @@ export async function fetchWeatherData(
 export async function fetchHistoricalWeatherData(
   latitude: number,
   longitude: number,
-  year: number
+  year: number,
 ): Promise<HistoricalWeatherData> {
   // Construct the API URL based on the provided latitude and longitude
   const url = `${API_ARCHIVE_URL}?latitude=${latitude}&longitude=${longitude}&start_date=${
@@ -140,7 +140,7 @@ export async function fetchHistoricalWeatherData(
 export async function fetchSunsetData(
   latitude: number,
   longitude: number,
-  year: number
+  year: number,
 ): Promise<SunsetData> {
   // Construct the API URL based on the provided latitude and longitude
   const url = `${API_ARCHIVE_URL}?latitude=${latitude}&longitude=${longitude}&start_date=${year}-01-01&end_date=${year}-12-31&daily=sunrise,sunset&timezone=GMT`;
@@ -159,7 +159,7 @@ export async function fetchSunsetData(
 }
 
 export async function fetchCityLocations(
-  name: string
+  name: string,
 ): Promise<CityLocation[]> {
   // Construct the API URL based on the provided latitude and longitude
   const url = `${API_GEOCODING_URL}?name=${name}&count=10&language=en&format=json`;

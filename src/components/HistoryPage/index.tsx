@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
+
+import { Container, Stack } from "@mui/material";
+
+import { WeatherLocationProps } from "../../WeatherLocation";
 import {
   SunsetData,
   fetchHistoricalWeatherData,
   fetchSunsetData,
 } from "../../api/OpenMeteo";
+import { BarChartContainer } from "./BarChart";
 import { FormattedData, formatChartData } from "./CalcHistory";
 import { PieChartContainer } from "./PieChart";
-import { BarChartContainer } from "./BarChart";
 import SunsetHistory from "./SunsetHistory";
-import { Container, Stack } from "@mui/material";
-import { WeatherLocationProps } from "../../WeatherLocation";
 
 // Generic function to return every Nth element of an array.
 // Can be used to shrink a years worth of daily data to values every N days.
@@ -43,7 +45,7 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
       const weatherData = await fetchHistoricalWeatherData(
         weatherLocation.latitude,
         weatherLocation.longitude,
-        2023
+        2023,
       );
       const formattedData = formatChartData(weatherData);
       setChartData(formattedData);
@@ -57,7 +59,7 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
       const data = await fetchSunsetData(
         weatherLocation.latitude,
         weatherLocation.longitude,
-        2022
+        2022,
       );
       setSunsetData(data);
     };

@@ -1,11 +1,13 @@
+import { debounce } from "chart.js/helpers";
+import React from "react";
+
 import {
   LocationDisabled,
   LocationSearching,
   MyLocation,
 } from "@mui/icons-material";
 import { Alert, Button, Popper } from "@mui/material";
-import React from "react";
-import { debounce } from "chart.js/helpers";
+
 import {
   WeatherLocationProps,
   reverseWeatherLocation,
@@ -62,7 +64,7 @@ export default function LocationButton({
 }: LocationButtonProps) {
   const [errorMessage, setErrorMessage] = React.useState<string>("");
   const [popperAnchor, setPopperAnchor] = React.useState<null | HTMLElement>(
-    null
+    null,
   );
 
   const fetchWeatherLocation = React.useMemo(
@@ -73,7 +75,7 @@ export default function LocationButton({
           const { coords } = await getDevicePosition();
           const reversedLocation = await reverseWeatherLocation(
             coords.latitude,
-            coords.longitude
+            coords.longitude,
           );
           setWeatherLocation(reversedLocation);
           setLocationState(LocationState.Ready);
@@ -83,7 +85,7 @@ export default function LocationButton({
           setLocationState(LocationState.Error);
         }
       }, 500),
-    [setLocationState, setWeatherLocation]
+    [setLocationState, setWeatherLocation],
   );
 
   return (

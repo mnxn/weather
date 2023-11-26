@@ -19,7 +19,7 @@ export interface FormattedData {
 
 // Function to calculate monthly temperature data
 const calculateMonthlyData = (
-  dailyData: HistoricalWeatherData["daily"]
+  dailyData: HistoricalWeatherData["daily"],
 ): MonthlyData => {
   const times = dailyData.time;
   const highestTemps = dailyData.temperature_2m_max;
@@ -44,11 +44,11 @@ const calculateMonthlyData = (
     const monthIndex = labels.indexOf(yearMonth);
     monthlyHighestTemps[monthIndex] = Math.max(
       monthlyHighestTemps[monthIndex],
-      highestTemps[index]
+      highestTemps[index],
     );
     monthlyLowestTemps[monthIndex] = Math.min(
       monthlyLowestTemps[monthIndex],
-      lowestTemps[index]
+      lowestTemps[index],
     );
   });
 
@@ -61,11 +61,11 @@ const calculateMonthlyData = (
 
 // Function to calculate weather distribution data
 const calculateWeatherDistributionData = (
-  dailyData: HistoricalWeatherData["daily"]
+  dailyData: HistoricalWeatherData["daily"],
 ): WeatherDistributionData => {
   const weatherDistribution: { [weather: string]: number } = {
     sunny: dailyData.weather_code.filter(
-      (code) => code === WmoCode.ClearSky || code === WmoCode.MainlyClear
+      (code) => code === WmoCode.ClearSky || code === WmoCode.MainlyClear,
     ).length,
     rainy: dailyData.weather_code.filter(
       (code) =>
@@ -74,13 +74,13 @@ const calculateWeatherDistributionData = (
         code === WmoCode.RainShowersModerate ||
         code === WmoCode.RainShowersViolent ||
         code === WmoCode.RainShowersSlight ||
-        code === WmoCode.RainSlight
+        code === WmoCode.RainSlight,
     ).length,
     cloudy: dailyData.weather_code.filter(
       (code) =>
         code === WmoCode.DrizzleLight ||
         code === WmoCode.PartlyCloudy ||
-        code === WmoCode.Overcast
+        code === WmoCode.Overcast,
     ).length,
   };
 

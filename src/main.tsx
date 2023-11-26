@@ -1,14 +1,14 @@
+import { ThemeProvider } from "@emotion/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import "weathericons/css/weather-icons.min.css";
+
+import { createTheme } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+
 import App from "./App.tsx";
 import "./index.css";
-import { BrowserRouter } from "react-router-dom";
-
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@emotion/react";
-import { createTheme } from "@mui/material";
-
-import "weathericons/css/weather-icons.min.css";
 
 async function loadAxeCore() {
   const axe = await import("@axe-core/react");
@@ -41,5 +41,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </CssBaseline>
       </ThemeProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

@@ -1,6 +1,7 @@
 import { Box, Divider, Paper, Stack, Tooltip } from "@mui/material";
-import { WmoCode, weatherDescription, weatherIconClass } from "./WmoCode";
 import { blue, red } from "@mui/material/colors";
+
+import { WmoCode, weatherDescription, weatherIconClass } from "./WmoCode";
 
 export interface DailyForecastProps {
   date: number;

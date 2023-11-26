@@ -1,17 +1,18 @@
-import { Box, Paper, Typography } from "@mui/material";
-import { blue, blueGrey } from "@mui/material/colors";
-import { Bar } from "react-chartjs-2";
 import {
+  BarElement,
+  CategoryScale,
+  ChartData,
   Chart as ChartJS,
   ChartOptions,
-  ChartData,
-  CategoryScale,
   LinearScale,
-  BarElement,
   Tooltip,
   TooltipItem,
   TooltipLabelStyle,
 } from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+import { Box, Paper, Typography } from "@mui/material";
+import { blue, blueGrey } from "@mui/material/colors";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
@@ -90,7 +91,7 @@ const chartOptions: ChartOptions<"bar"> = {
           if (typeof value === "string") return value;
 
           return new Date(
-            `${this.getLabelForValue(value)}T00:00`
+            `${this.getLabelForValue(value)}T00:00`,
           ).toLocaleString(undefined, {
             month: "short",
             day: "numeric",
@@ -126,7 +127,7 @@ export type SunsetHistoryProps = {
 function getTimePoints(
   timeZone: string,
   labels: string[],
-  data: string[]
+  data: string[],
 ): TimePoint[] {
   return data.map((time, index) => {
     // Use the "Z" suffix for original GMT timezone and convert to local date

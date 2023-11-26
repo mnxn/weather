@@ -47,7 +47,7 @@ const BASE_URL = "http://api.weatherapi.com/v1";
 // Function to fetch current weather by city name
 export async function getWeatherByCity(city: string): Promise<WeatherResponse> {
   const response = await fetch(
-    `${BASE_URL}/current.json?key=${API_KEY}&q=${city}`
+    `${BASE_URL}/current.json?key=${API_KEY}&q=${city}`,
   );
   const data = await response.json();
   return data;
@@ -55,12 +55,12 @@ export async function getWeatherByCity(city: string): Promise<WeatherResponse> {
 
 // Function to fetch weather forecast by city name
 export async function getWeatherForecastByCity(
-  city: string
+  city: string,
 ): Promise<WeatherForecastResponse> {
   const endpoint = "/forecast.json";
 
   const response = await fetch(
-    `${BASE_URL}${endpoint}?key=${API_KEY}&q=${city}`
+    `${BASE_URL}${endpoint}?key=${API_KEY}&q=${city}`,
   );
   const data = await response.json();
   return data;
@@ -69,11 +69,11 @@ export async function getWeatherForecastByCity(
 // Function to fetch current weather by latitude and longitude
 export async function getWeatherByCoordinates(
   lat: number,
-  lon: number
+  lon: number,
 ): Promise<WeatherResponse> {
   const endpoint = "/current.json";
   const response = await fetch(
-    `${BASE_URL}${endpoint}?key=${API_KEY}&q=${lat},${lon}`
+    `${BASE_URL}${endpoint}?key=${API_KEY}&q=${lat},${lon}`,
   );
   const data = await response.json();
   return data;
@@ -82,12 +82,12 @@ export async function getWeatherByCoordinates(
 // Function to fetch weather forecast by latitude and longitude
 export async function getWeatherForecastByCoordinates(
   lat: number,
-  lon: number
+  lon: number,
 ): Promise<WeatherForecastResponse> {
   const endpoint = "/forecast.json";
 
   const response = await fetch(
-    `${BASE_URL}${endpoint}?key=${API_KEY}&q=${lat},${lon}`
+    `${BASE_URL}${endpoint}?key=${API_KEY}&q=${lat},${lon}`,
   );
   const data = await response.json();
   return data;

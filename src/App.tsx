@@ -1,11 +1,12 @@
-import { Link, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import { Link, Route, Routes } from "react-router-dom";
 
+import { AppBar, Button, Toolbar } from "@mui/material";
+
+import { WeatherLocation, defaultLocation } from "./WeatherLocation";
+import HistoryPage from "./components/HistoryPage";
 import HomePage from "./components/HomePage";
 import MapsPage from "./components/MapsPage/MapsPage";
-import HistoryPage from "./components/HistoryPage";
-import { AppBar, Button, Toolbar } from "@mui/material";
-import { useState } from "react";
-import { WeatherLocation, defaultLocation } from "./WeatherLocation";
 
 function App() {
   const [weatherLocation, setWeatherLocation] =

@@ -1,18 +1,19 @@
-import { Box, Chip, Paper, Stack, alpha } from "@mui/material";
-import { blue, common, red } from "@mui/material/colors";
-import { Line } from "react-chartjs-2";
 import {
+  CategoryScale,
   Chart as ChartJS,
+  Filler,
   LineController,
   LineElement,
-  PointElement,
-  CategoryScale,
   LinearScale,
-  Filler,
+  PointElement,
   Tooltip,
 } from "chart.js";
-import { ShowChart } from "@mui/icons-material";
 import { useState } from "react";
+import { Line } from "react-chartjs-2";
+
+import { ShowChart } from "@mui/icons-material";
+import { Box, Chip, Paper, Stack, alpha } from "@mui/material";
+import { blue, common, red } from "@mui/material/colors";
 
 ChartJS.register(
   LineController,
@@ -21,7 +22,7 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   Filler,
-  Tooltip
+  Tooltip,
 );
 
 const chartOptions = {
