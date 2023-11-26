@@ -1,8 +1,8 @@
-import { Box, ListItemText, Stack, Typography } from "@mui/material";
+import { Box, ListItemText, Stack, Typography, debounce } from "@mui/material";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { LatLng } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import tileLayer from "./TileLayer";
 import { useScreenSize } from "../../utils/useScreenSize";
 
@@ -11,30 +11,45 @@ import {
   getWeatherByCity,
   getWeatherByCoordinates,
 } from "../../api/WeatherApi";
+import {
+  WeatherLocationProps,
+  reverseWeatherLocation,
+} from "../../WeatherLocation";
 
 const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
-const center = { lat: 45.5152, lng: -122.676483 };
 
-function MapsPage() {
-  const [selectedLocation, setSelectedLocation] = useState<LatLng | null>( center as LatLng);
+function MapsPage({
+  weatherLocation,
+  setWeatherLocation,
+}: WeatherLocationProps) {
   const [locationWeatherData, setLocationWeatherData] =
     useState<WeatherResponse>();
 
   // Fetch weather data when the selected location changes
   useEffect(() => {
     const fetchData = async () => {
-      if (selectedLocation !== undefined) {
-        const weatherByCity = await getWeatherByCoordinates(
-          selectedLocation?.lat ?? 0,
-          selectedLocation?.lng ?? 0
-        );
+      const weatherByCity = await getWeatherByCoordinates(
+        weatherLocation.latitude,
+        weatherLocation.longitude
+      );
 
-        setLocationWeatherData(weatherByCity);
-      }
+      setLocationWeatherData(weatherByCity);
     };
 
     fetchData();
-  }, [selectedLocation]);
+  }, [weatherLocation]);
+
+  const fetchWeatherLocation = React.useMemo(
+    () =>
+      debounce(async (latLng: LatLng) => {
+        const reversedLocation = await reverseWeatherLocation(
+          latLng.lat,
+          latLng.lng
+        );
+        setWeatherLocation(reversedLocation);
+      }, 500),
+    [setWeatherLocation]
+  );
 
   return (
     <Stack
@@ -45,8 +60,9 @@ function MapsPage() {
     >
       {locationWeatherData && <LocationBox data={locationWeatherData} />}
       <MapView
+        center={new LatLng(weatherLocation.latitude, weatherLocation.longitude)}
         onMapClicked={(latLng: LatLng) => {
-          setSelectedLocation(latLng);
+          fetchWeatherLocation(latLng);
         }}
       />
 
@@ -57,12 +73,12 @@ function MapsPage() {
   );
 }
 
-const MapView = ({
-  onMapClicked,
-}: {
+interface MapViewProps {
+  center: LatLng;
   onMapClicked: (latlng: LatLng) => void;
-}) => {
+}
 
+const MapView = ({ center, onMapClicked }: MapViewProps) => {
   return (
     <Box
       sx={{
@@ -106,7 +122,7 @@ const InteractiveMap = ({
       const latlng = e.latlng;
       if (latlng) onMapClicked(latlng);
     });
-  }, [map]);
+  }, [map, onMapClicked]);
 
   return null;
 };
@@ -139,7 +155,7 @@ const MajorCityBox = ({ data }: { data?: WeatherResponse }) => {
       />
       <Typography>{current?.condition?.text}</Typography>
       <Typography>
-      {current?.temp_c}°C ({current?.temp_f}°F)
+        {current?.temp_c}°C ({current?.temp_f}°F)
       </Typography>
     </Box>
   );

@@ -10,9 +10,13 @@ import { createTheme } from "@mui/material";
 
 import "weathericons/css/weather-icons.min.css";
 
-if (process.env.NODE_ENV !== "production") {
+async function loadAxeCore() {
   const axe = await import("@axe-core/react");
   axe.default(React, ReactDOM, 1000);
+}
+
+if (process.env.NODE_ENV !== "production") {
+  loadAxeCore();
 }
 
 const theme = createTheme({
