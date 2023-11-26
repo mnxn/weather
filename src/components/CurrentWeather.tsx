@@ -1,9 +1,8 @@
 import { Box } from "@mui/material";
 
-function CurrentWeather(props: { id?: string }) {
+function CurrentWeather() {
   return (
     <Box
-      id={props.id}
       display="flex"
       justifyContent="center"
       alignItems="center"
