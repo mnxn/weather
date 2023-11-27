@@ -15,7 +15,7 @@ async function loadAxeCore() {
   await axe.default(React, ReactDOM, 1000);
 }
 
-if (process.env.NODE_ENV !== "production") {
+if (import.meta.env.PROD) {
   void loadAxeCore();
 }
 
