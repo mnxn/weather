@@ -1,18 +1,20 @@
-import { Box, Chip, Paper, Stack, alpha } from "@mui/material";
-import { blue, common, red } from "@mui/material/colors";
-import { Line } from "react-chartjs-2";
 import {
+  CategoryScale,
   Chart as ChartJS,
+  ChartOptions,
+  Filler,
   LineController,
   LineElement,
-  PointElement,
-  CategoryScale,
   LinearScale,
-  Filler,
+  PointElement,
   Tooltip,
 } from "chart.js";
-import { ShowChart } from "@mui/icons-material";
 import { useState } from "react";
+import { Line } from "react-chartjs-2";
+
+import { ShowChart } from "@mui/icons-material";
+import { Box, Chip, Paper, Stack, alpha } from "@mui/material";
+import { blue, common, red } from "@mui/material/colors";
 
 ChartJS.register(
   LineController,
@@ -21,10 +23,10 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   Filler,
-  Tooltip
+  Tooltip,
 );
 
-const chartOptions = {
+const chartOptions: ChartOptions<"line"> = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -48,7 +50,7 @@ const chartOptions = {
       min: 0,
       max: 100,
       ticks: {
-        callback(value: unknown): string {
+        callback(value: string | number): string {
           return `${value}%`;
         },
       },
@@ -56,12 +58,12 @@ const chartOptions = {
   },
 };
 
-export type HourlyForecast = {
+export interface HourlyForecast {
   times: string[];
   temperature: number[];
   humidity: number[];
   precipitation: number[];
-};
+}
 
 interface DataSelectorChipProps {
   label: string;

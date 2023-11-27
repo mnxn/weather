@@ -1,7 +1,8 @@
-import { fetchTimeZone } from "./api/OpenMeteo";
-import { fetchReverseCityLocations } from "./api/OpenWeather";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
+
+import { fetchTimeZone } from "./api/OpenMeteo";
+import { fetchReverseCityLocations } from "./api/OpenWeather";
 
 countries.registerLocale(enLocale);
 
@@ -45,7 +46,7 @@ export function formatElevation(elevation: number): string {
 
 export function getFullCountryName(
   code: string | undefined,
-  fallback?: string
+  fallback?: string,
 ): string | undefined {
   if (code === undefined) {
     return fallback;
@@ -55,12 +56,12 @@ export function getFullCountryName(
 
 export async function reverseWeatherLocation(
   latitude: number,
-  longitude: number
+  longitude: number,
 ): Promise<WeatherLocation> {
   const data = await fetchReverseCityLocations(latitude, longitude);
   if (data.length === 0) {
     throw new Error(
-      "Received no results from OpenWeatherMap reverse geocoding."
+      "Received no results from OpenWeatherMap reverse geocoding.",
     );
   }
 

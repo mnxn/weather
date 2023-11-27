@@ -1,13 +1,13 @@
+import { Box, Container, Stack } from "@mui/material";
+
+import { WeatherLocationProps } from "../WeatherLocation";
 import CurrentLocation from "./CurrentLocation";
 import CurrentWeather from "./CurrentWeather";
-import Map from "./Map";
-import HourlyForecast from "./HourlyForecast";
 import DailyForecast from "./DailyForecast";
 import HistoryPreview from "./HistoryPreview";
-
-import { Box, Container, Stack } from "@mui/material";
+import HourlyForecast from "./HourlyForecast";
+import Map from "./Map";
 import { WmoCode } from "./WmoCode";
-import { WeatherLocationProps } from "../WeatherLocation";
 
 function HomePage({
   weatherLocation,
