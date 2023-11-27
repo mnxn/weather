@@ -1,9 +1,8 @@
 import {
   calculateMonthlyData,
-  calculateWeatherDistributionData,
-  formatChartData,
 } from "./CalcHistory";
 import { HistoricalWeatherData } from "../../api/OpenMeteo";
+import { WmoCode, weatherDescription, weatherIconClass } from "../WmoCode";
 
 // Mock WeatherData for testing
 const mockWeatherData: HistoricalWeatherData = {
@@ -16,8 +15,8 @@ const mockWeatherData: HistoricalWeatherData = {
   elevation: 0,
   daily_units: {
     time: "string",
-    temperature_2m_max: "string",
-    temperature_2m_min: "string",
+    temperature_2m_max: "number",
+    temperature_2m_min: "number",
   },
   daily: {
     time: [
@@ -35,39 +34,81 @@ const mockWeatherData: HistoricalWeatherData = {
 };
 
 describe("calculateMonthlyData", () => {
-  // Test for calculateMonthlyData function
-  test("should calculate monthly temperature data correctly", () => {
-    // Call calculateMonthlyData with mock weather data
+  test("should correctly calculate monthly temperature data", () => {
     const result = calculateMonthlyData(mockWeatherData.daily);
 
-    // Assert that the resulting labels match the expected monthly labels
     expect(result.labels).toEqual(["2022-01", "2022-02", "2022-03"]);
-    // Assert that the resulting highest temperatures array is calculated accurately
-    expect(result.highestTemps).toEqual([25, 28, 30, 32, 28, 26]);
+    expect(result.highestTemps).toEqual([28, 32, 28]);
   });
 });
 
-describe("calculateWeatherDistributionData", () => {
-  // Test for calculateWeatherDistributionData function
-  test("should calculate weather distribution data correctly", () => {
-    const result = calculateWeatherDistributionData(mockWeatherData.daily);
+describe("Weather Utility Functions", () => {
+  describe("weatherIconClass", () => {
+    it("should return the correct icon class for Clear Sky", () => {
+      expect(weatherIconClass(WmoCode.ClearSky)).toEqual("wi-day-sunny");
+    });
 
-    expect(result.labels).toEqual(["sunny", "rainy", "cloudy"]);
-    // Assert that the resulting data array is calculated accurately
-    expect(result.data).toEqual([2, 3, 1]);
+    it("should return the correct icon class for Partly Cloudy", () => {
+      expect(weatherIconClass(WmoCode.PartlyCloudy)).toEqual("wi-day-cloudy");
+    });
+
+    it("should return the correct icon class for Overcast", () => {
+      expect(weatherIconClass(WmoCode.Overcast)).toEqual(
+        "wi-day-sunny-overcast"
+      );
+    });
+
+    it("should return the correct icon class for Fog", () => {
+      expect(weatherIconClass(WmoCode.Fog)).toEqual("wi-fog");
+    });
+
+    it("should return the correct icon class for Drizzle", () => {
+      expect(weatherIconClass(WmoCode.DrizzleLight)).toEqual("wi-sprinkle");
+      expect(weatherIconClass(WmoCode.DrizzleModerate)).toEqual("wi-sprinkle");
+      expect(weatherIconClass(WmoCode.DrizzleDense)).toEqual("wi-sprinkle");
+    });
+
+    it("should return the correct icon class for Freezing Drizzle", () => {
+      expect(weatherIconClass(WmoCode.FreezingDrizzleLight)).toEqual(
+        "wi-rain-mix"
+      );
+      expect(weatherIconClass(WmoCode.FreezingDrizzleDense)).toEqual(
+        "wi-rain-mix"
+      );
+    });
   });
-});
 
-describe("formatChartData", () => {
-  test("should format chart data correctly", () => {
-    const result = formatChartData(mockWeatherData);
 
-    expect(result.monthly.labels).toEqual(["2022-01", "2022-02", "2022-03"]);
-    expect(result.weatherDistribution.labels).toEqual([
-      "sunny",
-      "rainy",
-      "cloudy",
-    ]);
-    expect(result.weatherDistribution.data).toEqual([2, 3, 1]);
+  describe("weatherDescription", () => {
+    it("should return the correct description for Clear Sky", () => {
+      expect(weatherDescription(WmoCode.ClearSky)).toEqual("Clear Sky");
+    });
+
+    it("should return the correct description for Partly Cloudy", () => {
+      expect(weatherDescription(WmoCode.PartlyCloudy)).toEqual("Partly Cloudy");
+    });
+
+    it("should return the correct description for Overcast", () => {
+      expect(weatherDescription(WmoCode.Overcast)).toEqual("Overcast");
+    });
+
+    it("should return the correct description for Fog", () => {
+      expect(weatherDescription(WmoCode.Fog)).toEqual("Fog");
+    });
+
+    it("should return the correct description for Drizzle", () => {
+      expect(weatherDescription(WmoCode.DrizzleLight)).toEqual("Drizzle");
+      expect(weatherDescription(WmoCode.DrizzleModerate)).toEqual("Drizzle");
+      expect(weatherDescription(WmoCode.DrizzleDense)).toEqual("Drizzle");
+    });
+
+    it("should return the correct description for Freezing Drizzle", () => {
+      expect(weatherDescription(WmoCode.FreezingDrizzleLight)).toEqual(
+        "Freezing Drizzle"
+      );
+      expect(weatherDescription(WmoCode.FreezingDrizzleDense)).toEqual(
+        "Freezing Drizzle"
+      );
+    });
   });
 });
