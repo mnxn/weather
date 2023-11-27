@@ -12,11 +12,11 @@ import "./index.css";
 
 async function loadAxeCore() {
   const axe = await import("@axe-core/react");
-  axe.default(React, ReactDOM, 1000);
+  await axe.default(React, ReactDOM, 1000);
 }
 
 if (process.env.NODE_ENV !== "production") {
-  loadAxeCore();
+  void loadAxeCore();
 }
 
 const theme = createTheme({
@@ -32,14 +32,19 @@ const theme = createTheme({
   },
 });
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline>
-          <App />
-        </CssBaseline>
-      </ThemeProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
-);
+const root = document.getElementById("root");
+if (root !== null) {
+  ReactDOM.createRoot(root).render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <CssBaseline>
+            <App />
+          </CssBaseline>
+        </ThemeProvider>
+      </BrowserRouter>
+    </React.StrictMode>,
+  );
+} else {
+  console.error("root element is missing");
+}

@@ -63,7 +63,7 @@ const calculateMonthlyData = (
 const calculateWeatherDistributionData = (
   dailyData: HistoricalWeatherData["daily"],
 ): WeatherDistributionData => {
-  const weatherDistribution: { [weather: string]: number } = {
+  const weatherDistribution: Record<string, number> = {
     sunny: dailyData.weather_code.filter(
       (code) => code === WmoCode.ClearSky || code === WmoCode.MainlyClear,
     ).length,

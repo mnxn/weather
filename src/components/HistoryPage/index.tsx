@@ -19,7 +19,7 @@ function everyNth<T>(array: T[], n: number): T[] {
   return array.filter((_, index) => index % n == 0);
 }
 
-const DAYS: number = 7;
+const DAYS = 7;
 
 const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
   const [chartData, setChartData] = useState<FormattedData>({
@@ -51,7 +51,7 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
       setChartData(formattedData);
     };
 
-    fetchData();
+    void fetchData();
   }, [weatherLocation]);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
       setSunsetData(data);
     };
 
-    fetchData();
+    void fetchData();
   }, [weatherLocation]);
 
   return (
@@ -99,9 +99,9 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
 
         <SunsetHistory
           timezone={weatherLocation.timeZone}
-          times={everyNth(sunsetData.time, DAYS)}
-          sunrise={everyNth(sunsetData.sunrise, DAYS)}
-          sunset={everyNth(sunsetData.sunset, DAYS)}
+          times={everyNth(sunsetData.daily.time, DAYS)}
+          sunrise={everyNth(sunsetData.daily.sunrise, DAYS)}
+          sunset={everyNth(sunsetData.daily.sunset, DAYS)}
         />
       </Stack>
     </Container>

@@ -37,7 +37,7 @@ function MapsPage({
       setLocationWeatherData(weatherByCity);
     };
 
-    fetchData();
+    void fetchData();
   }, [weatherLocation]);
 
   const fetchWeatherLocation = React.useMemo(
@@ -63,7 +63,7 @@ function MapsPage({
       <MapView
         center={new LatLng(weatherLocation.latitude, weatherLocation.longitude)}
         onMapClicked={(latLng: LatLng) => {
-          fetchWeatherLocation(latLng);
+          void fetchWeatherLocation(latLng);
         }}
       />
 
@@ -119,9 +119,8 @@ const InteractiveMap = ({
 
   useEffect(() => {
     // Listen for map clicks and invoke onMapClicked callback
-    map?.on("click", (e) => {
-      const latlng = e.latlng;
-      if (latlng) onMapClicked(latlng);
+    map.on("click", (e) => {
+      onMapClicked(e.latlng);
     });
   }, [map, onMapClicked]);
 
@@ -236,13 +235,13 @@ const MajorCitiesConditions = () => {
   const { isXMobileScreen } = useScreenSize();
 
   // State to store weather data for major cities
-  const [weatherData, setWeatherData] = useState<{
-    [key: string]: WeatherResponse;
-  }>({});
+  const [weatherData, setWeatherData] = useState<
+    Record<string, WeatherResponse | undefined>
+  >({});
 
   useEffect(() => {
     const fetchData = async () => {
-      const data: { [key: string]: WeatherResponse } = {};
+      const data: Record<string, WeatherResponse> = {};
 
       for (const city of cityNames) {
         const weatherByCity = await getWeatherByCity(city);
@@ -252,7 +251,7 @@ const MajorCitiesConditions = () => {
       setWeatherData(data);
     };
 
-    fetchData();
+    void fetchData();
   }, []);
 
   return (

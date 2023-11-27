@@ -12,10 +12,28 @@ interface OpenWeatherMapResponse {
   }[];
 }
 
+interface CurrentData {
+  main: {
+    temp: number;
+    humidity: number;
+  };
+  weather: WeatherCondition[];
+}
+
 interface CurrentWeather {
   temperature: number;
   humidity: number;
   weatherDescription: string;
+}
+
+interface FiveDayForecastData {
+  list: {
+    main: {
+      temp: number;
+      humidity: number;
+    };
+    weather: WeatherCondition[];
+  }[];
 }
 
 export interface FiveDayForecast {
@@ -44,6 +62,7 @@ export interface DailyData {
   dt: number;
   temp: DailyTemperature;
   weather: WeatherCondition[];
+  humidity: number;
   sunrise: number;
   sunset: number;
 }
@@ -67,9 +86,7 @@ interface DailyForecast {
 
 export interface CityLocation {
   name: string;
-  local_names: {
-    [language: string]: string;
-  };
+  local_names: Record<string, string>;
   lat: number;
   lon: number;
   country: string;
@@ -85,7 +102,7 @@ export async function fetchCurrentWeather(
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
+    const data = (await response.json()) as CurrentData;
     const currentWeather: CurrentWeather = {
       temperature: data.main.temp,
       humidity: data.main.humidity,
@@ -108,10 +125,7 @@ export async function fetchForecastByCityTwoWeeks(
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
-
-    const forecast: OpenWeatherMapResponse = { list: data.list };
-    return forecast;
+    return (await response.json()) as OpenWeatherMapResponse;
   } else {
     throw new Error(
       `Failed to fetch forecast data from OpenWeatherMap API for endpoint: ${endpoint}`,
@@ -128,7 +142,7 @@ export async function fetchFiveDayForecast(
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
+    const data = (await response.json()) as FiveDayForecastData;
     // Extract 5-day forecast data from the API response
     const fiveDayForecast: FiveDayForecast = {
       temperature: data.list[0].main.temp,
@@ -152,11 +166,7 @@ export async function fetchUVIndex(
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
-    const uvIndex: UVIndex = {
-      value: data.value,
-    };
-    return uvIndex;
+    return (await response.json()) as UVIndex;
   } else {
     throw new Error(
       `Failed to fetch UV Index data from OpenWeatherMap API for endpoint: ${endpoint}`,
@@ -173,8 +183,7 @@ export async function fetchAllWeather(
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
-    return data;
+    return (await response.json()) as HistoricalWeather;
   } else {
     throw new Error(
       `Failed to fetch historical weather data from OpenWeatherMap API for endpoint: ${endpoint}`,
@@ -192,7 +201,7 @@ export async function fetchHistoricalWeather(
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
+    const data = (await response.json()) as HistoricalWeather;
     return data;
   } else {
     throw new Error(
@@ -209,7 +218,7 @@ export async function fetchDailyForecast(
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
+    const data = (await response.json()) as { list: DailyData[] };
     // Extract daily forecast data from the API response
     const dailyForecast: DailyForecast = {
       temperature: {
@@ -240,7 +249,7 @@ export async function fetchReverseCityLocations(
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    return await response.json();
+    return (await response.json()) as CityLocation[];
   } else {
     throw new Error(
       `Failed to fetch daily forecast data from OpenWeatherMap API for endpoint: ${endpoint}`,

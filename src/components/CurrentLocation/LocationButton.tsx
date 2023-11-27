@@ -1,4 +1,3 @@
-import { debounce } from "chart.js/helpers";
 import React from "react";
 
 import {
@@ -6,7 +5,7 @@ import {
   LocationSearching,
   MyLocation,
 } from "@mui/icons-material";
-import { Alert, Button, Popper } from "@mui/material";
+import { Alert, Button, Popper, debounce } from "@mui/material";
 
 import {
   WeatherLocationProps,
@@ -94,7 +93,7 @@ export default function LocationButton({
         startIcon={<LocationIcon state={locationState} />}
         onClick={(event) => {
           if (popperAnchor === null) setPopperAnchor(event.currentTarget);
-          fetchWeatherLocation();
+          void fetchWeatherLocation();
         }}
       >
         Your Location
@@ -106,7 +105,9 @@ export default function LocationButton({
       >
         <Alert
           severity="error"
-          onClose={() => setLocationState(LocationState.Ready)}
+          onClose={() => {
+            setLocationState(LocationState.Ready);
+          }}
         >
           {errorMessage}
         </Alert>

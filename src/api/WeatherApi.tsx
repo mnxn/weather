@@ -1,21 +1,21 @@
 export interface WeatherResponse {
-  location: {
-    name: string;
-    region: string;
-    localtime: string;
-    lat: number;
-    lon: number;
+  location?: {
+    name?: string;
+    region?: string;
+    localtime?: string;
+    lat?: number;
+    lon?: number;
     country: string;
   };
-  current: {
-    cloud: number;
-    temp_c: number;
-    temp_f: number;
-    wind_kph: number;
-    humidity: number;
-    condition: {
-      text: string;
-      icon: string;
+  current?: {
+    cloud?: number;
+    temp_c?: number;
+    temp_f?: number;
+    wind_kph?: number;
+    humidity?: number;
+    condition?: {
+      text?: string;
+      icon?: string;
     };
   };
 }
@@ -27,7 +27,7 @@ export interface WeatherForecastResponse {
     country: string;
   };
   forecast: {
-    forecastday: Array<{
+    forecastday: {
       date: string;
       day: {
         maxtemp_c: number;
@@ -37,7 +37,7 @@ export interface WeatherForecastResponse {
           icon: string;
         };
       };
-    }>;
+    }[];
   };
 }
 
@@ -49,7 +49,7 @@ export async function getWeatherByCity(city: string): Promise<WeatherResponse> {
   const response = await fetch(
     `${BASE_URL}/current.json?key=${API_KEY}&q=${city}`,
   );
-  const data = await response.json();
+  const data = (await response.json()) as WeatherResponse;
   return data;
 }
 
@@ -62,7 +62,7 @@ export async function getWeatherForecastByCity(
   const response = await fetch(
     `${BASE_URL}${endpoint}?key=${API_KEY}&q=${city}`,
   );
-  const data = await response.json();
+  const data = (await response.json()) as WeatherForecastResponse;
   return data;
 }
 
@@ -75,7 +75,7 @@ export async function getWeatherByCoordinates(
   const response = await fetch(
     `${BASE_URL}${endpoint}?key=${API_KEY}&q=${lat},${lon}`,
   );
-  const data = await response.json();
+  const data = (await response.json()) as WeatherResponse;
   return data;
 }
 
@@ -89,6 +89,6 @@ export async function getWeatherForecastByCoordinates(
   const response = await fetch(
     `${BASE_URL}${endpoint}?key=${API_KEY}&q=${lat},${lon}`,
   );
-  const data = await response.json();
+  const data = (await response.json()) as WeatherForecastResponse;
   return data;
 }

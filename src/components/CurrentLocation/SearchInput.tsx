@@ -12,22 +12,22 @@ import { CityLocation, fetchCityLocations } from "../../api/OpenMeteo";
 function normalizeCities(cities: CityLocation[]): void {
   // Rewrite country field for consistency with weather locations acquired
   // through other methods in the application.
-  for (let i = 0; i < cities.length; i++) {
-    cities[i].country = getFullCountryName(
-      cities[i].country_code,
-      cities[i].country,
-    );
+  for (const city of cities) {
+    city.country = getFullCountryName(city.country_code, city.country);
   }
 
   // Sort by country, city name, and state. The country field must be sorted
   // first so categories appear properly in the autocomplete results.
-  cities.sort(
-    (a, b) =>
-      a.country?.localeCompare(b.country ?? "") ||
-      a.name.localeCompare(b.name) ||
-      a.admin1?.localeCompare(b.admin1 ?? "") ||
-      0,
-  );
+  cities.sort((a, b) => {
+    let difference = a.country?.localeCompare(b.country ?? "") ?? 0;
+    if (difference === 0) {
+      difference = a.name.localeCompare(b.name);
+    }
+    if (difference === 0) {
+      difference = a.admin1?.localeCompare(b.admin1 ?? "") ?? 0;
+    }
+    return difference;
+  });
 }
 
 const SearchInput = ({ setWeatherLocation }: WeatherLocationProps) => {
@@ -64,7 +64,7 @@ const SearchInput = ({ setWeatherLocation }: WeatherLocationProps) => {
           });
         }
       }}
-      onInputChange={(_event, value) => fetchData(value)}
+      onInputChange={(_event, value) => void fetchData(value)}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       filterSelectedOptions={false}
       filterOptions={(x) => x} // show all results from server

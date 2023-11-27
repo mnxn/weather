@@ -1,6 +1,7 @@
 import {
   CategoryScale,
   Chart as ChartJS,
+  ChartOptions,
   Filler,
   LineController,
   LineElement,
@@ -25,7 +26,7 @@ ChartJS.register(
   Tooltip,
 );
 
-const chartOptions = {
+const chartOptions: ChartOptions<"line"> = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -49,7 +50,7 @@ const chartOptions = {
       min: 0,
       max: 100,
       ticks: {
-        callback(value: unknown): string {
+        callback(value: string | number): string {
           return `${value}%`;
         },
       },
@@ -57,12 +58,12 @@ const chartOptions = {
   },
 };
 
-export type HourlyForecast = {
+export interface HourlyForecast {
   times: string[];
   temperature: number[];
   humidity: number[];
   precipitation: number[];
-};
+}
 
 interface DataSelectorChipProps {
   label: string;

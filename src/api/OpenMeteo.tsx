@@ -21,19 +21,23 @@ export interface DailyData {
 }
 
 interface WeatherData {
-  temperature: number;
-  humidity: number;
-  weathercode: string;
+  current: {
+    temperature: number;
+    humidity: number;
+    weathercode: string;
+  };
   // Add more fields as needed
 }
 
 export interface SunsetData {
-  time: string[];
-  sunrise: string[];
-  sunset: string[];
+  daily: {
+    time: string[];
+    sunrise: string[];
+    sunset: string[];
+  };
 }
 
-export type HistoricalWeatherData = {
+export interface HistoricalWeatherData {
   latitude: number;
   longitude: number;
   generationtime_ms: number;
@@ -47,7 +51,7 @@ export type HistoricalWeatherData = {
     temperature_2m_min: string;
   };
   daily: DailyData;
-};
+}
 
 export interface CityLocation {
   id: number;
@@ -83,7 +87,7 @@ export async function fetchTimeZone(
   const response = await fetch(url);
 
   if (response.ok) {
-    const data = await response.json();
+    const data = (await response.json()) as { timezone: string };
     return data.timezone;
   } else {
     throw new Error("Failed to fetch data");
@@ -101,15 +105,7 @@ export async function fetchWeatherData(
   const response = await fetch(url);
 
   if (response.ok) {
-    const data = await response.json();
-
-    const weatherData: WeatherData = {
-      temperature: data.current_weather.temperature,
-      humidity: data.current_weather.humidity,
-      weathercode: data.current_weather.weathercode,
-      // Map more fields as needed
-    };
-    return weatherData;
+    return (await response.json()) as WeatherData;
   } else {
     throw new Error("Failed to fetch data");
   }
@@ -130,8 +126,7 @@ export async function fetchHistoricalWeatherData(
   const response = await fetch(url, { cache: "force-cache" });
 
   if (response.ok) {
-    const data = await response.json();
-    return data;
+    return (await response.json()) as HistoricalWeatherData;
   } else {
     throw new Error("Failed to fetch data");
   }
@@ -150,9 +145,7 @@ export async function fetchSunsetData(
   const response = await fetch(url, { cache: "force-cache" });
 
   if (response.ok) {
-    const data = await response.json();
-
-    return data.daily;
+    return (await response.json()) as SunsetData;
   } else {
     throw new Error("Failed to fetch data");
   }
@@ -168,8 +161,8 @@ export async function fetchCityLocations(
   const response = await fetch(url);
 
   if (response.ok) {
-    const data = await response.json();
-    return data.results;
+    const data = (await response.json()) as { results?: CityLocation[] };
+    return data.results ?? [];
   } else {
     throw new Error("Failed to fetch data");
   }
