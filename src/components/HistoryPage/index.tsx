@@ -35,9 +35,11 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
   });
 
   const [sunsetData, setSunsetData] = useState<SunsetData>({
-    time: [],
-    sunrise: [],
-    sunset: [],
+    daily: {
+      time: [],
+      sunrise: [],
+      sunset: [],
+    },
   });
 
   useEffect(() => {
