@@ -9,6 +9,7 @@ import {
   LinearScale,
   PointElement,
   Tooltip,
+  TooltipItem,
 } from "chart.js";
 import { useState } from "react";
 import { Line } from "react-chartjs-2";
@@ -34,12 +35,49 @@ const chartOptions: ChartOptions<"line"> = {
     legend: {
       display: false,
     },
+    tooltip: {
+      callbacks: {
+        // Show day of the month in the tooltip title.
+        // For example: Monday, January 1
+        title(items: TooltipItem<"line">[]) {
+          if (items.length === 0) return;
+
+          const date = new Date(items[0].label);
+          return date.toLocaleString(undefined, {
+            day: "numeric",
+            month: "long",
+            weekday: "long",
+          });
+        },
+      },
+    },
   },
   scales: {
+    x: {
+      ticks: {
+        // Only show one label per day.
+        callback(value: number | string): string | undefined {
+          if (typeof value === "string") return value;
+
+          const date = new Date(this.getLabelForValue(value));
+          if (date.getHours() === 0) {
+            return date.toLocaleString(undefined, {
+              month: "short",
+              day: "numeric",
+            });
+          }
+        },
+      },
+    },
     temperature: {
       type: "linear" as const,
       display: true,
       position: "left" as const,
+      ticks: {
+        callback(value: string | number): string {
+          return `${value}°`;
+        },
+      },
     },
     percent: {
       type: "linear" as const,
@@ -59,7 +97,7 @@ const chartOptions: ChartOptions<"line"> = {
   },
 };
 
-export interface HourlyForecast {
+export interface HourlyForecastProps {
   times: string[];
   temperature: number[];
   humidity: number[];
@@ -92,7 +130,7 @@ function DataSelectorChip(props: DataSelectorChipProps) {
   );
 }
 
-function HourlyForecast(props: HourlyForecast) {
+function HourlyForecast(props: HourlyForecastProps) {
   const [temperatureEnabled, setTemperatureEnabled] = useState(true);
   const [humidityEnabled, setHumidityEnabled] = useState(true);
   const [precipitationEnabled, setPrecipitationEnabled] = useState(true);
