@@ -1,22 +1,23 @@
 import {
+  ArcElement,
   Chart as ChartJS,
   ChartOptions,
-  ChartType,
-  ArcElement,
-  Tooltip,
-  PieController,
   Legend,
+  PieController,
+  Tooltip,
 } from "chart.js";
 import { Pie } from "react-chartjs-2";
+
+import { Paper, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import { Typography } from "@mui/material";
+
 ChartJS.register(ArcElement, Tooltip, PieController, Legend);
 
 interface PieChartContainerProps {
   title: string;
   labels: string[];
   data: number[];
-  options?: ChartOptions<ChartType>;
+  options?: ChartOptions<"pie">;
 }
 
 export const PieChartContainer = ({
@@ -25,7 +26,7 @@ export const PieChartContainer = ({
   data,
   options,
 }: PieChartContainerProps) => {
-  const chartOptions: ChartOptions = {
+  const chartOptions: ChartOptions<"pie"> = {
     maintainAspectRatio: false,
     plugins: {
       legend: {
@@ -40,33 +41,28 @@ export const PieChartContainer = ({
     ...options,
   };
   return (
-    <Box
-      sx={{
-        padding: 2,
-        mb: 3,
-        borderRadius: 2,
-        backgroundColor: "white",
-      }}
-    >
-      <Typography variant="h5" sx={{ mb: 3 }}>
-        {title}
-      </Typography>
-      <Box sx={{ height: "350px" }}>
-        <Pie
-          data={{
-            labels,
-            datasets: [
-              {
-                data,
-                backgroundColor: ["#F4E869", "#5CD2E6", "#B4B4B3"],
-                borderWidth: 1,
-              },
-            ],
-          }}
-          options={chartOptions as ChartOptions}
-          style={{ position: "absolute" }}
-        />
+    <Paper elevation={1}>
+      <Box padding={3} textAlign="center">
+        <Typography component="h2" variant="h4" marginBlockEnd={3}>
+          {title}
+        </Typography>
+        <Box height={350}>
+          <Pie
+            data={{
+              labels,
+              datasets: [
+                {
+                  data,
+                  backgroundColor: ["#F4E869", "#5CD2E6", "#B4B4B3"],
+                  borderWidth: 1,
+                },
+              ],
+            }}
+            options={chartOptions}
+            style={{ position: "absolute" }}
+          />
+        </Box>
       </Box>
-    </Box>
+    </Paper>
   );
 };

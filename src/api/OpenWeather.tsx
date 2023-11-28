@@ -1,4 +1,5 @@
 const API_BASE_URL = "https://api.openweathermap.org/data/2.5";
+const API_GEOCODING_URL = "https://api.openweathermap.org/geo/1.0";
 const API_KEY = import.meta.env.VITE_OPEN_WEATHER_API_KEY;
 
 interface OpenWeatherMapResponse {
@@ -11,10 +12,28 @@ interface OpenWeatherMapResponse {
   }[];
 }
 
+interface CurrentData {
+  main: {
+    temp: number;
+    humidity: number;
+  };
+  weather: WeatherCondition[];
+}
+
 interface CurrentWeather {
   temperature: number;
   humidity: number;
   weatherDescription: string;
+}
+
+interface FiveDayForecastData {
+  list: {
+    main: {
+      temp: number;
+      humidity: number;
+    };
+    weather: WeatherCondition[];
+  }[];
 }
 
 export interface FiveDayForecast {
@@ -43,6 +62,7 @@ export interface DailyData {
   dt: number;
   temp: DailyTemperature;
   weather: WeatherCondition[];
+  humidity: number;
   sunrise: number;
   sunset: number;
 }
@@ -64,16 +84,25 @@ interface DailyForecast {
   weatherDescription: string;
 }
 
+export interface CityLocation {
+  name: string;
+  local_names: Record<string, string>;
+  lat: number;
+  lon: number;
+  country: string;
+  state?: string;
+}
+
 export async function fetchCurrentWeather(
   latitude: number,
-  longitude: number
+  longitude: number,
 ): Promise<CurrentWeather> {
   const endpoint = "/weather";
   const apiUrl = `${API_BASE_URL}${endpoint}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
+    const data = (await response.json()) as CurrentData;
     const currentWeather: CurrentWeather = {
       temperature: data.main.temp,
       humidity: data.main.humidity,
@@ -83,40 +112,37 @@ export async function fetchCurrentWeather(
     return currentWeather;
   } else {
     throw new Error(
-      `Failed to fetch current weather data from OpenWeatherMap API for endpoint: ${endpoint}`
+      `Failed to fetch current weather data from OpenWeatherMap API for endpoint: ${endpoint}`,
     );
   }
 }
 
 export async function fetchForecastByCityTwoWeeks(
-  city: string
+  city: string,
 ): Promise<OpenWeatherMapResponse> {
   const endpoint = "/forecast";
   const apiUrl = `${API_BASE_URL}${endpoint}?q=${city}&cnt=16&appid=${API_KEY}`;
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
-
-    const forecast: OpenWeatherMapResponse = { list: data.list };
-    return forecast;
+    return (await response.json()) as OpenWeatherMapResponse;
   } else {
     throw new Error(
-      `Failed to fetch forecast data from OpenWeatherMap API for endpoint: ${endpoint}`
+      `Failed to fetch forecast data from OpenWeatherMap API for endpoint: ${endpoint}`,
     );
   }
 }
 
 export async function fetchFiveDayForecast(
   latitude: number,
-  longitude: number
+  longitude: number,
 ): Promise<FiveDayForecast> {
   const endpoint = "/forecast";
   const apiUrl = `${API_BASE_URL}${endpoint}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
+    const data = (await response.json()) as FiveDayForecastData;
     // Extract 5-day forecast data from the API response
     const fiveDayForecast: FiveDayForecast = {
       temperature: data.list[0].main.temp,
@@ -126,46 +152,41 @@ export async function fetchFiveDayForecast(
     return fiveDayForecast;
   } else {
     throw new Error(
-      `Failed to fetch 5-day forecast data from OpenWeatherMap API for endpoint: ${endpoint}`
+      `Failed to fetch 5-day forecast data from OpenWeatherMap API for endpoint: ${endpoint}`,
     );
   }
 }
 
 export async function fetchUVIndex(
   latitude: number,
-  longitude: number
+  longitude: number,
 ): Promise<UVIndex> {
   const endpoint = "/uvi";
   const apiUrl = `${API_BASE_URL}${endpoint}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
-    const uvIndex: UVIndex = {
-      value: data.value,
-    };
-    return uvIndex;
+    return (await response.json()) as UVIndex;
   } else {
     throw new Error(
-      `Failed to fetch UV Index data from OpenWeatherMap API for endpoint: ${endpoint}`
+      `Failed to fetch UV Index data from OpenWeatherMap API for endpoint: ${endpoint}`,
     );
   }
 }
 
 export async function fetchAllWeather(
   latitude: number,
-  longitude: number
+  longitude: number,
 ): Promise<HistoricalWeather> {
   const endpoint = "/onecall";
   const apiUrl = `${API_BASE_URL}${endpoint}?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely&appid=${API_KEY}`;
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
-    return data;
+    return (await response.json()) as HistoricalWeather;
   } else {
     throw new Error(
-      `Failed to fetch historical weather data from OpenWeatherMap API for endpoint: ${endpoint}`
+      `Failed to fetch historical weather data from OpenWeatherMap API for endpoint: ${endpoint}`,
     );
   }
 }
@@ -173,31 +194,31 @@ export async function fetchAllWeather(
 export async function fetchHistoricalWeather(
   latitude: number,
   longitude: number,
-  time: number
+  time: number,
 ): Promise<HistoricalWeather> {
   const endpoint = "/onecall/timemachine";
   const apiUrl = `${API_BASE_URL}${endpoint}?lat=${latitude}&lon=${longitude}&dt=${time}&appid=${API_KEY}`;
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
+    const data = (await response.json()) as HistoricalWeather;
     return data;
   } else {
     throw new Error(
-      `Failed to fetch historical weather data from OpenWeatherMap API for endpoint: ${endpoint}`
+      `Failed to fetch historical weather data from OpenWeatherMap API for endpoint: ${endpoint}`,
     );
   }
 }
 export async function fetchDailyForecast(
   latitude: number,
-  longitude: number
+  longitude: number,
 ): Promise<DailyForecast> {
   const endpoint = "/forecast/daily";
   const apiUrl = `${API_BASE_URL}${endpoint}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
   const response = await fetch(apiUrl);
 
   if (response.ok) {
-    const data = await response.json();
+    const data = (await response.json()) as { list: DailyData[] };
     // Extract daily forecast data from the API response
     const dailyForecast: DailyForecast = {
       temperature: {
@@ -214,7 +235,24 @@ export async function fetchDailyForecast(
     return dailyForecast;
   } else {
     throw new Error(
-      `Failed to fetch daily forecast data from OpenWeatherMap API for endpoint: ${endpoint}`
+      `Failed to fetch daily forecast data from OpenWeatherMap API for endpoint: ${endpoint}`,
+    );
+  }
+}
+
+export async function fetchReverseCityLocations(
+  latitude: number,
+  longitude: number,
+): Promise<CityLocation[]> {
+  const endpoint = "/reverse";
+  const apiUrl = `${API_GEOCODING_URL}${endpoint}?lat=${latitude}&lon=${longitude}&limit=1&appid=${API_KEY}`;
+  const response = await fetch(apiUrl);
+
+  if (response.ok) {
+    return (await response.json()) as CityLocation[];
+  } else {
+    throw new Error(
+      `Failed to fetch daily forecast data from OpenWeatherMap API for endpoint: ${endpoint}`,
     );
   }
 }

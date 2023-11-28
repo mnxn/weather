@@ -1,19 +1,28 @@
-import { Bar } from "react-chartjs-2";
-import Box from "@mui/material/Box";
-import { Typography } from "@mui/material";
 import {
+  BarController,
+  BarElement,
+  CategoryScale,
   Chart as ChartJS,
+  ChartOptions,
+  Legend,
+  LinearScale,
+  Tooltip,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+import { Paper, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+
+//import { tooltip } from "leaflet";
+
+ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  ChartOptions,
   BarController,
   Legend,
   Tooltip,
-} from "chart.js";
-//import { tooltip } from "leaflet";
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, BarController, Legend, Tooltip);
+);
 
 interface BarChartContainerProps {
   title: string;
@@ -25,7 +34,7 @@ interface BarChartContainerProps {
     borderColor: string;
     borderWidth: number;
   }[];
-  options?: ChartOptions;
+  options?: ChartOptions<"bar">;
 }
 
 export const BarChartContainer = ({
@@ -34,7 +43,7 @@ export const BarChartContainer = ({
   datasets,
   options,
 }: BarChartContainerProps) => {
-  const chartOptions: ChartOptions = {
+  const chartOptions: ChartOptions<"bar"> = {
     maintainAspectRatio: false,
     plugins: {
       legend: {
@@ -49,27 +58,22 @@ export const BarChartContainer = ({
     ...options,
   };
   return (
-    <Box
-      sx={{
-        padding: 2,
-        mb: 3,
-        borderRadius: 2,
-        backgroundColor: "white",
-      }}
-    >
-      <Typography variant="h5" sx={{ mb: 3 }}>
-        {title}
-      </Typography>
-      <Box sx={{ height: "350px" }}>
-        <Bar
-          data={{
-            labels,
-            datasets,
-          }}
-          options={chartOptions as ChartOptions}
-          style={{ position: "absolute" }}
-        />
+    <Paper elevation={1}>
+      <Box padding={3} textAlign="center">
+        <Typography component="h2" variant="h4" marginBlockEnd={3}>
+          {title}
+        </Typography>
+        <Box height={350}>
+          <Bar
+            data={{
+              labels,
+              datasets,
+            }}
+            options={chartOptions}
+            style={{ position: "absolute" }}
+          />
+        </Box>
       </Box>
-    </Box>
+    </Paper>
   );
 };

@@ -1,26 +1,86 @@
-import SearchInput from "./SearchInput";
-import Box from "@mui/material/Box";
+import { useState } from "react";
 
-function CurrentLocation(props: { id?: string }) {
-  const handleSearch = (searchTerm: string) => {
-    console.log("Search term:", searchTerm);
-  };
-  
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Chip,
+  LinearProgress,
+  Stack,
+  Tooltip,
+} from "@mui/material";
+
+import {
+  WeatherLocation,
+  WeatherLocationProps,
+  formatElevation,
+  formatLatitude,
+  formatLongitude,
+} from "../../WeatherLocation";
+import LocationButton from "./LocationButton";
+import { LocationState } from "./LocationState";
+import SearchInput from "./SearchInput";
+
+function getLocationTitle({ city, state }: WeatherLocation): string {
+  if (city && state) {
+    return `${city}, ${state}`;
+  } else if (city) {
+    return city;
+  } else if (state) {
+    return state;
+  }
+  return "Unknown Location";
+}
+
+function CurrentLocation({
+  weatherLocation,
+  setWeatherLocation,
+}: WeatherLocationProps) {
+  const [locationState, setLocationState] = useState<LocationState>(
+    LocationState.Ready,
+  );
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: "white",
-        borderRadius: 1,
-        padding: 2,
-      }}
-      id={props.id}
-    >
-      <SearchInput onSearch={handleSearch} />
+    <Card>
+      <CardHeader
+        title={getLocationTitle(weatherLocation)}
+        subheader={weatherLocation.country}
+      />
+      <CardContent>
+        <Stack gap={2}>
+          <SearchInput
+            weatherLocation={weatherLocation}
+            setWeatherLocation={setWeatherLocation}
+          />
 
-    </Box>
+          <Stack direction="row" gap={1}>
+            <Tooltip title="Latitude">
+              <Chip label={formatLatitude(weatherLocation.latitude)} />
+            </Tooltip>
+
+            <Tooltip title="Longitude">
+              <Chip label={formatLongitude(weatherLocation.longitude)} />
+            </Tooltip>
+
+            {weatherLocation.elevation !== undefined && (
+              <Tooltip title="Elevation">
+                <Chip label={formatElevation(weatherLocation.elevation)} />
+              </Tooltip>
+            )}
+          </Stack>
+        </Stack>
+      </CardContent>
+      <CardActions>
+        <LocationButton
+          weatherLocation={weatherLocation}
+          setWeatherLocation={setWeatherLocation}
+          locationState={locationState}
+          setLocationState={setLocationState}
+        />
+      </CardActions>
+      {locationState === LocationState.Loading && <LinearProgress />}
+    </Card>
   );
 }
 

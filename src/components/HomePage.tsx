@@ -1,29 +1,43 @@
+import { Box, Container, Stack } from "@mui/material";
+
+import { WeatherLocationProps } from "../WeatherLocation";
 import CurrentLocation from "./CurrentLocation";
 import CurrentWeather from "./CurrentWeather";
-import Map from "./Map";
-import HourlyForecast from "./HourlyForecast";
 import DailyForecast from "./DailyForecast";
 import HistoryPreview from "./HistoryPreview";
-
-import "./HomePage.css";
-import { Box, Container, Stack } from "@mui/material";
+import HourlyForecast from "./HourlyForecast";
+import Map from "./Map";
 import { WmoCode } from "./WmoCode";
 
-function HomePage() {
+function HomePage({
+  weatherLocation,
+  setWeatherLocation,
+}: WeatherLocationProps) {
   return (
     <Container>
-      <Box id="dashboard" display="grid" gap={2} padding={2}>
-        <CurrentLocation id="current-location" />
-        <CurrentWeather id="current-weather" />
-        <Map id="map" />
+      <Stack gap={2} padding={2}>
+        <Stack direction="row" gap={2}>
+          <Box flex={1}>
+            <CurrentLocation
+              weatherLocation={weatherLocation}
+              setWeatherLocation={setWeatherLocation}
+            />
+          </Box>
+          <Box flex={1}>
+            <CurrentWeather />
+          </Box>
+          <Box flex={1}>
+            <Map />
+          </Box>
+        </Stack>
+
         <HourlyForecast
-          id="hourly-forecast"
           times={["1", "2", "3", "4", "5", "6", "7"]}
           temperature={[20, 10, 30, 15, 25, 35, 30]}
           humidity={[90, 85, 60, 30, 40, 45, 70]}
           precipitation={[5, 20, 75, 90, 30, 60, 40]}
         />
-        <Stack id="daily-forecast" direction="row" gap={1}>
+        <Stack direction="row" gap={1}>
           <DailyForecast
             date={11}
             day="Sunday"
@@ -74,8 +88,8 @@ function HomePage() {
             low={50}
           />
         </Stack>
-        <HistoryPreview id="history-preview" />
-      </Box>
+        <HistoryPreview />
+      </Stack>
     </Container>
   );
 }
