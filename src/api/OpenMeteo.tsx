@@ -111,14 +111,6 @@ export async function fetchWeatherData(
   }
 }
 
-// me	"2023-11-28T03:45"
-// interval	900
-// temperature_2m	-1.5
-// relative_humidity_2m	88
-// weather_code	71
-// cloud_cover	100
-// wind_speed_10m	15.5
-
 export interface CombinedData {
   current: {
     time: string;
