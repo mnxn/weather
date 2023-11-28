@@ -1,7 +1,7 @@
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
 
-import { fetchTimeZone } from "./api/OpenMeteo";
+import { fetchElevation, fetchTimeZone } from "./api/OpenMeteo";
 import { fetchReverseCityLocations } from "./api/OpenWeather";
 
 countries.registerLocale(enLocale);
@@ -41,7 +41,7 @@ export function formatLongitude(longitude: number): string {
 }
 
 export function formatElevation(elevation: number): string {
-  return `${elevation.toFixed(1)} ft`;
+  return `${elevation.toFixed(1)} m`;
 }
 
 export function getFullCountryName(
@@ -66,14 +66,16 @@ export async function reverseWeatherLocation(
   }
 
   const firstResult = data[0];
+  const elevation = await fetchElevation(latitude, longitude);
   const timeZone = await fetchTimeZone(latitude, longitude);
-  console.log(timeZone);
+
   return {
     city: firstResult.name,
     state: firstResult.state,
     country: getFullCountryName(firstResult.country, firstResult.country),
     latitude, // use original coordinates
     longitude,
+    elevation,
     timeZone,
   };
 }
