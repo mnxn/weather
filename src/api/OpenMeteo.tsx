@@ -139,9 +139,10 @@ export interface CombinedData {
 export async function fetchCombinedData(
   latitude: number,
   longitude: number,
+  days: number,
 ): Promise<CombinedData> {
   // Construct the API URL based on the provided latitude and longitude
-  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7`;
+  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=${days}`;
 
   // Make an asynchronous HTTP GET request to the API
   const response = await fetch(url);
