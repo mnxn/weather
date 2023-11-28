@@ -18,8 +18,8 @@ export interface FormattedData {
 }
 
 // Function to calculate monthly temperature data
-const calculateMonthlyData = (
-  dailyData: HistoricalWeatherData["daily"],
+export const calculateMonthlyData = (
+  dailyData: HistoricalWeatherData["daily"]
 ): MonthlyData => {
   const times = dailyData.time;
   const highestTemps = dailyData.temperature_2m_max;
@@ -60,8 +60,8 @@ const calculateMonthlyData = (
 };
 
 // Function to calculate weather distribution data
-const calculateWeatherDistributionData = (
-  dailyData: HistoricalWeatherData["daily"],
+export const calculateWeatherDistributionData = (
+  dailyData: HistoricalWeatherData["daily"]
 ): WeatherDistributionData => {
   const weatherDistribution: Record<string, number> = {
     sunny: dailyData.weather_code.filter(
