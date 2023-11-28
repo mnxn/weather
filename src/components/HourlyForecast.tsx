@@ -1,5 +1,6 @@
 import {
   CategoryScale,
+  ChartData,
   Chart as ChartJS,
   ChartOptions,
   Filler,
@@ -96,7 +97,7 @@ function HourlyForecast(props: HourlyForecast) {
   const [humidityEnabled, setHumidityEnabled] = useState(true);
   const [precipitationEnabled, setPrecipitationEnabled] = useState(true);
 
-  const data = {
+  const data: ChartData<"line"> = {
     labels: props.times,
     datasets: [
       {
@@ -105,6 +106,7 @@ function HourlyForecast(props: HourlyForecast) {
         borderColor: red[500],
         backgroundColor: red[500],
         yAxisID: "temperature",
+        pointStyle: false,
         hidden: !temperatureEnabled,
       },
       {
@@ -113,6 +115,7 @@ function HourlyForecast(props: HourlyForecast) {
         borderColor: common.black,
         backgroundColor: common.black,
         yAxisID: "percent",
+        pointStyle: false,
         hidden: !humidityEnabled,
       },
       {
@@ -121,6 +124,7 @@ function HourlyForecast(props: HourlyForecast) {
         borderColor: blue[500],
         backgroundColor: alpha(blue[500], 0.35),
         yAxisID: "percent",
+        pointStyle: false,
         hidden: !precipitationEnabled,
         fill: true,
       },
