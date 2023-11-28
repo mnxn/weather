@@ -171,8 +171,8 @@ function HourlyForecast(props: HourlyForecastProps) {
 
   return (
     <Paper elevation={1}>
-      <Box padding={2}>
-        <Box height={300}>
+      <Box padding={{ xs: 1, sm: 2 }}>
+        <Box height={{ xs: 200, sm: 250, md: 300 }}>
           <Line
             data={data}
             options={chartOptions}
@@ -182,9 +182,10 @@ function HourlyForecast(props: HourlyForecastProps) {
 
         <Stack
           direction="row"
+          flexWrap="wrap"
           width="100%"
           justifyContent="center"
-          spacing={2}
+          gap={{ xs: 1, sm: 2 }}
           marginBlock={1}
         >
           <DataSelectorChip
