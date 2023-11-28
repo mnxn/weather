@@ -111,6 +111,56 @@ export async function fetchWeatherData(
   }
 }
 
+// me	"2023-11-28T03:45"
+// interval	900
+// temperature_2m	-1.5
+// relative_humidity_2m	88
+// weather_code	71
+// cloud_cover	100
+// wind_speed_10m	15.5
+
+export interface CombinedData {
+  current: {
+    time: string;
+    temperature_2m: number;
+    relative_humidity_2m: number;
+    weather_code: number;
+    cloud_cover: number;
+    wind_speed_10m: number;
+  };
+
+  hourly: {
+    time: string[];
+    temperature_2m: number[];
+    relative_humidity_2m: number[];
+    precipitation_probability: number[];
+  };
+
+  daily: {
+    time: string[];
+    weather_code: WmoCode[];
+    temperature_2m_max: number[];
+    temperature_2m_min: number[];
+  };
+}
+
+export async function fetchCombinedData(
+  latitude: number,
+  longitude: number,
+): Promise<CombinedData> {
+  // Construct the API URL based on the provided latitude and longitude
+  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7`;
+
+  // Make an asynchronous HTTP GET request to the API
+  const response = await fetch(url);
+
+  if (response.ok) {
+    return (await response.json()) as CombinedData;
+  } else {
+    throw new Error("Failed to fetch data");
+  }
+}
+
 export async function fetchHistoricalWeatherData(
   latitude: number,
   longitude: number,
