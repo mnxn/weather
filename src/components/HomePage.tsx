@@ -1,18 +1,34 @@
-import { Box, Container, Stack } from "@mui/material";
+import { useEffect, useState } from "react";
+
+import { Box, Container, Skeleton, Stack } from "@mui/material";
 
 import { WeatherLocationProps } from "../WeatherLocation";
+import { CombinedData, fetchCombinedData } from "../api/OpenMeteo";
 import CurrentLocation from "./CurrentLocation";
 import CurrentWeather from "./CurrentWeather";
 import DailyForecast from "./DailyForecast";
 import HistoryPreview from "./HistoryPreview";
 import HourlyForecast from "./HourlyForecast";
 import Map from "./Map";
-import { WmoCode } from "./WmoCode";
 
 function HomePage({
   weatherLocation,
   setWeatherLocation,
 }: WeatherLocationProps) {
+  const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchCombinedData(
+        weatherLocation.latitude,
+        weatherLocation.longitude,
+      );
+      setCombinedData(data);
+    };
+
+    void fetchData();
+  }, [weatherLocation]);
+
   return (
     <Container>
       <Stack gap={2} padding={2}>
@@ -31,62 +47,36 @@ function HomePage({
           </Box>
         </Stack>
 
-        <HourlyForecast
-          times={["1", "2", "3", "4", "5", "6", "7"]}
-          temperature={[20, 10, 30, 15, 25, 35, 30]}
-          humidity={[90, 85, 60, 30, 40, 45, 70]}
-          precipitation={[5, 20, 75, 90, 30, 60, 40]}
-        />
+        {combinedData ? (
+          <HourlyForecast
+            times={combinedData.hourly.time}
+            temperature={combinedData.hourly.temperature_2m}
+            humidity={combinedData.hourly.relative_humidity_2m}
+            precipitation={combinedData.hourly.precipitation_probability}
+          />
+        ) : (
+          <Skeleton variant="rectangular" height={400} />
+        )}
+
         <Stack direction="row" gap={1}>
-          <DailyForecast
-            date={11}
-            day="Sunday"
-            weather={WmoCode.ClearSky}
-            high={100}
-            low={50}
-          />
-          <DailyForecast
-            date={12}
-            day="Monday"
-            weather={WmoCode.RainHeavy}
-            high={100}
-            low={50}
-          />
-          <DailyForecast
-            date={13}
-            day="Tuesday"
-            weather={WmoCode.SnowHeavy}
-            high={100}
-            low={50}
-          />
-          <DailyForecast
-            date={14}
-            day="Wednesday"
-            weather={WmoCode.Fog}
-            high={100}
-            low={50}
-          />
-          <DailyForecast
-            date={15}
-            day="Thursday"
-            weather={WmoCode.DrizzleDense}
-            high={100}
-            low={50}
-          />
-          <DailyForecast
-            date={16}
-            day="Friday"
-            weather={WmoCode.ThunderstormHailHeavy}
-            high={100}
-            low={50}
-          />
-          <DailyForecast
-            date={17}
-            day="Saturday"
-            weather={WmoCode.FreezingRainHeavy}
-            high={100}
-            low={50}
-          />
+          {combinedData
+            ? combinedData.daily.time.map((time, index) => (
+                <DailyForecast
+                  key={time}
+                  date={time}
+                  weather={combinedData.daily.weather_code[index]}
+                  high={combinedData.daily.temperature_2m_max[index]}
+                  low={combinedData.daily.temperature_2m_min[index]}
+                />
+              ))
+            : Array.from({ length: 7 }, (_, index) => (
+                <Skeleton
+                  key={index}
+                  variant="rectangular"
+                  height={225}
+                  sx={{ flex: 1 }}
+                />
+              ))}
         </Stack>
         <HistoryPreview />
       </Stack>
