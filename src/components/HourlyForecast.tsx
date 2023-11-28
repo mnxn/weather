@@ -44,9 +44,9 @@ const chartOptions: ChartOptions<"line"> = {
 
           const date = new Date(items[0].label);
           return date.toLocaleString(undefined, {
+            month: "short",
             day: "numeric",
-            month: "long",
-            weekday: "long",
+            hour: "numeric",
           });
         },
       },
