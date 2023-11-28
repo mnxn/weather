@@ -21,19 +21,23 @@ export interface DailyData {
 }
 
 interface WeatherData {
-  temperature: number;
-  humidity: number;
-  weathercode: string;
+  current: {
+    temperature: number;
+    humidity: number;
+    weathercode: string;
+  };
   // Add more fields as needed
 }
 
 export interface SunsetData {
-  time: string[];
-  sunrise: string[];
-  sunset: string[];
+  daily: {
+    time: string[];
+    sunrise: string[];
+    sunset: string[];
+  };
 }
 
-export type HistoricalWeatherData = {
+export interface HistoricalWeatherData {
   latitude: number;
   longitude: number;
   generationtime_ms: number;
@@ -47,7 +51,7 @@ export type HistoricalWeatherData = {
     temperature_2m_min: string;
   };
   daily: DailyData;
-};
+}
 
 export interface CityLocation {
   id: number;
@@ -74,7 +78,7 @@ export interface CityLocation {
 
 export async function fetchTimeZone(
   latitude: number,
-  longitude: number
+  longitude: number,
 ): Promise<string> {
   // Construct the API URL based on the provided latitude and longitude
   const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&timezone=auto`;
@@ -83,7 +87,7 @@ export async function fetchTimeZone(
   const response = await fetch(url);
 
   if (response.ok) {
-    const data = await response.json();
+    const data = (await response.json()) as { timezone: string };
     return data.timezone;
   } else {
     throw new Error("Failed to fetch data");
@@ -92,7 +96,7 @@ export async function fetchTimeZone(
 
 export async function fetchWeatherData(
   latitude: number,
-  longitude: number
+  longitude: number,
 ): Promise<WeatherData> {
   // Construct the API URL based on the provided latitude and longitude
   const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
@@ -101,15 +105,49 @@ export async function fetchWeatherData(
   const response = await fetch(url);
 
   if (response.ok) {
-    const data = await response.json();
+    return (await response.json()) as WeatherData;
+  } else {
+    throw new Error("Failed to fetch data");
+  }
+}
 
-    const weatherData: WeatherData = {
-      temperature: data.current_weather.temperature,
-      humidity: data.current_weather.humidity,
-      weathercode: data.current_weather.weathercode,
-      // Map more fields as needed
-    };
-    return weatherData;
+export interface CombinedData {
+  current: {
+    time: string;
+    temperature_2m: number;
+    relative_humidity_2m: number;
+    weather_code: number;
+    cloud_cover: number;
+    wind_speed_10m: number;
+  };
+
+  hourly: {
+    time: string[];
+    temperature_2m: number[];
+    relative_humidity_2m: number[];
+    precipitation_probability: number[];
+  };
+
+  daily: {
+    time: string[];
+    weather_code: WmoCode[];
+    temperature_2m_max: number[];
+    temperature_2m_min: number[];
+  };
+}
+
+export async function fetchCombinedData(
+  latitude: number,
+  longitude: number,
+): Promise<CombinedData> {
+  // Construct the API URL based on the provided latitude and longitude
+  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7`;
+
+  // Make an asynchronous HTTP GET request to the API
+  const response = await fetch(url);
+
+  if (response.ok) {
+    return (await response.json()) as CombinedData;
   } else {
     throw new Error("Failed to fetch data");
   }
@@ -118,7 +156,7 @@ export async function fetchWeatherData(
 export async function fetchHistoricalWeatherData(
   latitude: number,
   longitude: number,
-  year: number
+  year: number,
 ): Promise<HistoricalWeatherData> {
   // Construct the API URL based on the provided latitude and longitude
   const url = `${API_ARCHIVE_URL}?latitude=${latitude}&longitude=${longitude}&start_date=${
@@ -130,8 +168,7 @@ export async function fetchHistoricalWeatherData(
   const response = await fetch(url, { cache: "force-cache" });
 
   if (response.ok) {
-    const data = await response.json();
-    return data;
+    return (await response.json()) as HistoricalWeatherData;
   } else {
     throw new Error("Failed to fetch data");
   }
@@ -140,7 +177,7 @@ export async function fetchHistoricalWeatherData(
 export async function fetchSunsetData(
   latitude: number,
   longitude: number,
-  year: number
+  year: number,
 ): Promise<SunsetData> {
   // Construct the API URL based on the provided latitude and longitude
   const url = `${API_ARCHIVE_URL}?latitude=${latitude}&longitude=${longitude}&start_date=${year}-01-01&end_date=${year}-12-31&daily=sunrise,sunset&timezone=GMT`;
@@ -150,16 +187,14 @@ export async function fetchSunsetData(
   const response = await fetch(url, { cache: "force-cache" });
 
   if (response.ok) {
-    const data = await response.json();
-
-    return data.daily;
+    return (await response.json()) as SunsetData;
   } else {
     throw new Error("Failed to fetch data");
   }
 }
 
 export async function fetchCityLocations(
-  name: string
+  name: string,
 ): Promise<CityLocation[]> {
   // Construct the API URL based on the provided latitude and longitude
   const url = `${API_GEOCODING_URL}?name=${name}&count=10&language=en&format=json`;
@@ -168,8 +203,8 @@ export async function fetchCityLocations(
   const response = await fetch(url);
 
   if (response.ok) {
-    const data = await response.json();
-    return data.results;
+    const data = (await response.json()) as { results?: CityLocation[] };
+    return data.results ?? [];
   } else {
     throw new Error("Failed to fetch data");
   }

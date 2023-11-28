@@ -1,5 +1,5 @@
 import CurrentLocation from "./CurrentLocation";
-import CurrentWeather from "./CurrentWeather";
+import WeatherBox from "./CurrentWeather/CurrentWeather";
 import Map from "./Map";
 import HourlyForecast from "./HourlyForecast";
 import DailyForecast from "./DailyForecast";
@@ -24,7 +24,7 @@ function HomePage({
             />
           </Box>
           <Box flex={1}>
-            <CurrentWeather />
+          <WeatherBox weatherLocation={weatherLocation} setWeatherLocation={setWeatherLocation} />
           </Box>
           <Box flex={1}>
             <Map />
