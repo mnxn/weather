@@ -21,7 +21,7 @@ export function LocationJumpButton({
       variant="outlined"
       startIcon={isXMobileScreen ? undefined : <Place />}
       sx={{
-        minWidth: 0,
+        minWidth: 32,
         paddingInline: { xs: 1, sm: 2 },
         paddingBlock: 1,
         marginLeft: "auto",
