@@ -9,8 +9,8 @@ import CurrentWeather from "./CurrentWeather";
 import DailyForecast from "./DailyForecast";
 import HistoryPreview from "./HistoryPreview";
 import HourlyForecast from "./HourlyForecast";
+import MapPreview from "./MapPreview";
 import { UnitProps } from "./UnitButton";
-import MapPreview from "./MapPreview"; 
 
 const FUTURE_FORECAST_DAYS = 6;
 
@@ -19,6 +19,7 @@ function HomePage({
   locationExpanded,
   setLocationExpanded,
   units,
+  setUnits,
   weatherLocation,
   setWeatherLocation,
 }: LocationFocusProps & UnitProps & WeatherLocationProps) {
@@ -54,21 +55,31 @@ function HomePage({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-            <CurrentWeather
-              time={combinedData?.current.time ?? ""}
-              temperature={combinedData?.current.temperature_2m ?? 0}
-              humidity={combinedData?.current.relative_humidity_2m ?? 0}
-              windSpeed={combinedData?.current.wind_speed_10m ?? 0}
-              maxTemperature={combinedData?.daily.temperature_2m_max[0] ?? 0}
-              minTemperature={combinedData?.daily.temperature_2m_min[0] ?? 0}
-            />
+            {combinedData === null ? (
+              <Skeleton variant="rectangular" height="100%" />
+            ) : (
+              <CurrentWeather
+                time={combinedData.current.time}
+                weather={combinedData.current.weather_code}
+                temperature={combinedData.current.temperature_2m}
+                humidity={combinedData.current.relative_humidity_2m}
+                windSpeed={combinedData.current.wind_speed_10m}
+                cloudCover={combinedData.current.cloud_cover}
+                maxTemperature={combinedData.daily.temperature_2m_max[0]}
+                minTemperature={combinedData.daily.temperature_2m_min[0]}
+                units={units}
+                setUnits={setUnits}
+              />
+            )}
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <MapPreview center={{
+            <MapPreview
+              center={{
                 lat: weatherLocation.latitude,
                 lng: weatherLocation.longitude,
-              }} />
+              }}
+            />
           </Grid>
         </Grid>
 

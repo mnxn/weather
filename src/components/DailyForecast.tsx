@@ -1,6 +1,7 @@
-import { Box, Divider, Paper, Stack, Tooltip } from "@mui/material";
-import { blue, red } from "@mui/material/colors";
+import { Box, Paper, Stack } from "@mui/material";
+import { blue } from "@mui/material/colors";
 
+import HighLowTemps from "./HighLowTemps";
 import { WmoCode, weatherDescription, weatherIconClass } from "./WmoCode";
 
 export interface DailyForecastProps {
@@ -34,19 +35,9 @@ function DailyForecast(props: DailyForecastProps) {
           marginBlock={1}
         />
         <Box>{weatherDescription(props.weather)}</Box>
-        <Stack direction="row" gap={1} marginBlock={1} alignItems="center">
-          <Tooltip title="High Temperature">
-            <Box fontWeight="bold" color={red[500]}>
-              {props.high}&deg;
-            </Box>
-          </Tooltip>
-          <Divider orientation="vertical" flexItem />
-          <Tooltip title="Low Temperature">
-            <Box fontWeight="bold" color={blue[500]}>
-              {props.low}&deg;
-            </Box>
-          </Tooltip>
-        </Stack>
+        <Box marginBlock={1}>
+          <HighLowTemps high={props.high} low={props.low} />
+        </Box>
       </Stack>
     </Paper>
   );
