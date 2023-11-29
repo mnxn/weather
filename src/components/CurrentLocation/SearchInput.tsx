@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { MutableRefObject, useState } from "react";
 
 import { Autocomplete, debounce } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -8,7 +8,6 @@ import {
   getFullCountryName,
 } from "../../WeatherLocation";
 import { CityLocation, fetchCityLocations } from "../../api/OpenMeteo";
-import { SearchRefProps } from "../LocationJumpButton";
 
 function normalizeCities(cities: CityLocation[]): void {
   // Rewrite country field for consistency with weather locations acquired
@@ -29,6 +28,10 @@ function normalizeCities(cities: CityLocation[]): void {
     }
     return difference;
   });
+}
+
+export interface SearchRefProps {
+  searchRef: MutableRefObject<HTMLInputElement | null>;
 }
 
 const SearchInput = ({

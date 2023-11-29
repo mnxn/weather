@@ -23,8 +23,7 @@ import {
   getWeatherByCoordinates,
 } from "../../api/WeatherApi";
 import { useScreenSize } from "../../utils/useScreenSize";
-import CurrentLocation from "../CurrentLocation";
-import { SearchRefProps } from "../LocationJumpButton";
+import CurrentLocation, { LocationFocusProps } from "../CurrentLocation";
 import { UnitProps } from "../UnitButton";
 import tileLayer from "./TileLayer";
 
@@ -32,11 +31,13 @@ const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
 
 function MapsPage({
   searchRef,
+  locationExpanded,
+  setLocationExpanded,
   units,
   setUnits,
   weatherLocation,
   setWeatherLocation,
-}: SearchRefProps & UnitProps & WeatherLocationProps) {
+}: LocationFocusProps & UnitProps & WeatherLocationProps) {
   const [locationWeatherData, setLocationWeatherData] =
     useState<WeatherResponse>();
 
@@ -83,7 +84,8 @@ function MapsPage({
           <Grid item xs={12} sm={6} md={4}>
             <CurrentLocation
               collapsible
-              startOpened={false}
+              locationExpanded={locationExpanded}
+              setLocationExpanded={setLocationExpanded}
               searchRef={searchRef}
               weatherLocation={weatherLocation}
               setWeatherLocation={setWeatherLocation}

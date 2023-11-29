@@ -1,5 +1,3 @@
-import { MutableRefObject } from "react";
-
 import { Place } from "@mui/icons-material";
 import { Button } from "@mui/material";
 
@@ -8,15 +6,13 @@ import {
   getShortLocationTitle,
 } from "../WeatherLocation";
 import { useScreenSize } from "../utils/useScreenSize";
-
-export interface SearchRefProps {
-  searchRef: MutableRefObject<HTMLInputElement | null>;
-}
+import { LocationFocusProps } from "./CurrentLocation";
 
 export function LocationJumpButton({
   searchRef,
+  setLocationExpanded,
   weatherLocation,
-}: SearchRefProps & WeatherLocationProps) {
+}: LocationFocusProps & WeatherLocationProps) {
   const { isXMobileScreen } = useScreenSize();
 
   return (
@@ -31,7 +27,12 @@ export function LocationJumpButton({
         marginRight: 1,
       }}
       onClick={() => {
-        searchRef.current?.focus();
+        setLocationExpanded(true);
+        // Wait until the current location component has finished expanding
+        // before jumping to the search input.
+        setTimeout(() => {
+          searchRef.current?.focus();
+        }, 150);
       }}
     >
       {isXMobileScreen ? <Place /> : getShortLocationTitle(weatherLocation)}

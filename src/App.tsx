@@ -16,6 +16,7 @@ function App() {
   const [weatherLocation, setWeatherLocation] =
     useState<WeatherLocation>(defaultLocation);
 
+  const [locationExpanded, setLocationExpanded] = useState<boolean>(false);
   const searchRef = useRef<HTMLInputElement | null>(null);
 
   return (
@@ -35,6 +36,8 @@ function App() {
           </Box>
           <LocationJumpButton
             searchRef={searchRef}
+            locationExpanded={locationExpanded}
+            setLocationExpanded={setLocationExpanded}
             weatherLocation={weatherLocation}
             setWeatherLocation={setWeatherLocation}
           />
@@ -48,6 +51,8 @@ function App() {
             element={
               <HomePage
                 searchRef={searchRef}
+                locationExpanded={locationExpanded}
+                setLocationExpanded={setLocationExpanded}
                 units={units}
                 setUnits={setUnits}
                 weatherLocation={weatherLocation}
@@ -60,6 +65,8 @@ function App() {
             element={
               <MapsPage
                 searchRef={searchRef}
+                locationExpanded={locationExpanded}
+                setLocationExpanded={setLocationExpanded}
                 units={units}
                 setUnits={setUnits}
                 weatherLocation={weatherLocation}
@@ -72,6 +79,8 @@ function App() {
             element={
               <HistoryPage
                 searchRef={searchRef}
+                locationExpanded={locationExpanded}
+                setLocationExpanded={setLocationExpanded}
                 units={units}
                 setUnits={setUnits}
                 weatherLocation={weatherLocation}

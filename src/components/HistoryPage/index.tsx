@@ -8,8 +8,7 @@ import {
   fetchHistoricalWeatherData,
   fetchSunsetData,
 } from "../../api/OpenMeteo";
-import CurrentLocation from "../CurrentLocation";
-import { SearchRefProps } from "../LocationJumpButton";
+import CurrentLocation, { LocationFocusProps } from "../CurrentLocation";
 import { UnitProps } from "../UnitButton";
 import { BarChartContainer } from "./BarChart";
 import { FormattedData, formatChartData } from "./CalcHistory";
@@ -26,10 +25,12 @@ const DAYS = 7;
 
 const HistoryPage = ({
   searchRef,
+  locationExpanded,
+  setLocationExpanded,
   units,
   weatherLocation,
   setWeatherLocation,
-}: SearchRefProps & UnitProps & WeatherLocationProps) => {
+}: LocationFocusProps & UnitProps & WeatherLocationProps) => {
   const [chartData, setChartData] = useState<FormattedData>({
     monthly: {
       labels: [],
@@ -95,7 +96,8 @@ const HistoryPage = ({
           <Grid item xs={12} sm={6} md={4}>
             <CurrentLocation
               collapsible
-              startOpened={false}
+              locationExpanded={locationExpanded}
+              setLocationExpanded={setLocationExpanded}
               searchRef={searchRef}
               weatherLocation={weatherLocation}
               setWeatherLocation={setWeatherLocation}

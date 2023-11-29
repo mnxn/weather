@@ -21,26 +21,29 @@ import {
   formatLongitude,
   getLocationTitle,
 } from "../../WeatherLocation";
-import { SearchRefProps } from "../LocationJumpButton";
 import LocationButton from "./LocationButton";
 import { LocationState } from "./LocationState";
-import SearchInput from "./SearchInput";
+import SearchInput, { SearchRefProps } from "./SearchInput";
+
+export interface LocationFocusProps extends SearchRefProps {
+  locationExpanded: boolean;
+  setLocationExpanded: (expanded: boolean) => void;
+}
 
 export interface CurrentLocationProps
-  extends SearchRefProps,
+  extends LocationFocusProps,
     WeatherLocationProps {
   collapsible?: boolean;
-  startOpened?: boolean;
 }
 
 function CurrentLocation({
   collapsible = false,
-  startOpened = true,
+  locationExpanded,
+  setLocationExpanded,
   searchRef,
   weatherLocation,
   setWeatherLocation,
 }: CurrentLocationProps) {
-  const [opened, setOpened] = useState<boolean>(startOpened);
   const [locationState, setLocationState] = useState<LocationState>(
     LocationState.Ready,
   );
@@ -54,15 +57,16 @@ function CurrentLocation({
           collapsible ? (
             <IconButton
               onClick={() => {
-                setOpened(!opened);
+                setLocationExpanded(!locationExpanded);
               }}
             >
-              {opened ? <ExpandLess /> : <ExpandMore />}
+              {locationExpanded ? <ExpandLess /> : <ExpandMore />}
             </IconButton>
           ) : undefined
         }
       />
-      <Collapse in={opened} timeout="auto">
+
+      <Collapse in={!collapsible || locationExpanded} timeout="auto">
         <CardContent>
           <Stack gap={2}>
             <SearchInput
