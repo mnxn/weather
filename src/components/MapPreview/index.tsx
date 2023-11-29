@@ -1,26 +1,50 @@
-
-import { Box, IconButton } from "@mui/material";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { LatLng } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import tileLayer from "./TileLayer";
+import React from "react";
+import { MapContainer, TileLayer } from "react-leaflet";
 import { Link } from "react-router-dom";
-import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 
-interface MapPreviewProps {
-  center: { lat: number; lng: number };
-}
+import OpenInFullIcon from "@mui/icons-material/OpenInFull";
+import { Box, IconButton, debounce } from "@mui/material";
 
-const MapPreview = ({ center}: MapPreviewProps) => {
+import {
+  WeatherLocationProps,
+  reverseWeatherLocation,
+} from "../../WeatherLocation";
+import { InteractiveMap } from "../MapsPage/MapsPage";
+import tileLayer from "./TileLayer";
+
+const MapPreview = ({
+  weatherLocation,
+  setWeatherLocation,
+}: WeatherLocationProps) => {
+  const center = new LatLng(
+    weatherLocation.latitude,
+    weatherLocation.longitude,
+  );
+
+  const fetchWeatherLocation = React.useMemo(
+    () =>
+      debounce(async (latLng: LatLng) => {
+        const reversedLocation = await reverseWeatherLocation(
+          latLng.lat,
+          latLng.lng,
+        );
+        setWeatherLocation(reversedLocation);
+      }, 500),
+    [setWeatherLocation],
+  );
+
   return (
     <Box
       sx={{
         position: "relative",
         minHeight: "200px",
-        height: "100%", 
+        height: "100%",
         width: "100%",
         borderRadius: "8px",
         overflow: "hidden",
-        marginBottom: "16px", 
+        marginBottom: "16px",
       }}
     >
       <MapContainer
@@ -29,11 +53,17 @@ const MapPreview = ({ center}: MapPreviewProps) => {
           width: "100%",
           overflow: "hidden",
         }}
-        center={[center.lat, center.lng]}
-        zoom={10} 
+        center={center}
+        zoom={10}
         scrollWheelZoom={false}
       >
-      <TileLayer {...tileLayer} />
+        <TileLayer {...tileLayer} />
+        <InteractiveMap
+          center={center}
+          onMapClicked={(latLng: LatLng) => {
+            void fetchWeatherLocation(latLng);
+          }}
+        />
       </MapContainer>
 
       <Box
@@ -45,15 +75,15 @@ const MapPreview = ({ center}: MapPreviewProps) => {
         }}
       >
         <Link to="/Maps" style={{ textDecoration: "none" }}>
-        <IconButton 
+          <IconButton
             aria-label="Go to MapsPage"
-            sx={{ bgcolor: "white", color: "black" }}>
+            sx={{ bgcolor: "white", color: "black" }}
+          >
             <OpenInFullIcon />
           </IconButton>
         </Link>
       </Box>
     </Box>
-
   );
 };
 
