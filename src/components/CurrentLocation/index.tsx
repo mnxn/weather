@@ -64,7 +64,7 @@ function CurrentLocation({
             </Tooltip>
 
             {weatherLocation.elevation !== undefined && (
-              <Tooltip title="Elevation">
+              <Tooltip title="Elevation (meters)">
                 <Chip label={formatElevation(weatherLocation.elevation)} />
               </Tooltip>
             )}
