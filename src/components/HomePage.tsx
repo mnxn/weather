@@ -40,7 +40,6 @@ function HomePage({
     void fetchData();
   }, [weatherLocation.latitude, weatherLocation.longitude, units.temperature]);
 
-
   return (
     <Container sx={{ padding: 0 }}>
       <Stack gap={2} padding={{ xs: 1, md: 2 }}>
@@ -55,15 +54,15 @@ function HomePage({
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-          <CurrentWeather
-            time={combinedData?.current.time || ""}
-            temperature={combinedData?.current.temperature_2m || 0}
-            humidity={combinedData?.current.relative_humidity_2m || 0}
-            windSpeed={combinedData?.current.wind_speed_10m || 0}
-            maxTemperature={combinedData?.daily.temperature_2m_max[0] || 0}
-            minTemperature={combinedData?.daily.temperature_2m_min[0] || 0}
-          />
-        </Grid>
+            <CurrentWeather
+              time={combinedData?.current.time ?? ""}
+              temperature={combinedData?.current.temperature_2m ?? 0}
+              humidity={combinedData?.current.relative_humidity_2m ?? 0}
+              windSpeed={combinedData?.current.wind_speed_10m ?? 0}
+              maxTemperature={combinedData?.daily.temperature_2m_max[0] ?? 0}
+              minTemperature={combinedData?.daily.temperature_2m_min[0] ?? 0}
+            />
+          </Grid>
 
           <Grid item xs={12} md={4}>
             <MapPreview center={{
