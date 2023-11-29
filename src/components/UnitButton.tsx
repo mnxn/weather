@@ -1,4 +1,5 @@
-import { Paper, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { SxProps, ToggleButton, ToggleButtonGroup, alpha } from "@mui/material";
+import { common } from "@mui/material/colors";
 
 export interface Units {
   temperature: "C" | "F";
@@ -9,31 +10,40 @@ export interface UnitProps {
   setUnits: (units: Units) => void;
 }
 
+const buttonStyle: SxProps = {
+  paddingBlock: 1,
+  borderColor: common.white,
+  color: common.white,
+  "&:hover": {
+    backgroundColor: alpha(common.white, 0.2),
+  },
+  "&.Mui-selected": {
+    backgroundColor: common.white,
+    color: common.black,
+    "&:hover": {
+      backgroundColor: common.white,
+    },
+  },
+};
+
 export function UnitButton({ units, setUnits }: UnitProps) {
   return (
-    <Paper elevation={0}>
-      <ToggleButtonGroup
-        exclusive
-        color="info"
-        value={units.temperature}
-        onChange={(_, value: "C" | "F" | null) => {
-          if (value !== null) {
-            setUnits({ ...units, temperature: value });
-          }
-        }}
-        aria-label="Temperature Unit"
-      >
-        <ToggleButton value="C" aria-label="Celsius" sx={{ paddingBlock: 1 }}>
-          &deg;C
-        </ToggleButton>
-        <ToggleButton
-          value="F"
-          aria-label="Fahrenheit"
-          sx={{ paddingBlock: 1 }}
-        >
-          &deg;F
-        </ToggleButton>
-      </ToggleButtonGroup>
-    </Paper>
+    <ToggleButtonGroup
+      exclusive
+      value={units.temperature}
+      onChange={(_, value: "C" | "F" | null) => {
+        if (value !== null) {
+          setUnits({ ...units, temperature: value });
+        }
+      }}
+      aria-label="Temperature Unit"
+    >
+      <ToggleButton value="C" aria-label="Celsius" sx={buttonStyle}>
+        &deg;C
+      </ToggleButton>
+      <ToggleButton value="F" aria-label="Fahrenheit" sx={buttonStyle}>
+        &deg;F
+      </ToggleButton>
+    </ToggleButtonGroup>
   );
 }
