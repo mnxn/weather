@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
 import { AppBar, Button, Toolbar } from "@mui/material";
-import { Box } from "@mui/system";
 
 import { WeatherLocation, defaultLocation } from "./WeatherLocation";
 import HistoryPage from "./components/HistoryPage";
