@@ -42,7 +42,7 @@ export interface WeatherForecastResponse {
 }
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
-const BASE_URL = "http://api.weatherapi.com/v1";
+const BASE_URL = "https://api.weatherapi.com/v1";
 
 // Function to fetch current weather by city name
 export async function getWeatherByCity(city: string): Promise<WeatherResponse> {
