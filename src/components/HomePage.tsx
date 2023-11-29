@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { Container, Grid, Skeleton, Stack } from "@mui/material";
 
-import { UnitProps } from "../Units";
 import { WeatherLocationProps } from "../WeatherLocation";
 import { CombinedData, fetchCombinedData } from "../api/OpenMeteo";
 import CurrentLocation from "./CurrentLocation";
@@ -11,6 +10,7 @@ import DailyForecast from "./DailyForecast";
 import HistoryPreview from "./HistoryPreview";
 import HourlyForecast from "./HourlyForecast";
 import Map from "./Map";
+import { UnitProps } from "./UnitButton";
 
 const FUTURE_FORECAST_DAYS = 6;
 

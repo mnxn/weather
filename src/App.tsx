@@ -4,11 +4,11 @@ import { Link, Route, Routes } from "react-router-dom";
 import { AppBar, Button, Toolbar } from "@mui/material";
 import { Box } from "@mui/system";
 
-import { UnitButton, Units } from "./Units";
 import { WeatherLocation, defaultLocation } from "./WeatherLocation";
 import HistoryPage from "./components/HistoryPage";
 import HomePage from "./components/HomePage";
 import MapsPage from "./components/MapsPage/MapsPage";
+import { UnitButton, Units } from "./components/UnitButton";
 
 function App() {
   const [units, setUnits] = useState<Units>({ temperature: "F" });

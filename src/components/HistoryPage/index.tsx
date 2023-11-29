@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 
 import { Container, Stack } from "@mui/material";
 
-import { UnitProps } from "../../Units";
 import { WeatherLocationProps } from "../../WeatherLocation";
 import {
   SunsetData,
   fetchHistoricalWeatherData,
   fetchSunsetData,
 } from "../../api/OpenMeteo";
+import { UnitProps } from "../UnitButton";
 import { BarChartContainer } from "./BarChart";
 import { FormattedData, formatChartData } from "./CalcHistory";
 import { PieChartContainer } from "./PieChart";

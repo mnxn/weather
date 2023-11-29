@@ -5,7 +5,6 @@ import { MapContainer, TileLayer, useMap } from "react-leaflet";
 
 import { Box, ListItemText, Stack, Typography, debounce } from "@mui/material";
 
-import { UnitProps } from "../../Units";
 import {
   WeatherLocationProps,
   reverseWeatherLocation,
@@ -16,6 +15,7 @@ import {
   getWeatherByCoordinates,
 } from "../../api/WeatherApi";
 import { useScreenSize } from "../../utils/useScreenSize";
+import { UnitProps } from "../UnitButton";
 import tileLayer from "./TileLayer";
 
 const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
