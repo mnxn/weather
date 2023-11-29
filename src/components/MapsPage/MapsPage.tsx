@@ -3,7 +3,14 @@ import "leaflet/dist/leaflet.css";
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 
-import { Box, ListItemText, Stack, Typography, debounce } from "@mui/material";
+import {
+  Box,
+  Container,
+  ListItemText,
+  Stack,
+  Typography,
+  debounce,
+} from "@mui/material";
 
 import {
   WeatherLocationProps,
@@ -56,30 +63,29 @@ function MapsPage({
   );
 
   return (
-    <Stack
-      sx={{
-        padding: 6,
-      }}
-      direction="column"
-    >
-      {locationWeatherData && <LocationBox data={locationWeatherData} />}
-      <MapView
-        center={new LatLng(weatherLocation.latitude, weatherLocation.longitude)}
-        onMapClicked={(latLng: LatLng) => {
-          void fetchWeatherLocation(latLng);
-        }}
-      />
-
-      {locationWeatherData && (
-        <LocationCondition
-          data={locationWeatherData}
-          units={units}
-          setUnits={setUnits}
+    <Container sx={{ padding: 0 }}>
+      <Stack gap={2} padding={{ xs: 1, md: 2 }}>
+        {locationWeatherData && <LocationBox data={locationWeatherData} />}
+        <MapView
+          center={
+            new LatLng(weatherLocation.latitude, weatherLocation.longitude)
+          }
+          onMapClicked={(latLng: LatLng) => {
+            void fetchWeatherLocation(latLng);
+          }}
         />
-      )}
 
-      <MajorCitiesConditions units={units} setUnits={setUnits} />
-    </Stack>
+        {locationWeatherData && (
+          <LocationCondition
+            data={locationWeatherData}
+            units={units}
+            setUnits={setUnits}
+          />
+        )}
+
+        <MajorCitiesConditions units={units} setUnits={setUnits} />
+      </Stack>
+    </Container>
   );
 }
 
@@ -98,7 +104,6 @@ const MapView = ({ center, onMapClicked }: MapViewProps) => {
         border: "1px solid #e0e0e0",
         borderRadius: "8px",
         overflow: "hidden",
-        marginBottom: "24px",
       }}
     >
       <MapContainer
@@ -155,7 +160,6 @@ const MajorCityBox = ({ data, units }: MajorCityBoxProps) => {
         width: "100%",
         px: 3,
         py: 2,
-        mb: 3,
       }}
     >
       <Typography variant="h6" gutterBottom>
@@ -206,11 +210,7 @@ const LocationCondition = ({ data, units }: LocationConditionProps) => {
   const temp = units.temperature === "C" ? current?.temp_c : current?.temp_f;
 
   return (
-    <Stack
-      direction={isXMobileScreen ? "column" : "row"}
-      spacing={2}
-      sx={{ mb: 3 }}
-    >
+    <Stack direction={isXMobileScreen ? "column" : "row"} spacing={2}>
       <WeatherItem
         primary={`${temp ?? 0}°${units.temperature}`}
         secondary="Temperature"
@@ -234,7 +234,6 @@ const LocationBox = ({ data }: { data: WeatherResponse }) => {
         width: "fit-content",
         px: 3,
         py: 2,
-        mb: 3,
       }}
     >
       <Typography variant="h6" gutterBottom>

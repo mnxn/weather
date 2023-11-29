@@ -42,7 +42,7 @@ function HomePage({
 
   return (
     <Container sx={{ padding: 0 }}>
-      <Stack gap={2} padding={{ xs: 1, sm: 1, md: 2 }}>
+      <Stack gap={2} padding={{ xs: 1, md: 2 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={4}>
             <CurrentLocation

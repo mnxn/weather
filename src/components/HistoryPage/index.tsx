@@ -75,8 +75,8 @@ const HistoryPage = ({
   }, [weatherLocation.latitude, weatherLocation.longitude]);
 
   return (
-    <Container>
-      <Stack gap={3} padding={2}>
+    <Container sx={{ padding: 0 }}>
+      <Stack gap={2} padding={{ xs: 1, md: 2 }}>
         <BarChartContainer
           title="Highest/Lowest Temperature"
           labels={chartData.monthly.labels}
