@@ -23,17 +23,15 @@ function App() {
     <>
       <AppBar position="sticky" sx={{ bgcolor: "#0f172a" }}>
         <Toolbar>
-          <Box flexGrow={1}>
-            <Button color="inherit" component={Link} to="/">
-              Home
-            </Button>
-            <Button color="inherit" component={Link} to="/maps">
-              Maps
-            </Button>
-            <Button color="inherit" component={Link} to="/history">
-              History
-            </Button>
-          </Box>
+          <Button color="inherit" component={Link} to="/">
+            Home
+          </Button>
+          <Button color="inherit" component={Link} to="/maps">
+            Maps
+          </Button>
+          <Button color="inherit" component={Link} to="/history">
+            History
+          </Button>
           <LocationJumpButton
             searchRef={searchRef}
             locationExpanded={locationExpanded}

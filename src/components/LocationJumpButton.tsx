@@ -24,6 +24,7 @@ export function LocationJumpButton({
         minWidth: 0,
         paddingInline: { xs: 1, sm: 2 },
         paddingBlock: 1,
+        marginLeft: "auto",
         marginRight: 1,
       }}
       onClick={() => {
