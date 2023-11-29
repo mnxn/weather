@@ -7,7 +7,7 @@ import { CombinedData, fetchCombinedData } from "../api/OpenMeteo";
 import CurrentLocation, { LocationFocusProps } from "./CurrentLocation";
 import CurrentWeather from "./CurrentWeather";
 import DailyForecast from "./DailyForecast";
-import HistoryPreview from "./HistoryPreview";
+// import HistoryPreview from "./HistoryPreview";
 import HourlyForecast from "./HourlyForecast";
 import MapPreview from "./MapPreview";
 import { UnitProps } from "./UnitButton";
@@ -110,7 +110,7 @@ function HomePage({
             </Grid>
           ))}
         </Grid>
-        <HistoryPreview />
+        {/* <HistoryPreview /> */}
       </Stack>
     </Container>
   );
