@@ -1,9 +1,10 @@
 
-import { Box, Button } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import tileLayer from "./TileLayer";
 import { Link } from "react-router-dom";
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 
 interface MapPreviewProps {
   center: { lat: number; lng: number };
@@ -14,6 +15,7 @@ const MapPreview = ({ center}: MapPreviewProps) => {
     <Box
       sx={{
         position: "relative",
+        minHeight: "200px",
         height: "100%", 
         width: "100%",
         borderRadius: "8px",
@@ -39,13 +41,15 @@ const MapPreview = ({ center}: MapPreviewProps) => {
           position: "absolute",
           zIndex: 999,
           bottom: "8px",
-          right: "8px",
+          left: "8px",
         }}
       >
         <Link to="/Maps" style={{ textDecoration: "none" }}>
-          <Button variant="contained" color="primary">
-            Go to MapsPage
-          </Button>
+        <IconButton 
+            aria-label="Go to MapsPage"
+            sx={{ bgcolor: "white", color: "black" }}>
+            <OpenInFullIcon />
+          </IconButton>
         </Link>
       </Box>
     </Box>
