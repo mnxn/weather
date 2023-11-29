@@ -46,7 +46,7 @@ function CurrentLocation({
   );
 
   return (
-    <Card>
+    <Card sx={{ height: "100%" }}>
       <CardHeader
         title={getLocationTitle(weatherLocation)}
         subheader={weatherLocation.country}

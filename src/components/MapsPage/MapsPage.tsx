@@ -6,6 +6,7 @@ import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import {
   Box,
   Container,
+  Grid,
   ListItemText,
   Stack,
   Typography,
@@ -22,17 +23,20 @@ import {
   getWeatherByCoordinates,
 } from "../../api/WeatherApi";
 import { useScreenSize } from "../../utils/useScreenSize";
+import CurrentLocation from "../CurrentLocation";
+import { SearchRefProps } from "../LocationJumpButton";
 import { UnitProps } from "../UnitButton";
 import tileLayer from "./TileLayer";
 
 const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
 
 function MapsPage({
+  searchRef,
   units,
   setUnits,
   weatherLocation,
   setWeatherLocation,
-}: UnitProps & WeatherLocationProps) {
+}: SearchRefProps & UnitProps & WeatherLocationProps) {
   const [locationWeatherData, setLocationWeatherData] =
     useState<WeatherResponse>();
 
@@ -65,7 +69,28 @@ function MapsPage({
   return (
     <Container sx={{ padding: 0 }}>
       <Stack gap={2} padding={{ xs: 1, md: 2 }}>
-        {locationWeatherData && <LocationBox data={locationWeatherData} />}
+        <Grid container spacing={2} justifyItems="center">
+          <Grid item xs={12} sm={6} md={8} alignSelf="center">
+            <Typography
+              height="100%"
+              variant="h2"
+              component="h1"
+              textAlign="center"
+            >
+              Interactive Map
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <CurrentLocation
+              collapsible
+              startOpened={false}
+              searchRef={searchRef}
+              weatherLocation={weatherLocation}
+              setWeatherLocation={setWeatherLocation}
+            />
+          </Grid>
+        </Grid>
+
         <MapView
           center={
             new LatLng(weatherLocation.latitude, weatherLocation.longitude)
@@ -219,33 +244,6 @@ const LocationCondition = ({ data, units }: LocationConditionProps) => {
       <WeatherItem primary={`${current?.humidity}`} secondary="Humidity" />
       <WeatherItem primary={`${current?.wind_kph} KM/H`} secondary="Wind" />
     </Stack>
-  );
-};
-
-// Component to display location details for the selected location
-const LocationBox = ({ data }: { data: WeatherResponse }) => {
-  const { location } = data;
-
-  return (
-    <Box
-      sx={{
-        backgroundColor: "white",
-        borderRadius: 2,
-        width: "fit-content",
-        px: 3,
-        py: 2,
-      }}
-    >
-      <Typography variant="h6" gutterBottom>
-        {location?.name}
-      </Typography>
-      <Typography>{location?.localtime}</Typography>
-      <Typography>{location?.country}</Typography>
-      <Typography>{location?.region}</Typography>
-      <Typography>
-        {location?.lat} , {location?.lon}
-      </Typography>
-    </Box>
   );
 };
 

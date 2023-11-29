@@ -59,6 +59,7 @@ function App() {
             path="/maps"
             element={
               <MapsPage
+                searchRef={searchRef}
                 units={units}
                 setUnits={setUnits}
                 weatherLocation={weatherLocation}
@@ -70,6 +71,7 @@ function App() {
             path="/history"
             element={
               <HistoryPage
+                searchRef={searchRef}
                 units={units}
                 setUnits={setUnits}
                 weatherLocation={weatherLocation}
