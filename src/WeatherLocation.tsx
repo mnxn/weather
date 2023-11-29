@@ -44,6 +44,29 @@ export function formatElevation(elevation: number): string {
   return `${elevation.toFixed(1)} m`;
 }
 
+export function getShortLocationTitle({
+  city,
+  state,
+}: WeatherLocation): string {
+  if (city) {
+    return city;
+  } else if (state) {
+    return state;
+  }
+  return "Unknown";
+}
+
+export function getLocationTitle({ city, state }: WeatherLocation): string {
+  if (city && state) {
+    return `${city}, ${state}`;
+  } else if (city) {
+    return city;
+  } else if (state) {
+    return state;
+  }
+  return "Unknown Location";
+}
+
 export function getFullCountryName(
   code: string | undefined,
   fallback?: string,

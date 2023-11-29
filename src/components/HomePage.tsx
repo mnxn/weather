@@ -9,16 +9,18 @@ import CurrentWeather from "./CurrentWeather";
 import DailyForecast from "./DailyForecast";
 import HistoryPreview from "./HistoryPreview";
 import HourlyForecast from "./HourlyForecast";
+import { SearchRefProps } from "./LocationJumpButton";
 import Map from "./Map";
 import { UnitProps } from "./UnitButton";
 
 const FUTURE_FORECAST_DAYS = 6;
 
 function HomePage({
+  searchRef,
   units,
   weatherLocation,
   setWeatherLocation,
-}: UnitProps & WeatherLocationProps) {
+}: SearchRefProps & UnitProps & WeatherLocationProps) {
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
 
   useEffect(() => {
@@ -44,6 +46,7 @@ function HomePage({
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={4}>
             <CurrentLocation
+              searchRef={searchRef}
               weatherLocation={weatherLocation}
               setWeatherLocation={setWeatherLocation}
             />

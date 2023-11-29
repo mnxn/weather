@@ -8,6 +8,7 @@ import {
   getFullCountryName,
 } from "../../WeatherLocation";
 import { CityLocation, fetchCityLocations } from "../../api/OpenMeteo";
+import { SearchRefProps } from "../LocationJumpButton";
 
 function normalizeCities(cities: CityLocation[]): void {
   // Rewrite country field for consistency with weather locations acquired
@@ -30,7 +31,10 @@ function normalizeCities(cities: CityLocation[]): void {
   });
 }
 
-const SearchInput = ({ setWeatherLocation }: WeatherLocationProps) => {
+const SearchInput = ({
+  searchRef,
+  setWeatherLocation,
+}: SearchRefProps & WeatherLocationProps) => {
   const [options, setOptions] = useState<CityLocation[]>([]);
 
   const fetchData = React.useMemo(
@@ -77,6 +81,7 @@ const SearchInput = ({ setWeatherLocation }: WeatherLocationProps) => {
       renderInput={(props) => (
         <TextField
           {...props}
+          inputRef={searchRef}
           label="Search"
           placeholder="City, Country"
           fullWidth

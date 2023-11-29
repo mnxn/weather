@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
 import { AppBar, Button, Toolbar } from "@mui/material";
@@ -7,6 +7,7 @@ import { Box } from "@mui/system";
 import { WeatherLocation, defaultLocation } from "./WeatherLocation";
 import HistoryPage from "./components/HistoryPage";
 import HomePage from "./components/HomePage";
+import { LocationJumpButton } from "./components/LocationJumpButton";
 import MapsPage from "./components/MapsPage/MapsPage";
 import { UnitButton, Units } from "./components/UnitButton";
 
@@ -14,6 +15,8 @@ function App() {
   const [units, setUnits] = useState<Units>({ temperature: "F" });
   const [weatherLocation, setWeatherLocation] =
     useState<WeatherLocation>(defaultLocation);
+
+  const searchRef = useRef<HTMLInputElement | null>(null);
 
   return (
     <>
@@ -30,6 +33,11 @@ function App() {
               History
             </Button>
           </Box>
+          <LocationJumpButton
+            searchRef={searchRef}
+            weatherLocation={weatherLocation}
+            setWeatherLocation={setWeatherLocation}
+          />
           <UnitButton units={units} setUnits={setUnits} />
         </Toolbar>
       </AppBar>
@@ -39,6 +47,7 @@ function App() {
             index
             element={
               <HomePage
+                searchRef={searchRef}
                 units={units}
                 setUnits={setUnits}
                 weatherLocation={weatherLocation}

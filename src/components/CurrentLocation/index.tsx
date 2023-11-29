@@ -12,31 +12,22 @@ import {
 } from "@mui/material";
 
 import {
-  WeatherLocation,
   WeatherLocationProps,
   formatElevation,
   formatLatitude,
   formatLongitude,
+  getLocationTitle,
 } from "../../WeatherLocation";
+import { SearchRefProps } from "../LocationJumpButton";
 import LocationButton from "./LocationButton";
 import { LocationState } from "./LocationState";
 import SearchInput from "./SearchInput";
 
-function getLocationTitle({ city, state }: WeatherLocation): string {
-  if (city && state) {
-    return `${city}, ${state}`;
-  } else if (city) {
-    return city;
-  } else if (state) {
-    return state;
-  }
-  return "Unknown Location";
-}
-
 function CurrentLocation({
+  searchRef,
   weatherLocation,
   setWeatherLocation,
-}: WeatherLocationProps) {
+}: SearchRefProps & WeatherLocationProps) {
   const [locationState, setLocationState] = useState<LocationState>(
     LocationState.Ready,
   );
@@ -50,6 +41,7 @@ function CurrentLocation({
       <CardContent>
         <Stack gap={2}>
           <SearchInput
+            searchRef={searchRef}
             weatherLocation={weatherLocation}
             setWeatherLocation={setWeatherLocation}
           />
