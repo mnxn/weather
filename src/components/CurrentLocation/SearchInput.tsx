@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { MutableRefObject, useState } from "react";
 
 import { Autocomplete, debounce } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -30,7 +30,14 @@ function normalizeCities(cities: CityLocation[]): void {
   });
 }
 
-const SearchInput = ({ setWeatherLocation }: WeatherLocationProps) => {
+export interface SearchRefProps {
+  searchRef: MutableRefObject<HTMLInputElement | null>;
+}
+
+const SearchInput = ({
+  searchRef,
+  setWeatherLocation,
+}: SearchRefProps & WeatherLocationProps) => {
   const [options, setOptions] = useState<CityLocation[]>([]);
 
   const fetchData = React.useMemo(
@@ -77,6 +84,7 @@ const SearchInput = ({ setWeatherLocation }: WeatherLocationProps) => {
       renderInput={(props) => (
         <TextField
           {...props}
+          inputRef={searchRef}
           label="Search"
           placeholder="City, Country"
           fullWidth

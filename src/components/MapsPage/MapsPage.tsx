@@ -3,7 +3,15 @@ import "leaflet/dist/leaflet.css";
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 
-import { Box, ListItemText, Stack, Typography, debounce } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  ListItemText,
+  Stack,
+  Typography,
+  debounce,
+} from "@mui/material";
 
 import {
   WeatherLocationProps,
@@ -15,17 +23,21 @@ import {
   getWeatherByCoordinates,
 } from "../../api/WeatherApi";
 import { useScreenSize } from "../../utils/useScreenSize";
+import CurrentLocation, { LocationFocusProps } from "../CurrentLocation";
 import { UnitProps } from "../UnitButton";
 import tileLayer from "./TileLayer";
 
 const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
 
 function MapsPage({
+  searchRef,
+  locationExpanded,
+  setLocationExpanded,
   units,
   setUnits,
   weatherLocation,
   setWeatherLocation,
-}: UnitProps & WeatherLocationProps) {
+}: LocationFocusProps & UnitProps & WeatherLocationProps) {
   const [locationWeatherData, setLocationWeatherData] =
     useState<WeatherResponse>();
 
@@ -56,30 +68,51 @@ function MapsPage({
   );
 
   return (
-    <Stack
-      sx={{
-        padding: 6,
-      }}
-      direction="column"
-    >
-      {locationWeatherData && <LocationBox data={locationWeatherData} />}
-      <MapView
-        center={new LatLng(weatherLocation.latitude, weatherLocation.longitude)}
-        onMapClicked={(latLng: LatLng) => {
-          void fetchWeatherLocation(latLng);
-        }}
-      />
+    <Container sx={{ padding: 0 }}>
+      <Stack gap={2} padding={{ xs: 1, md: 2 }}>
+        <Grid container spacing={2} justifyItems="center">
+          <Grid item xs={12} sm={6} md={8} alignSelf="center">
+            <Typography
+              height="100%"
+              variant="h2"
+              component="h1"
+              textAlign="center"
+            >
+              Interactive Map
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <CurrentLocation
+              collapsible
+              locationExpanded={locationExpanded}
+              setLocationExpanded={setLocationExpanded}
+              searchRef={searchRef}
+              weatherLocation={weatherLocation}
+              setWeatherLocation={setWeatherLocation}
+            />
+          </Grid>
+        </Grid>
 
-      {locationWeatherData && (
-        <LocationCondition
-          data={locationWeatherData}
-          units={units}
-          setUnits={setUnits}
+        <MapView
+          center={
+            new LatLng(weatherLocation.latitude, weatherLocation.longitude)
+          }
+          onMapClicked={(latLng: LatLng) => {
+            void fetchWeatherLocation(latLng);
+          }}
         />
-      )}
 
-      <MajorCitiesConditions units={units} setUnits={setUnits} />
-    </Stack>
+        {locationWeatherData && (
+          <LocationCondition
+            data={locationWeatherData}
+            units={units}
+            setUnits={setUnits}
+          />
+        )}
+
+        <MajorCitiesConditions units={units} setUnits={setUnits} />
+      </Stack>
+    </Container>
   );
 }
 
@@ -98,7 +131,6 @@ const MapView = ({ center, onMapClicked }: MapViewProps) => {
         border: "1px solid #e0e0e0",
         borderRadius: "8px",
         overflow: "hidden",
-        marginBottom: "24px",
       }}
     >
       <MapContainer
@@ -113,18 +145,19 @@ const MapView = ({ center, onMapClicked }: MapViewProps) => {
         scrollWheelZoom={false}
       >
         <TileLayer {...tileLayer} />
-        <InteractiveMap onMapClicked={onMapClicked} />
+        <InteractiveMap center={center} onMapClicked={onMapClicked} />
       </MapContainer>
     </Box>
   );
 };
 
-const InteractiveMap = ({
-  onMapClicked,
-}: {
-  onMapClicked: (latlng: LatLng) => void;
-}) => {
+const InteractiveMap = ({ center, onMapClicked }: MapViewProps) => {
   const map = useMap();
+
+  useEffect(() => {
+    // Move map view when the current location is changed.
+    map.setView(center);
+  }, [map, center]);
 
   useEffect(() => {
     // Listen for map clicks and invoke onMapClicked callback
@@ -155,7 +188,6 @@ const MajorCityBox = ({ data, units }: MajorCityBoxProps) => {
         width: "100%",
         px: 3,
         py: 2,
-        mb: 3,
       }}
     >
       <Typography variant="h6" gutterBottom>
@@ -206,11 +238,7 @@ const LocationCondition = ({ data, units }: LocationConditionProps) => {
   const temp = units.temperature === "C" ? current?.temp_c : current?.temp_f;
 
   return (
-    <Stack
-      direction={isXMobileScreen ? "column" : "row"}
-      spacing={2}
-      sx={{ mb: 3 }}
-    >
+    <Stack direction={isXMobileScreen ? "column" : "row"} spacing={2}>
       <WeatherItem
         primary={`${temp ?? 0}°${units.temperature}`}
         secondary="Temperature"
@@ -219,34 +247,6 @@ const LocationCondition = ({ data, units }: LocationConditionProps) => {
       <WeatherItem primary={`${current?.humidity}`} secondary="Humidity" />
       <WeatherItem primary={`${current?.wind_kph} KM/H`} secondary="Wind" />
     </Stack>
-  );
-};
-
-// Component to display location details for the selected location
-const LocationBox = ({ data }: { data: WeatherResponse }) => {
-  const { location } = data;
-
-  return (
-    <Box
-      sx={{
-        backgroundColor: "white",
-        borderRadius: 2,
-        width: "fit-content",
-        px: 3,
-        py: 2,
-        mb: 3,
-      }}
-    >
-      <Typography variant="h6" gutterBottom>
-        {location?.name}
-      </Typography>
-      <Typography>{location?.localtime}</Typography>
-      <Typography>{location?.country}</Typography>
-      <Typography>{location?.region}</Typography>
-      <Typography>
-        {location?.lat} , {location?.lon}
-      </Typography>
-    </Box>
   );
 };
 

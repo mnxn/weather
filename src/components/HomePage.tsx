@@ -4,7 +4,7 @@ import { Container, Grid, Skeleton, Stack } from "@mui/material";
 
 import { WeatherLocationProps } from "../WeatherLocation";
 import { CombinedData, fetchCombinedData } from "../api/OpenMeteo";
-import CurrentLocation from "./CurrentLocation";
+import CurrentLocation, { LocationFocusProps } from "./CurrentLocation";
 import CurrentWeather from "./CurrentWeather";
 import DailyForecast from "./DailyForecast";
 import HistoryPreview from "./HistoryPreview";
@@ -15,10 +15,13 @@ import MapPreview from "./MapPreview";
 const FUTURE_FORECAST_DAYS = 6;
 
 function HomePage({
+  searchRef,
+  locationExpanded,
+  setLocationExpanded,
   units,
   weatherLocation,
   setWeatherLocation,
-}: UnitProps & WeatherLocationProps) {
+}: LocationFocusProps & UnitProps & WeatherLocationProps) {
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
 
   useEffect(() => {
@@ -40,10 +43,13 @@ function HomePage({
 
   return (
     <Container sx={{ padding: 0 }}>
-      <Stack gap={2} padding={{ xs: 1, sm: 1, md: 2 }}>
+      <Stack gap={2} padding={{ xs: 1, md: 2 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={4}>
             <CurrentLocation
+              searchRef={searchRef}
+              locationExpanded={locationExpanded}
+              setLocationExpanded={setLocationExpanded}
               weatherLocation={weatherLocation}
               setWeatherLocation={setWeatherLocation}
             />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Container, Stack } from "@mui/material";
+import { Container, Grid, Stack, Typography } from "@mui/material";
 
 import { WeatherLocationProps } from "../../WeatherLocation";
 import {
@@ -8,6 +8,7 @@ import {
   fetchHistoricalWeatherData,
   fetchSunsetData,
 } from "../../api/OpenMeteo";
+import CurrentLocation, { LocationFocusProps } from "../CurrentLocation";
 import { UnitProps } from "../UnitButton";
 import { BarChartContainer } from "./BarChart";
 import { FormattedData, formatChartData } from "./CalcHistory";
@@ -23,9 +24,13 @@ function everyNth<T>(array: T[], n: number): T[] {
 const DAYS = 7;
 
 const HistoryPage = ({
+  searchRef,
+  locationExpanded,
+  setLocationExpanded,
   units,
   weatherLocation,
-}: UnitProps & WeatherLocationProps) => {
+  setWeatherLocation,
+}: LocationFocusProps & UnitProps & WeatherLocationProps) => {
   const [chartData, setChartData] = useState<FormattedData>({
     monthly: {
       labels: [],
@@ -75,8 +80,31 @@ const HistoryPage = ({
   }, [weatherLocation.latitude, weatherLocation.longitude]);
 
   return (
-    <Container>
-      <Stack gap={3} padding={2}>
+    <Container sx={{ padding: 0 }}>
+      <Stack gap={2} padding={{ xs: 1, md: 2 }}>
+        <Grid container spacing={2} justifyItems="center">
+          <Grid item xs={12} sm={6} md={8} alignSelf="center">
+            <Typography
+              height="100%"
+              variant="h2"
+              component="h1"
+              textAlign="center"
+            >
+              Historical Data
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <CurrentLocation
+              collapsible
+              locationExpanded={locationExpanded}
+              setLocationExpanded={setLocationExpanded}
+              searchRef={searchRef}
+              weatherLocation={weatherLocation}
+              setWeatherLocation={setWeatherLocation}
+            />
+          </Grid>
+        </Grid>
+
         <BarChartContainer
           title="Highest/Lowest Temperature"
           labels={chartData.monthly.labels}
