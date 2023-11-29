@@ -1,4 +1,4 @@
-import { useTheme, useMediaQuery } from "@mui/material";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 interface ScreenWidth {
   isMobileScreen: boolean;
@@ -14,7 +14,7 @@ export function useScreenSize(): ScreenWidth {
   const isMobileScreen: boolean = useMediaQuery(theme.breakpoints.down("md"));
   const isXMobileScreen: boolean = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet: boolean = useMediaQuery(
-    theme.breakpoints.between("sm", "md")
+    theme.breakpoints.between("sm", "md"),
   );
   const isDesktop: boolean = useMediaQuery(theme.breakpoints.up("lg"));
 

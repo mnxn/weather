@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
+
+import { Container, Stack } from "@mui/material";
+
+import { WeatherLocationProps } from "../../WeatherLocation";
 import {
   SunsetData,
   fetchHistoricalWeatherData,
   fetchSunsetData,
 } from "../../api/OpenMeteo";
+import { BarChartContainer } from "./BarChart";
 import { FormattedData, formatChartData } from "./CalcHistory";
 import { PieChartContainer } from "./PieChart";
-import { BarChartContainer } from "./BarChart";
 import SunsetHistory from "./SunsetHistory";
-import { Container, Stack } from "@mui/material";
-import { WeatherLocationProps } from "../../WeatherLocation";
 
 // Generic function to return every Nth element of an array.
 // Can be used to shrink a years worth of daily data to values every N days.
@@ -17,7 +19,7 @@ function everyNth<T>(array: T[], n: number): T[] {
   return array.filter((_, index) => index % n == 0);
 }
 
-const DAYS: number = 7;
+const DAYS = 7;
 
 const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
   const [chartData, setChartData] = useState<FormattedData>({
@@ -33,9 +35,11 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
   });
 
   const [sunsetData, setSunsetData] = useState<SunsetData>({
-    time: [],
-    sunrise: [],
-    sunset: [],
+    daily: {
+      time: [],
+      sunrise: [],
+      sunset: [],
+    },
   });
 
   useEffect(() => {
@@ -43,13 +47,13 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
       const weatherData = await fetchHistoricalWeatherData(
         weatherLocation.latitude,
         weatherLocation.longitude,
-        2023
+        2023,
       );
       const formattedData = formatChartData(weatherData);
       setChartData(formattedData);
     };
 
-    fetchData();
+    void fetchData();
   }, [weatherLocation]);
 
   useEffect(() => {
@@ -57,12 +61,12 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
       const data = await fetchSunsetData(
         weatherLocation.latitude,
         weatherLocation.longitude,
-        2022
+        2022,
       );
       setSunsetData(data);
     };
 
-    fetchData();
+    void fetchData();
   }, [weatherLocation]);
 
   return (
@@ -97,9 +101,9 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
 
         <SunsetHistory
           timezone={weatherLocation.timeZone}
-          times={everyNth(sunsetData.time, DAYS)}
-          sunrise={everyNth(sunsetData.sunrise, DAYS)}
-          sunset={everyNth(sunsetData.sunset, DAYS)}
+          times={everyNth(sunsetData.daily.time, DAYS)}
+          sunrise={everyNth(sunsetData.daily.sunrise, DAYS)}
+          sunset={everyNth(sunsetData.daily.sunset, DAYS)}
         />
       </Stack>
     </Container>

@@ -1,11 +1,12 @@
+import React from "react";
+
 import {
   LocationDisabled,
   LocationSearching,
   MyLocation,
 } from "@mui/icons-material";
-import { Alert, Button, Popper } from "@mui/material";
-import React from "react";
-import { debounce } from "chart.js/helpers";
+import { Alert, Button, Popper, debounce } from "@mui/material";
+
 import {
   WeatherLocationProps,
   reverseWeatherLocation,
@@ -62,7 +63,7 @@ export default function LocationButton({
 }: LocationButtonProps) {
   const [errorMessage, setErrorMessage] = React.useState<string>("");
   const [popperAnchor, setPopperAnchor] = React.useState<null | HTMLElement>(
-    null
+    null,
   );
 
   const fetchWeatherLocation = React.useMemo(
@@ -73,7 +74,7 @@ export default function LocationButton({
           const { coords } = await getDevicePosition();
           const reversedLocation = await reverseWeatherLocation(
             coords.latitude,
-            coords.longitude
+            coords.longitude,
           );
           setWeatherLocation(reversedLocation);
           setLocationState(LocationState.Ready);
@@ -83,7 +84,7 @@ export default function LocationButton({
           setLocationState(LocationState.Error);
         }
       }, 500),
-    [setLocationState, setWeatherLocation]
+    [setLocationState, setWeatherLocation],
   );
 
   return (
@@ -92,7 +93,7 @@ export default function LocationButton({
         startIcon={<LocationIcon state={locationState} />}
         onClick={(event) => {
           if (popperAnchor === null) setPopperAnchor(event.currentTarget);
-          fetchWeatherLocation();
+          void fetchWeatherLocation();
         }}
       >
         Your Location
@@ -104,7 +105,9 @@ export default function LocationButton({
       >
         <Alert
           severity="error"
-          onClose={() => setLocationState(LocationState.Ready)}
+          onClose={() => {
+            setLocationState(LocationState.Ready);
+          }}
         >
           {errorMessage}
         </Alert>

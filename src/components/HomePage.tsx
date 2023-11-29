@@ -1,93 +1,86 @@
+import { useEffect, useState } from "react";
+
+import { Container, Grid, Skeleton, Stack } from "@mui/material";
+
+import { WeatherLocationProps } from "../WeatherLocation";
+import { CombinedData, fetchCombinedData } from "../api/OpenMeteo";
 import CurrentLocation from "./CurrentLocation";
 import CurrentWeather from "./CurrentWeather";
-import Map from "./Map";
-import HourlyForecast from "./HourlyForecast";
 import DailyForecast from "./DailyForecast";
 import HistoryPreview from "./HistoryPreview";
+import HourlyForecast from "./HourlyForecast";
+import Map from "./Map";
 
-import { Box, Container, Stack } from "@mui/material";
-import { WmoCode } from "./WmoCode";
-import { WeatherLocationProps } from "../WeatherLocation";
+const FUTURE_FORECAST_DAYS = 6;
 
 function HomePage({
   weatherLocation,
   setWeatherLocation,
 }: WeatherLocationProps) {
+  const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchCombinedData(
+        weatherLocation.latitude,
+        weatherLocation.longitude,
+        // Open-Meteo includes the current day in the forecast.
+        FUTURE_FORECAST_DAYS + 1,
+      );
+
+      setCombinedData(data);
+    };
+
+    void fetchData();
+  }, [weatherLocation]);
+
   return (
-    <Container>
-      <Stack gap={2} padding={2}>
-        <Stack direction="row" gap={2}>
-          <Box flex={1}>
+    <Container sx={{ padding: 0 }}>
+      <Stack gap={2} padding={{ xs: 1, sm: 1, md: 2 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} md={4}>
             <CurrentLocation
               weatherLocation={weatherLocation}
               setWeatherLocation={setWeatherLocation}
             />
-          </Box>
-          <Box flex={1}>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
             <CurrentWeather />
-          </Box>
-          <Box flex={1}>
+          </Grid>
+          <Grid item xs={12} md={4}>
             <Map />
-          </Box>
-        </Stack>
+          </Grid>
+        </Grid>
 
-        <HourlyForecast
-          times={["1", "2", "3", "4", "5", "6", "7"]}
-          temperature={[20, 10, 30, 15, 25, 35, 30]}
-          humidity={[90, 85, 60, 30, 40, 45, 70]}
-          precipitation={[5, 20, 75, 90, 30, 60, 40]}
-        />
-        <Stack direction="row" gap={1}>
-          <DailyForecast
-            date={11}
-            day="Sunday"
-            weather={WmoCode.ClearSky}
-            high={100}
-            low={50}
+        {combinedData === null ? (
+          <Skeleton variant="rectangular" height={380} />
+        ) : (
+          <HourlyForecast
+            times={combinedData.hourly.time}
+            temperature={combinedData.hourly.temperature_2m}
+            humidity={combinedData.hourly.relative_humidity_2m}
+            precipitation={combinedData.hourly.precipitation_probability}
           />
-          <DailyForecast
-            date={12}
-            day="Monday"
-            weather={WmoCode.RainHeavy}
-            high={100}
-            low={50}
-          />
-          <DailyForecast
-            date={13}
-            day="Tuesday"
-            weather={WmoCode.SnowHeavy}
-            high={100}
-            low={50}
-          />
-          <DailyForecast
-            date={14}
-            day="Wednesday"
-            weather={WmoCode.Fog}
-            high={100}
-            low={50}
-          />
-          <DailyForecast
-            date={15}
-            day="Thursday"
-            weather={WmoCode.DrizzleDense}
-            high={100}
-            low={50}
-          />
-          <DailyForecast
-            date={16}
-            day="Friday"
-            weather={WmoCode.ThunderstormHailHeavy}
-            high={100}
-            low={50}
-          />
-          <DailyForecast
-            date={17}
-            day="Saturday"
-            weather={WmoCode.FreezingRainHeavy}
-            high={100}
-            low={50}
-          />
-        </Stack>
+        )}
+
+        <Grid container spacing={1}>
+          {Array.from({ length: FUTURE_FORECAST_DAYS }, (_, index) => (
+            <Grid item key={index} xs={6} sm={4} md={2}>
+              {combinedData === null ? (
+                <Skeleton variant="rectangular" height={225} />
+              ) : (
+                // Skip current day since the current weather component
+                // already shows the same information.
+                <DailyForecast
+                  date={combinedData.daily.time[index + 1]}
+                  weather={combinedData.daily.weather_code[index + 1]}
+                  high={combinedData.daily.temperature_2m_max[index + 1]}
+                  low={combinedData.daily.temperature_2m_min[index + 1]}
+                />
+              )}
+            </Grid>
+          ))}
+        </Grid>
         <HistoryPreview />
       </Stack>
     </Container>

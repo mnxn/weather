@@ -1,18 +1,22 @@
-import { Box, Chip, Paper, Stack, alpha } from "@mui/material";
-import { blue, common, red } from "@mui/material/colors";
-import { Line } from "react-chartjs-2";
 import {
+  CategoryScale,
+  ChartData,
   Chart as ChartJS,
+  ChartOptions,
+  Filler,
   LineController,
   LineElement,
-  PointElement,
-  CategoryScale,
   LinearScale,
-  Filler,
+  PointElement,
   Tooltip,
+  TooltipItem,
 } from "chart.js";
-import { ShowChart } from "@mui/icons-material";
 import { useState } from "react";
+import { Line } from "react-chartjs-2";
+
+import { ShowChart } from "@mui/icons-material";
+import { Box, Chip, Paper, Stack, alpha } from "@mui/material";
+import { blue, common, red } from "@mui/material/colors";
 
 ChartJS.register(
   LineController,
@@ -21,22 +25,59 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   Filler,
-  Tooltip
+  Tooltip,
 );
 
-const chartOptions = {
+const chartOptions: ChartOptions<"line"> = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: {
       display: false,
     },
+    tooltip: {
+      callbacks: {
+        // Show day of the month in the tooltip title.
+        // For example: Monday, January 1
+        title(items: TooltipItem<"line">[]) {
+          if (items.length === 0) return;
+
+          const date = new Date(items[0].label);
+          return date.toLocaleString(undefined, {
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+          });
+        },
+      },
+    },
   },
   scales: {
+    x: {
+      ticks: {
+        // Only show one label per day.
+        callback(value: number | string): string | undefined {
+          if (typeof value === "string") return value;
+
+          const date = new Date(this.getLabelForValue(value));
+          if (date.getHours() === 0) {
+            return date.toLocaleString(undefined, {
+              month: "short",
+              day: "numeric",
+            });
+          }
+        },
+      },
+    },
     temperature: {
       type: "linear" as const,
       display: true,
       position: "left" as const,
+      ticks: {
+        callback(value: string | number): string {
+          return `${value}°`;
+        },
+      },
     },
     percent: {
       type: "linear" as const,
@@ -48,7 +89,7 @@ const chartOptions = {
       min: 0,
       max: 100,
       ticks: {
-        callback(value: unknown): string {
+        callback(value: string | number): string {
           return `${value}%`;
         },
       },
@@ -56,12 +97,12 @@ const chartOptions = {
   },
 };
 
-export type HourlyForecast = {
+export interface HourlyForecastProps {
   times: string[];
   temperature: number[];
   humidity: number[];
   precipitation: number[];
-};
+}
 
 interface DataSelectorChipProps {
   label: string;
@@ -89,12 +130,12 @@ function DataSelectorChip(props: DataSelectorChipProps) {
   );
 }
 
-function HourlyForecast(props: HourlyForecast) {
+function HourlyForecast(props: HourlyForecastProps) {
   const [temperatureEnabled, setTemperatureEnabled] = useState(true);
   const [humidityEnabled, setHumidityEnabled] = useState(true);
   const [precipitationEnabled, setPrecipitationEnabled] = useState(true);
 
-  const data = {
+  const data: ChartData<"line"> = {
     labels: props.times,
     datasets: [
       {
@@ -103,6 +144,7 @@ function HourlyForecast(props: HourlyForecast) {
         borderColor: red[500],
         backgroundColor: red[500],
         yAxisID: "temperature",
+        pointStyle: false,
         hidden: !temperatureEnabled,
       },
       {
@@ -111,6 +153,7 @@ function HourlyForecast(props: HourlyForecast) {
         borderColor: common.black,
         backgroundColor: common.black,
         yAxisID: "percent",
+        pointStyle: false,
         hidden: !humidityEnabled,
       },
       {
@@ -119,6 +162,7 @@ function HourlyForecast(props: HourlyForecast) {
         borderColor: blue[500],
         backgroundColor: alpha(blue[500], 0.35),
         yAxisID: "percent",
+        pointStyle: false,
         hidden: !precipitationEnabled,
         fill: true,
       },
@@ -127,8 +171,8 @@ function HourlyForecast(props: HourlyForecast) {
 
   return (
     <Paper elevation={1}>
-      <Box padding={2}>
-        <Box height={300}>
+      <Box padding={{ xs: 1, sm: 2 }}>
+        <Box height={{ xs: 200, sm: 250, md: 300 }}>
           <Line
             data={data}
             options={chartOptions}
@@ -138,9 +182,10 @@ function HourlyForecast(props: HourlyForecast) {
 
         <Stack
           direction="row"
+          flexWrap="wrap"
           width="100%"
           justifyContent="center"
-          spacing={2}
+          gap={{ xs: 1, sm: 2 }}
           marginBlock={1}
         >
           <DataSelectorChip
