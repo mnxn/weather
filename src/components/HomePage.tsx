@@ -9,8 +9,8 @@ import CurrentWeather from "./CurrentWeather";
 import DailyForecast from "./DailyForecast";
 import HistoryPreview from "./HistoryPreview";
 import HourlyForecast from "./HourlyForecast";
-import Map from "./Map";
 import { UnitProps } from "./UnitButton";
+import MapPreview from "./MapPreview"; 
 
 const FUTURE_FORECAST_DAYS = 6;
 
@@ -60,7 +60,10 @@ function HomePage({
         </Grid>
 
           <Grid item xs={12} md={4}>
-            <Map />
+            <MapPreview center={{
+                lat: weatherLocation.latitude,
+                lng: weatherLocation.longitude,
+              }} />
           </Grid>
         </Grid>
 
