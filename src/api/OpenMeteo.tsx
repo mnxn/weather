@@ -114,11 +114,12 @@ export async function fetchElevation(
 }
 
 export async function fetchWeatherData(
+  temperatureUnit: "celsius" | "fahrenheit",
   latitude: number,
   longitude: number,
 ): Promise<WeatherData> {
   // Construct the API URL based on the provided latitude and longitude
-  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
+  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current_weather=true&temperature_unit=${temperatureUnit}`;
 
   // Make an asynchronous HTTP GET request to the API
   const response = await fetch(url);
@@ -156,12 +157,13 @@ export interface CombinedData {
 }
 
 export async function fetchCombinedData(
+  temperatureUnit: "celsius" | "fahrenheit",
   latitude: number,
   longitude: number,
   days: number,
 ): Promise<CombinedData> {
   // Construct the API URL based on the provided latitude and longitude
-  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=${days}`;
+  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=${days}&temperature_unit=${temperatureUnit}`;
 
   // Make an asynchronous HTTP GET request to the API
   const response = await fetch(url);
@@ -174,6 +176,7 @@ export async function fetchCombinedData(
 }
 
 export async function fetchHistoricalWeatherData(
+  temperatureUnit: "celsius" | "fahrenheit",
   latitude: number,
   longitude: number,
   year: number,
@@ -181,7 +184,7 @@ export async function fetchHistoricalWeatherData(
   // Construct the API URL based on the provided latitude and longitude
   const url = `${API_ARCHIVE_URL}?latitude=${latitude}&longitude=${longitude}&start_date=${
     year - 1
-  }-11-01&end_date=${year}-10-31&daily=weather_code,temperature_2m_max,temperature_2m_min`;
+  }-11-01&end_date=${year}-10-31&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=${temperatureUnit}`;
 
   // Make an asynchronous HTTP GET request to the API
   // Force cache because data from the previous year will not change.
