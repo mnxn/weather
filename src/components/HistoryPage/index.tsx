@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Container, Stack } from "@mui/material";
 
+import { UnitProps } from "../../Units";
 import { WeatherLocationProps } from "../../WeatherLocation";
 import {
   SunsetData,
@@ -21,7 +22,10 @@ function everyNth<T>(array: T[], n: number): T[] {
 
 const DAYS = 7;
 
-const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
+const HistoryPage = ({
+  units,
+  weatherLocation,
+}: UnitProps & WeatherLocationProps) => {
   const [chartData, setChartData] = useState<FormattedData>({
     monthly: {
       labels: [],
@@ -45,6 +49,7 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
   useEffect(() => {
     const fetchData = async () => {
       const weatherData = await fetchHistoricalWeatherData(
+        units.temperature === "C" ? "celsius" : "fahrenheit",
         weatherLocation.latitude,
         weatherLocation.longitude,
         2023,
@@ -54,7 +59,7 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
     };
 
     void fetchData();
-  }, [weatherLocation]);
+  }, [weatherLocation.latitude, weatherLocation.longitude, units.temperature]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,7 +72,7 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
     };
 
     void fetchData();
-  }, [weatherLocation]);
+  }, [weatherLocation.latitude, weatherLocation.longitude]);
 
   return (
     <Container>
@@ -77,14 +82,14 @@ const HistoryPage = ({ weatherLocation }: WeatherLocationProps) => {
           labels={chartData.monthly.labels}
           datasets={[
             {
-              label: `Highest Temperature (°C)`,
+              label: `Highest Temperature (°${units.temperature})`,
               data: chartData.monthly.highestTemps,
               backgroundColor: "rgba(255, 99, 132, 0.5)",
               borderColor: "rgba(255, 99, 132, 1)",
               borderWidth: 1,
             },
             {
-              label: `Lowest Temperature (°C)`,
+              label: `Lowest Temperature (°${units.temperature})`,
               data: chartData.monthly.lowestTemps,
               backgroundColor: "rgba(54, 162, 235, 0.5)",
               borderColor: "rgba(54, 162, 235, 1)",

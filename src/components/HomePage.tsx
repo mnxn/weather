@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Container, Grid, Skeleton, Stack } from "@mui/material";
 
+import { UnitProps } from "../Units";
 import { WeatherLocationProps } from "../WeatherLocation";
 import { CombinedData, fetchCombinedData } from "../api/OpenMeteo";
 import CurrentLocation from "./CurrentLocation";
@@ -14,14 +15,16 @@ import Map from "./Map";
 const FUTURE_FORECAST_DAYS = 6;
 
 function HomePage({
+  units,
   weatherLocation,
   setWeatherLocation,
-}: WeatherLocationProps) {
+}: UnitProps & WeatherLocationProps) {
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchCombinedData(
+        units.temperature === "C" ? "celsius" : "fahrenheit",
         weatherLocation.latitude,
         weatherLocation.longitude,
         // Open-Meteo includes the current day in the forecast.
@@ -32,7 +35,7 @@ function HomePage({
     };
 
     void fetchData();
-  }, [weatherLocation]);
+  }, [weatherLocation.latitude, weatherLocation.longitude, units.temperature]);
 
   return (
     <Container sx={{ padding: 0 }}>

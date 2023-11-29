@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, useMap } from "react-leaflet";
 
 import { Box, ListItemText, Stack, Typography, debounce } from "@mui/material";
 
+import { UnitProps } from "../../Units";
 import {
   WeatherLocationProps,
   reverseWeatherLocation,
@@ -20,9 +21,11 @@ import tileLayer from "./TileLayer";
 const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
 
 function MapsPage({
+  units,
+  setUnits,
   weatherLocation,
   setWeatherLocation,
-}: WeatherLocationProps) {
+}: UnitProps & WeatherLocationProps) {
   const [locationWeatherData, setLocationWeatherData] =
     useState<WeatherResponse>();
 
@@ -67,9 +70,15 @@ function MapsPage({
         }}
       />
 
-      {locationWeatherData && <LocationCondition data={locationWeatherData} />}
+      {locationWeatherData && (
+        <LocationCondition
+          data={locationWeatherData}
+          units={units}
+          setUnits={setUnits}
+        />
+      )}
 
-      <MajorCitiesConditions />
+      <MajorCitiesConditions units={units} setUnits={setUnits} />
     </Stack>
   );
 }
@@ -127,8 +136,12 @@ const InteractiveMap = ({
   return null;
 };
 
+interface MajorCityBoxProps extends UnitProps {
+  data?: WeatherResponse;
+}
+
 // Component to display weather information for a major city
-const MajorCityBox = ({ data }: { data?: WeatherResponse }) => {
+const MajorCityBox = ({ data, units }: MajorCityBoxProps) => {
   if (!data) {
     return <p>No data available</p>;
   }
@@ -155,7 +168,8 @@ const MajorCityBox = ({ data }: { data?: WeatherResponse }) => {
       />
       <Typography>{current?.condition?.text}</Typography>
       <Typography>
-        {current?.temp_c}°C ({current?.temp_f}°F)
+        {units.temperature === "C" ? current?.temp_c : current?.temp_f}
+        &deg;{units.temperature}
       </Typography>
     </Box>
   );
@@ -180,10 +194,16 @@ const WeatherItem: React.FC<WeatherItemProps> = ({ primary, secondary }) => (
   />
 );
 
+interface LocationConditionProps extends UnitProps {
+  data: WeatherResponse;
+}
+
 // Component to display weather conditions for the selected location
-const LocationCondition = ({ data }: { data: WeatherResponse }) => {
+const LocationCondition = ({ data, units }: LocationConditionProps) => {
   const { current } = data;
   const { isXMobileScreen } = useScreenSize();
+
+  const temp = units.temperature === "C" ? current?.temp_c : current?.temp_f;
 
   return (
     <Stack
@@ -192,7 +212,7 @@ const LocationCondition = ({ data }: { data: WeatherResponse }) => {
       sx={{ mb: 3 }}
     >
       <WeatherItem
-        primary={`${current?.temp_c ?? 0}°C`}
+        primary={`${temp ?? 0}°${units.temperature}`}
         secondary="Temperature"
       />
       <WeatherItem primary={`${current?.cloud}`} secondary="Clouds" />
@@ -231,7 +251,7 @@ const LocationBox = ({ data }: { data: WeatherResponse }) => {
 };
 
 // Component to display weather conditions for major cities
-const MajorCitiesConditions = () => {
+const MajorCitiesConditions = ({ units, setUnits }: UnitProps) => {
   const { isXMobileScreen } = useScreenSize();
 
   // State to store weather data for major cities
@@ -262,7 +282,13 @@ const MajorCitiesConditions = () => {
     >
       {cityNames.map((city) => (
         <Box key={city} sx={{ width: "100%" }}>
-          {weatherData[city] && <MajorCityBox data={weatherData[city]} />}
+          {weatherData[city] && (
+            <MajorCityBox
+              data={weatherData[city]}
+              units={units}
+              setUnits={setUnits}
+            />
+          )}
         </Box>
       ))}
     </Stack>
