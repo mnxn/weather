@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
-import { AppBar, Button, Toolbar } from "@mui/material";
+import { AppBar, Button, Container, Toolbar } from "@mui/material";
 
 import { WeatherLocation, defaultLocation } from "./WeatherLocation";
 import HistoryPage from "./components/HistoryPage";
@@ -21,25 +21,27 @@ function App() {
   return (
     <>
       <AppBar position="sticky" sx={{ bgcolor: "#0f172a" }}>
-        <Toolbar>
-          <Button color="inherit" component={Link} to="/">
-            Home
-          </Button>
-          <Button color="inherit" component={Link} to="/maps">
-            Maps
-          </Button>
-          <Button color="inherit" component={Link} to="/history">
-            History
-          </Button>
-          <LocationJumpButton
-            searchRef={searchRef}
-            locationExpanded={locationExpanded}
-            setLocationExpanded={setLocationExpanded}
-            weatherLocation={weatherLocation}
-            setWeatherLocation={setWeatherLocation}
-          />
-          <UnitButton units={units} setUnits={setUnits} />
-        </Toolbar>
+        <Container sx={{ padding: 0 }}>
+          <Toolbar>
+            <Button color="inherit" component={Link} to="/">
+              Home
+            </Button>
+            <Button color="inherit" component={Link} to="/maps">
+              Maps
+            </Button>
+            <Button color="inherit" component={Link} to="/history">
+              History
+            </Button>
+            <LocationJumpButton
+              searchRef={searchRef}
+              locationExpanded={locationExpanded}
+              setLocationExpanded={setLocationExpanded}
+              weatherLocation={weatherLocation}
+              setWeatherLocation={setWeatherLocation}
+            />
+            <UnitButton units={units} setUnits={setUnits} />
+          </Toolbar>
+        </Container>
       </AppBar>
       <main>
         <Routes>
