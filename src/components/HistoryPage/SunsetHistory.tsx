@@ -1,24 +1,25 @@
-import { Box, Paper, Typography } from "@mui/material";
-import { blue, blueGrey } from "@mui/material/colors";
-import { Bar } from "react-chartjs-2";
 import {
+  BarElement,
+  CategoryScale,
+  ChartData,
   Chart as ChartJS,
   ChartOptions,
-  ChartData,
-  CategoryScale,
   LinearScale,
-  BarElement,
   Tooltip,
   TooltipItem,
   TooltipLabelStyle,
 } from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+import { Box, Paper, Typography } from "@mui/material";
+import { blue, blueGrey } from "@mui/material/colors";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 interface TimePoint {
   x: string;
   y: number;
-  date: Date;
+  date?: Date;
 }
 
 const nightColor = blueGrey[900];
@@ -45,6 +46,8 @@ const chartOptions: ChartOptions<"bar"> = {
         // read the original date value to display the local time of day
         label(item: TooltipItem<"bar">) {
           const point = item.raw as TimePoint;
+          if (point.date === undefined) return;
+
           const formattedTime = point.date.toLocaleString(undefined, {
             hour: "numeric",
             minute: "numeric",
@@ -55,9 +58,11 @@ const chartOptions: ChartOptions<"bar"> = {
 
         // only show month and day for the tooltip header
         title(items: TooltipItem<"bar">[]) {
-          if (items.length === 0) return undefined;
+          if (items.length === 0) return;
 
           const point = items[0].raw as TimePoint;
+          if (point.date === undefined) return;
+
           return point.date.toLocaleString(undefined, {
             month: "long",
             day: "numeric",
@@ -90,7 +95,7 @@ const chartOptions: ChartOptions<"bar"> = {
           if (typeof value === "string") return value;
 
           return new Date(
-            `${this.getLabelForValue(value)}T00:00`
+            `${this.getLabelForValue(value)}T00:00`,
           ).toLocaleString(undefined, {
             month: "short",
             day: "numeric",
@@ -116,17 +121,17 @@ const chartOptions: ChartOptions<"bar"> = {
   },
 };
 
-export type SunsetHistoryProps = {
+export interface SunsetHistoryProps {
   timezone: string;
   times: string[];
   sunrise: string[];
   sunset: string[];
-};
+}
 
 function getTimePoints(
   timeZone: string,
   labels: string[],
-  data: string[]
+  data: string[],
 ): TimePoint[] {
   return data.map((time, index) => {
     // Use the "Z" suffix for original GMT timezone and convert to local date
@@ -166,7 +171,9 @@ function SunsetHistory(props: SunsetHistoryProps) {
       },
       {
         label: "Midnight",
-        data: Array(props.times.length).fill(24), // 24 hours to fill the entire background
+        data: props.times.map((x) => {
+          return { x, y: 24 }; // 24 hours to fill the entire background
+        }),
         backgroundColor: nightColor,
         categoryPercentage: 1,
         barPercentage: 1,

@@ -11,6 +11,7 @@ import { WmoCode } from "../components/WmoCode";
 const API_BASE_URL = "https://api.open-meteo.com/v1/forecast";
 const API_ARCHIVE_URL = "https://archive-api.open-meteo.com/v1/archive";
 const API_GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search";
+const API_ELEVATION_URL = "https://api.open-meteo.com/v1/elevation";
 
 export interface DailyData {
   time: string[];
@@ -94,12 +95,31 @@ export async function fetchTimeZone(
   }
 }
 
+export async function fetchElevation(
+  latitude: number,
+  longitude: number,
+): Promise<number> {
+  // Construct the API URL based on the provided latitude and longitude
+  const url = `${API_ELEVATION_URL}?latitude=${latitude}&longitude=${longitude}`;
+
+  // Make an asynchronous HTTP GET request to the API
+  const response = await fetch(url);
+
+  if (response.ok) {
+    const data = (await response.json()) as { elevation: number[] };
+    return data.elevation[0];
+  } else {
+    throw new Error("Failed to fetch data");
+  }
+}
+
 export async function fetchWeatherData(
+  temperatureUnit: "celsius" | "fahrenheit",
   latitude: number,
   longitude: number,
 ): Promise<WeatherData> {
   // Construct the API URL based on the provided latitude and longitude
-  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current_weather=true`;
+  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current_weather=true&temperature_unit=${temperatureUnit}`;
 
   // Make an asynchronous HTTP GET request to the API
   const response = await fetch(url);
@@ -137,11 +157,14 @@ export interface CombinedData {
 }
 
 export async function fetchCombinedData(
+  temperatureUnit: "celsius" | "fahrenheit",
   latitude: number,
   longitude: number,
+  days: number,
 ): Promise<CombinedData> {
   // Construct the API URL based on the provided latitude and longitude
-  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7`;
+  const url = `${API_BASE_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,cloud_cover,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=${days}&temperature_unit=${temperatureUnit}`;
+
 
   // Make an asynchronous HTTP GET request to the API
   const response = await fetch(url);
@@ -154,6 +177,7 @@ export async function fetchCombinedData(
 }
 
 export async function fetchHistoricalWeatherData(
+  temperatureUnit: "celsius" | "fahrenheit",
   latitude: number,
   longitude: number,
   year: number,
@@ -161,7 +185,7 @@ export async function fetchHistoricalWeatherData(
   // Construct the API URL based on the provided latitude and longitude
   const url = `${API_ARCHIVE_URL}?latitude=${latitude}&longitude=${longitude}&start_date=${
     year - 1
-  }-11-01&end_date=${year}-10-31&daily=weather_code,temperature_2m_max,temperature_2m_min`;
+  }-11-01&end_date=${year}-10-31&daily=weather_code,temperature_2m_max,temperature_2m_min&temperature_unit=${temperatureUnit}`;
 
   // Make an asynchronous HTTP GET request to the API
   // Force cache because data from the previous year will not change.

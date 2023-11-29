@@ -10,18 +10,21 @@ import DailyForecast from "./DailyForecast";
 import HistoryPreview from "./HistoryPreview";
 import HourlyForecast from "./HourlyForecast";
 import Map from "./Map";
+import { UnitProps } from "./UnitButton";
 
 const FUTURE_FORECAST_DAYS = 6;
 
 function HomePage({
+  units,
   weatherLocation,
   setWeatherLocation,
-}: WeatherLocationProps) {
+}: UnitProps & WeatherLocationProps) {
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchCombinedData(
+        units.temperature === "C" ? "celsius" : "fahrenheit",
         weatherLocation.latitude,
         weatherLocation.longitude,
         // Open-Meteo includes the current day in the forecast.
@@ -32,7 +35,8 @@ function HomePage({
     };
 
     void fetchData();
-  }, [weatherLocation]);
+  }, [weatherLocation.latitude, weatherLocation.longitude, units.temperature]);
+
 
   return (
     <Container sx={{ padding: 0 }}>
@@ -54,6 +58,7 @@ function HomePage({
             minTemperature={combinedData?.daily.temperature_2m_min[0] || 0}
           />
         </Grid>
+
           <Grid item xs={12} md={4}>
             <Map />
           </Grid>
@@ -79,10 +84,11 @@ function HomePage({
                 // Skip current day since the current weather component
                 // already shows the same information.
                 <DailyForecast
-                    date={combinedData.daily.time[index + 1]}
-                    weather={combinedData.daily.weather_code[index + 1]}
-                    high={combinedData.daily.temperature_2m_max[index + 1]}
-                    low={combinedData.daily.temperature_2m_min[index + 1]} />
+                  date={combinedData.daily.time[index + 1]}
+                  weather={combinedData.daily.weather_code[index + 1]}
+                  high={combinedData.daily.temperature_2m_max[index + 1]}
+                  low={combinedData.daily.temperature_2m_min[index + 1]}
+                />
               )}
             </Grid>
           ))}

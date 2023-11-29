@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   Card,
   CardActions,
@@ -8,17 +10,17 @@ import {
   Stack,
   Tooltip,
 } from "@mui/material";
+
 import {
   WeatherLocation,
   WeatherLocationProps,
-  formatLatitude,
   formatElevation,
+  formatLatitude,
   formatLongitude,
 } from "../../WeatherLocation";
-import SearchInput from "./SearchInput";
 import LocationButton from "./LocationButton";
-import { useState } from "react";
 import { LocationState } from "./LocationState";
+import SearchInput from "./SearchInput";
 
 function getLocationTitle({ city, state }: WeatherLocation): string {
   if (city && state) {
@@ -36,7 +38,7 @@ function CurrentLocation({
   setWeatherLocation,
 }: WeatherLocationProps) {
   const [locationState, setLocationState] = useState<LocationState>(
-    LocationState.Ready
+    LocationState.Ready,
   );
 
   return (
@@ -62,7 +64,7 @@ function CurrentLocation({
             </Tooltip>
 
             {weatherLocation.elevation !== undefined && (
-              <Tooltip title="Elevation">
+              <Tooltip title="Elevation (meters)">
                 <Chip label={formatElevation(weatherLocation.elevation)} />
               </Tooltip>
             )}
