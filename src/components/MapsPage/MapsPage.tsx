@@ -151,7 +151,7 @@ const MapView = ({ center, onMapClicked }: MapViewProps) => {
   );
 };
 
-const InteractiveMap = ({ center, onMapClicked }: MapViewProps) => {
+export const InteractiveMap = ({ center, onMapClicked }: MapViewProps) => {
   const map = useMap();
 
   useEffect(() => {

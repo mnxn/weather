@@ -75,10 +75,8 @@ function HomePage({
 
           <Grid item xs={12} md={4}>
             <MapPreview
-              center={{
-                lat: weatherLocation.latitude,
-                lng: weatherLocation.longitude,
-              }}
+              weatherLocation={weatherLocation}
+              setWeatherLocation={setWeatherLocation}
             />
           </Grid>
         </Grid>
