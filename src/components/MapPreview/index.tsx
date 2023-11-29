@@ -14,7 +14,7 @@ const MapPreview = ({ center}: MapPreviewProps) => {
     <Box
       sx={{
         position: "relative",
-        height: "200px", 
+        height: "100%", 
         width: "100%",
         borderRadius: "8px",
         overflow: "hidden",
