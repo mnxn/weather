@@ -33,7 +33,12 @@ describe("fetchHistoricalWeatherData", () => {
     });
 
     // Call the fetchWeatherData function and await the result
-    const result = await fetchHistoricalWeatherData(latitude, longitude, year);
+    const result = await fetchHistoricalWeatherData(
+      "celsius",
+      latitude,
+      longitude,
+      year,
+    );
 
     // Assertions to check if the returned data matches the expected values
     expect(result.latitude).toEqual(latitude);
@@ -54,8 +59,8 @@ describe("fetchHistoricalWeatherData", () => {
     (global.fetch as jest.Mock) = jest.fn().mockResolvedValue({ ok: false });
 
     // Use Jest's expect function to test if fetchWeatherData rejects with the expected error message
-    await expect(fetchHistoricalWeatherData(latitude, longitude, year)).rejects.toThrow(
-      "Failed to fetch data"
-    );
+    await expect(
+      fetchHistoricalWeatherData("celsius", latitude, longitude, year),
+    ).rejects.toThrow("Failed to fetch data");
   });
 });

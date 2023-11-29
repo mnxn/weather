@@ -10,18 +10,21 @@ import DailyForecast from "./DailyForecast";
 import HistoryPreview from "./HistoryPreview";
 import HourlyForecast from "./HourlyForecast";
 import Map from "./Map";
+import { UnitProps } from "./UnitButton";
 
 const FUTURE_FORECAST_DAYS = 6;
 
 function HomePage({
+  units,
   weatherLocation,
   setWeatherLocation,
-}: WeatherLocationProps) {
+}: UnitProps & WeatherLocationProps) {
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchCombinedData(
+        units.temperature === "C" ? "celsius" : "fahrenheit",
         weatherLocation.latitude,
         weatherLocation.longitude,
         // Open-Meteo includes the current day in the forecast.
@@ -32,7 +35,7 @@ function HomePage({
     };
 
     void fetchData();
-  }, [weatherLocation]);
+  }, [weatherLocation.latitude, weatherLocation.longitude, units.temperature]);
 
   return (
     <Container sx={{ padding: 0 }}>
