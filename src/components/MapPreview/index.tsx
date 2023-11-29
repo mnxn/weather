@@ -13,6 +13,7 @@ const MapPreview = ({ center}: MapPreviewProps) => {
   return (
     <Box
       sx={{
+        position: "relative",
         height: "200px", 
         width: "100%",
         borderRadius: "8px",
@@ -33,20 +34,22 @@ const MapPreview = ({ center}: MapPreviewProps) => {
       <TileLayer {...tileLayer} />
       </MapContainer>
 
-      <Link to="/Maps" style={{ textDecoration: "none" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            position: "absolute",
-            bottom: "8px",
-            right: "8px",
-          }}
-        >
-          Go to MapsPage
-        </Button>
-      </Link>
+      <Box
+        sx={{
+          position: "absolute",
+          zIndex: 999,
+          bottom: "8px",
+          right: "8px",
+        }}
+      >
+        <Link to="/Maps" style={{ textDecoration: "none" }}>
+          <Button variant="contained" color="primary">
+            Go to MapsPage
+          </Button>
+        </Link>
+      </Box>
     </Box>
+
   );
 };
 
