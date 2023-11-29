@@ -145,18 +145,19 @@ const MapView = ({ center, onMapClicked }: MapViewProps) => {
         scrollWheelZoom={false}
       >
         <TileLayer {...tileLayer} />
-        <InteractiveMap onMapClicked={onMapClicked} />
+        <InteractiveMap center={center} onMapClicked={onMapClicked} />
       </MapContainer>
     </Box>
   );
 };
 
-const InteractiveMap = ({
-  onMapClicked,
-}: {
-  onMapClicked: (latlng: LatLng) => void;
-}) => {
+const InteractiveMap = ({ center, onMapClicked }: MapViewProps) => {
   const map = useMap();
+
+  useEffect(() => {
+    // Move map view when the current location is changed.
+    map.setView(center);
+  }, [map, center]);
 
   useEffect(() => {
     // Listen for map clicks and invoke onMapClicked callback
