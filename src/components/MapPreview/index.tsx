@@ -5,7 +5,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import { Link } from "react-router-dom";
 
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
-import { Box, IconButton, debounce } from "@mui/material";
+import { Box, IconButton, Paper, debounce } from "@mui/material";
 
 import {
   WeatherLocationProps,
@@ -75,12 +75,14 @@ const MapPreview = ({
         }}
       >
         <Link to="/Maps" style={{ textDecoration: "none" }}>
-          <IconButton
-            aria-label="Go to MapsPage"
-            sx={{ bgcolor: "white", color: "black" }}
-          >
-            <OpenInFullIcon />
-          </IconButton>
+          <Paper sx={{ borderRadius: 5 }}>
+            <IconButton
+              aria-label="Go to MapsPage"
+              sx={{ bgcolor: "white", color: "black" }}
+            >
+              <OpenInFullIcon />
+            </IconButton>
+          </Paper>
         </Link>
       </Box>
     </Box>
