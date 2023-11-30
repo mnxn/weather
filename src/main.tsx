@@ -12,7 +12,7 @@ import "./index.css";
 
 async function loadAxeCore() {
   const axe = await import("@axe-core/react");
-  await axe.default(React, ReactDOM, 1000);
+  await axe.default(React, ReactDOM, 5000);
 }
 
 if (!import.meta.env.PROD) {
