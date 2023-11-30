@@ -42,10 +42,19 @@ function HomePage({
 
   return (
     <Container sx={{ padding: 0 }}>
-      <Typography variant="h2" component="h1" textAlign="center" margin={3}>
+      <Typography
+        variant="h2"
+        component="h1"
+        textAlign="center"
+        marginBlock={3}
+      >
         Weather Dashboard
       </Typography>
-      <Stack gap={2} padding={{ xs: 1, md: 2 }}>
+      <Stack
+        gap={2}
+        paddingInline={{ xs: 1, md: 2 }}
+        marginBottom={{ xs: 1, md: 2 }}
+      >
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={4}>
             <CurrentLocation
