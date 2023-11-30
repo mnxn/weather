@@ -60,6 +60,11 @@ function CurrentLocation({
               onClick={() => {
                 setLocationExpanded(!locationExpanded);
               }}
+              aria-label={
+                locationExpanded
+                  ? "Collapse Current Location Card"
+                  : "Expand Current Location Card"
+              }
             >
               {locationExpanded ? <ExpandLess /> : <ExpandMore />}
             </IconButton>
