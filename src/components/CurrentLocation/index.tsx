@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import {
+  Box,
   Card,
   CardActions,
   CardContent,
@@ -49,7 +50,7 @@ function CurrentLocation({
   );
 
   return (
-    <Card sx={{ height: "100%" }}>
+    <Card sx={{ height: "100%", position: "relative" }}>
       <CardHeader
         title={getLocationTitle(weatherLocation)}
         titleTypographyProps={{ component: "h2" }}
@@ -107,7 +108,12 @@ function CurrentLocation({
           />
         </CardActions>
       </Collapse>
-      {locationState === LocationState.Loading && <LinearProgress />}
+      {locationState === LocationState.Loading && (
+        // Set position to the bottom of the container.
+        <Box position="absolute" bottom={0} width="100%">
+          <LinearProgress />
+        </Box>
+      )}
     </Card>
   );
 }

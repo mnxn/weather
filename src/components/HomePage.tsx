@@ -67,7 +67,7 @@ function HomePage({
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             {combinedData === null ? (
-              <Skeleton variant="rectangular" height="100%" />
+              <Skeleton variant="rectangular" height={280} />
             ) : (
               <CurrentWeather
                 time={combinedData.current.time}
