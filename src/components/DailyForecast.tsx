@@ -1,4 +1,4 @@
-import { Box, Paper, Stack } from "@mui/material";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 
 import HighLowTemps from "./HighLowTemps";
@@ -19,11 +19,11 @@ function DailyForecast(props: DailyForecastProps) {
     <Paper elevation={1} sx={{ flex: 1 }}>
       <Stack alignItems="center" textAlign="center" paddingBlock={1}>
         {date.getDate()}
-        <h3 style={{ margin: 0 }}>
+        <Typography variant="h6" component="h2" fontWeight="bold">
           {date.toLocaleString(undefined, {
             weekday: "long",
           })}
-        </h3>
+        </Typography>
         <Box
           className={`wi ${weatherIconClass(props.weather)}`}
           fontSize={50}

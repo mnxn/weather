@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Container, Grid, Skeleton, Stack } from "@mui/material";
+import { Container, Grid, Skeleton, Stack, Typography } from "@mui/material";
 
 import { WeatherLocationProps } from "../WeatherLocation";
 import { CombinedData, fetchCombinedData } from "../api/OpenMeteo";
@@ -42,6 +42,9 @@ function HomePage({
 
   return (
     <Container sx={{ padding: 0 }}>
+      <Typography variant="h2" component="h1" textAlign="center" margin={3}>
+        Weather Dashboard
+      </Typography>
       <Stack gap={2} padding={{ xs: 1, md: 2 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={4}>

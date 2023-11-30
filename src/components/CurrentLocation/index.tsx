@@ -52,6 +52,7 @@ function CurrentLocation({
     <Card sx={{ height: "100%" }}>
       <CardHeader
         title={getLocationTitle(weatherLocation)}
+        titleTypographyProps={{ component: "h2" }}
         subheader={weatherLocation.country}
         action={
           collapsible ? (

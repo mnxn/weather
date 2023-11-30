@@ -190,7 +190,7 @@ const MajorCityBox = ({ data, units }: MajorCityBoxProps) => {
         py: 2,
       }}
     >
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" component="h2" gutterBottom>
         {location?.name}
       </Typography>
       <img
