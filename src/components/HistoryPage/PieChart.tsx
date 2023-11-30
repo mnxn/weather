@@ -15,6 +15,7 @@ ChartJS.register(ArcElement, Tooltip, PieController, Legend);
 
 interface PieChartContainerProps {
   title: string;
+  ariaLabel?: string;
   labels: string[];
   data: number[];
   options?: ChartOptions<"pie">;
@@ -22,6 +23,7 @@ interface PieChartContainerProps {
 
 export const PieChartContainer = ({
   title,
+  ariaLabel,
   labels,
   data,
   options,
@@ -48,6 +50,7 @@ export const PieChartContainer = ({
         </Typography>
         <Box height={350}>
           <Pie
+            aria-label={ariaLabel}
             data={{
               labels,
               datasets: [

@@ -107,6 +107,7 @@ const HistoryPage = ({
 
         <BarChartContainer
           title="Highest/Lowest Temperature"
+          ariaLabel="Last 12 Months Highest/Lowest Temperature Bar Chart"
           labels={chartData.monthly.labels}
           datasets={[
             {
@@ -128,6 +129,7 @@ const HistoryPage = ({
 
         <PieChartContainer
           title="Weather Distribution"
+          ariaLabel="Last 12 Months Weather Distribution Pie Chart"
           labels={chartData.weatherDistribution.labels}
           data={chartData.weatherDistribution.data}
         />

@@ -174,6 +174,7 @@ function HourlyForecast(props: HourlyForecastProps) {
       <Box padding={{ xs: 1, sm: 2 }}>
         <Box height={{ xs: 200, sm: 250, md: 300 }}>
           <Line
+            aria-label="7-day Hourly Weather Forecast Line Chart"
             data={data}
             options={chartOptions}
             style={{ position: "absolute" }}

@@ -189,6 +189,7 @@ function SunsetHistory(props: SunsetHistoryProps) {
         </Typography>
         <Box height={350}>
           <Bar
+            aria-label="Previous Year Sunset/Sunrise History Bar Chart"
             data={data}
             options={chartOptions}
             style={{ position: "absolute" }}
