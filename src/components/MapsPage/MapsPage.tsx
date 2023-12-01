@@ -197,7 +197,7 @@ const MajorCityBox = ({ data, units }: MajorCityBoxProps) => {
       </Typography>
       <img
         src={`https:${current?.condition?.icon}`}
-        alt={current?.condition?.text}
+        alt={`${current?.condition?.text} Weather Icon`}
         style={{ width: "64px", height: "64px" }}
       />
       <Typography>{current?.condition?.text}</Typography>
