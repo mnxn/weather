@@ -130,7 +130,7 @@ function DataSelectorChip(props: DataSelectorChipProps) {
   );
 }
 
-function HourlyForecast(props: HourlyForecastProps) {
+export default function HourlyForecast(props: HourlyForecastProps) {
   const [temperatureEnabled, setTemperatureEnabled] = useState(true);
   const [humidityEnabled, setHumidityEnabled] = useState(true);
   const [precipitationEnabled, setPrecipitationEnabled] = useState(true);
@@ -214,5 +214,3 @@ function HourlyForecast(props: HourlyForecastProps) {
     </Paper>
   );
 }
-
-export default HourlyForecast;

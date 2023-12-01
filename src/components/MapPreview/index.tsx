@@ -14,10 +14,10 @@ import {
 import { InteractiveMap } from "../MapsPage/MapsPage";
 import tileLayer from "./TileLayer";
 
-const MapPreview = ({
+export default function MapPreview({
   weatherLocation,
   setWeatherLocation,
-}: WeatherLocationProps) => {
+}: WeatherLocationProps) {
   const center = new LatLng(
     weatherLocation.latitude,
     weatherLocation.longitude,
@@ -37,15 +37,13 @@ const MapPreview = ({
 
   return (
     <Box
-      sx={{
-        position: "relative",
-        minHeight: "200px",
-        height: "100%",
-        width: "100%",
-        borderRadius: 1,
-        overflow: "hidden",
-        boxShadow: 1,
-      }}
+      position="relative"
+      minHeight="200px"
+      height="100%"
+      width="100%"
+      borderRadius={1}
+      overflow="hidden"
+      boxShadow={1}
     >
       <MapContainer
         style={{
@@ -67,14 +65,7 @@ const MapPreview = ({
         />
       </MapContainer>
 
-      <Box
-        sx={{
-          position: "absolute",
-          zIndex: 999,
-          bottom: "8px",
-          left: "8px",
-        }}
-      >
+      <Box position="absolute" zIndex={999} bottom="8px" left="8px">
         <Paper sx={{ borderRadius: 5 }}>
           <IconButton
             LinkComponent={Link}
@@ -88,6 +79,4 @@ const MapPreview = ({
       </Box>
     </Box>
   );
-};
-
-export default MapPreview;
+}

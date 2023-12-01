@@ -21,13 +21,13 @@ interface PieChartContainerProps {
   options?: ChartOptions<"pie">;
 }
 
-export const PieChartContainer = ({
+export function PieChartContainer({
   title,
   ariaLabel,
   labels,
   data,
   options,
-}: PieChartContainerProps) => {
+}: PieChartContainerProps) {
   const chartOptions: ChartOptions<"pie"> = {
     maintainAspectRatio: false,
     plugins: {
@@ -68,4 +68,4 @@ export const PieChartContainer = ({
       </Box>
     </Paper>
   );
-};
+}

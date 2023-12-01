@@ -19,6 +19,7 @@ module.exports = {
   },
   plugins: ["react-refresh"],
   rules: {
+    "func-style": ["warn", "declaration"],
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },

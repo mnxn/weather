@@ -12,6 +12,7 @@ import {
   Typography,
   debounce,
 } from "@mui/material";
+import { common } from "@mui/material/colors";
 
 import {
   WeatherLocationProps,
@@ -29,7 +30,7 @@ import tileLayer from "./TileLayer";
 
 const cityNames = ["Chicago", "Portland", "New York", "Oregon", "Boston"];
 
-function MapsPage({
+export default function MapsPage({
   searchRef,
   locationExpanded,
   setLocationExpanded,
@@ -43,14 +44,14 @@ function MapsPage({
 
   // Fetch weather data when the selected location changes
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       const weatherByCity = await getWeatherByCoordinates(
         weatherLocation.latitude,
         weatherLocation.longitude,
       );
 
       setLocationWeatherData(weatherByCity);
-    };
+    }
 
     void fetchData();
   }, [weatherLocation]);
@@ -121,17 +122,15 @@ interface MapViewProps {
   onMapClicked: (latlng: LatLng) => void;
 }
 
-const MapView = ({ center, onMapClicked }: MapViewProps) => {
+function MapView({ center, onMapClicked }: MapViewProps) {
   return (
     <Box
-      sx={{
-        height: "500px",
-        width: "100%",
-        zIndex: "0",
-        overflow: "hidden",
-        borderRadius: 1,
-        boxShadow: 1,
-      }}
+      height="500px"
+      width="100%"
+      zIndex={0}
+      overflow="hidden"
+      borderRadius={1}
+      boxShadow={1}
     >
       <MapContainer
         style={{
@@ -150,9 +149,9 @@ const MapView = ({ center, onMapClicked }: MapViewProps) => {
       </MapContainer>
     </Box>
   );
-};
+}
 
-export const InteractiveMap = ({ center, onMapClicked }: MapViewProps) => {
+export function InteractiveMap({ center, onMapClicked }: MapViewProps) {
   const map = useMap();
 
   useEffect(() => {
@@ -168,14 +167,14 @@ export const InteractiveMap = ({ center, onMapClicked }: MapViewProps) => {
   }, [map, onMapClicked]);
 
   return null;
-};
+}
 
 interface MajorCityBoxProps extends UnitProps {
   data?: WeatherResponse;
 }
 
 // Component to display weather information for a major city
-const MajorCityBox = ({ data, units }: MajorCityBoxProps) => {
+function MajorCityBox({ data, units }: MajorCityBoxProps) {
   if (!data) {
     return <p>No data available</p>;
   }
@@ -183,14 +182,12 @@ const MajorCityBox = ({ data, units }: MajorCityBoxProps) => {
 
   return (
     <Box
-      sx={{
-        backgroundColor: "white",
-        borderRadius: 1,
-        boxShadow: 1,
-        width: "100%",
-        px: 3,
-        py: 2,
-      }}
+      bgcolor={common.white}
+      borderRadius={1}
+      boxShadow={1}
+      width="100%"
+      paddingInline={3}
+      paddingBlock={2}
     >
       <Typography variant="h6" component="h2" gutterBottom>
         {location?.name}
@@ -207,34 +204,37 @@ const MajorCityBox = ({ data, units }: MajorCityBoxProps) => {
       </Typography>
     </Box>
   );
-};
+}
 
 // Reusable function to render a ListItemText component with provided content
 interface WeatherItemProps {
   primary: string;
   secondary: string;
 }
-const WeatherItem: React.FC<WeatherItemProps> = ({ primary, secondary }) => (
-  <ListItemText
-    primary={primary}
-    secondary={secondary}
-    sx={{
-      backgroundColor: "white",
-      borderRadius: 1,
-      boxShadow: 1,
-      px: 3,
-      py: 2,
-      mb: 3,
-    }}
-  />
-);
+
+function WeatherItem({ primary, secondary }: WeatherItemProps) {
+  return (
+    <ListItemText
+      primary={primary}
+      secondary={secondary}
+      sx={{
+        backgroundColor: common.white,
+        borderRadius: 1,
+        boxShadow: 1,
+        px: 3,
+        py: 2,
+        mb: 3,
+      }}
+    />
+  );
+}
 
 interface LocationConditionProps extends UnitProps {
   data: WeatherResponse;
 }
 
 // Component to display weather conditions for the selected location
-const LocationCondition = ({ data, units }: LocationConditionProps) => {
+function LocationCondition({ data, units }: LocationConditionProps) {
   const { current } = data;
   const { isXMobileScreen } = useScreenSize();
 
@@ -251,10 +251,10 @@ const LocationCondition = ({ data, units }: LocationConditionProps) => {
       <WeatherItem primary={`${current?.wind_kph} KM/H`} secondary="Wind" />
     </Stack>
   );
-};
+}
 
 // Component to display weather conditions for major cities
-const MajorCitiesConditions = ({ units, setUnits }: UnitProps) => {
+function MajorCitiesConditions({ units, setUnits }: UnitProps) {
   const { isXMobileScreen } = useScreenSize();
 
   // State to store weather data for major cities
@@ -263,7 +263,7 @@ const MajorCitiesConditions = ({ units, setUnits }: UnitProps) => {
   >({});
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       const data: Record<string, WeatherResponse> = {};
 
       for (const city of cityNames) {
@@ -272,7 +272,7 @@ const MajorCitiesConditions = ({ units, setUnits }: UnitProps) => {
       }
 
       setWeatherData(data);
-    };
+    }
 
     void fetchData();
   }, []);
@@ -281,10 +281,12 @@ const MajorCitiesConditions = ({ units, setUnits }: UnitProps) => {
     <Stack
       direction={isXMobileScreen ? "column" : "row"}
       spacing={2}
-      sx={{ mb: 3, justifyContent: "center", width: "100%" }}
+      marginBottom={3}
+      justifyContent="center"
+      width="100%"
     >
       {cityNames.map((city) => (
-        <Box key={city} sx={{ width: "100%" }}>
+        <Box key={city} width="100%">
           {weatherData[city] && (
             <MajorCityBox
               data={weatherData[city]}
@@ -296,6 +298,4 @@ const MajorCitiesConditions = ({ units, setUnits }: UnitProps) => {
       ))}
     </Stack>
   );
-};
-
-export default MapsPage;
+}

@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Box, Card, CardContent, CardHeader, Chip, Stack } from "@mui/material";
 
 import HighLowTemps from "./HighLowTemps";
@@ -17,7 +15,7 @@ interface CurrentWeatherProps extends UnitProps {
   minTemperature: number;
 }
 
-const CurrentWeather: React.FC<CurrentWeatherProps> = ({
+export default function CurrentWeather({
   time,
   weather,
   temperature,
@@ -27,7 +25,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
   maxTemperature,
   minTemperature,
   units,
-}) => {
+}: CurrentWeatherProps) {
   const timeString = new Date(time).toLocaleString(undefined, {
     month: "short",
     day: "numeric",
@@ -64,6 +62,4 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
       </CardContent>
     </Card>
   );
-};
-
-export default CurrentWeather;
+}

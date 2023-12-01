@@ -11,7 +11,7 @@ import { LocationJumpButton } from "./components/LocationJumpButton";
 import MapsPage from "./components/MapsPage/MapsPage";
 import { UnitButton, Units } from "./components/UnitButton";
 
-function App() {
+export default function App() {
   const [units, setUnits] = useState<Units>({ temperature: "F" });
   const [weatherLocation, setWeatherLocation] =
     useState<WeatherLocation>(defaultLocation);
@@ -100,5 +100,3 @@ function App() {
     </>
   );
 }
-
-export default App;
