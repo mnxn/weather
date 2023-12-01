@@ -1,7 +1,7 @@
 import { LatLng } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 
 import {
   Box,
@@ -145,6 +145,7 @@ const MapView = ({ center, onMapClicked }: MapViewProps) => {
         scrollWheelZoom={false}
       >
         <TileLayer {...tileLayer} />
+        <Marker position={center} />
         <InteractiveMap center={center} onMapClicked={onMapClicked} />
       </MapContainer>
     </Box>

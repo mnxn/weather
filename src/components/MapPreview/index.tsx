@@ -1,7 +1,7 @@
 import { LatLng } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import React from "react";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import { Link } from "react-router-dom";
 
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
@@ -58,6 +58,7 @@ const MapPreview = ({
         scrollWheelZoom={false}
       >
         <TileLayer {...tileLayer} />
+        <Marker position={center} />
         <InteractiveMap
           center={center}
           onMapClicked={(latLng: LatLng) => {
