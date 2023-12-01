@@ -1,27 +1,77 @@
-# React + TypeScript + Vite
+# Weather Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Features
 
-Currently, two official plugins are available:
+- Location Search
+- Browser Location Option
+- Real-time Weather Data
+- Hourly/Daily Weather Forecast
+- Interactive Maps
+- Historical Data
+  - Highest/Lowest Temperature Bar Chart
+  - Weather Distribution Pie Chart
+  - Sunset/Sunrise Time Bar Chart
+- Temperature Unit Toggle (Celsius/Fahrenheit)
+- Mobile Responsiveness
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Dependencies
 
-## Expanding the ESLint configuration
+- `react`, `react-dom`, `react-router-dom`
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+  - Frontend framework & routing library
+  - https://react.dev/
+  - https://reactrouter.com/en/main
 
-- Configure the top-level `parserOptions` property like this:
+- `@mui/material`, `@mui/icons-material`, `@emotion/react`, `@emotion/styled`, `@fontsource/roboto`
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+  - Material Design React component library
+  - https://mui.com/
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- `chart.js`, `react-chartjs-2`
+
+  - Charting library & React wrapper
+  - https://www.chartjs.org/
+  - https://react-chartjs-2.js.org/
+
+- `leaflet`, `react-chartjs-2`
+
+  - Interactive Map library & React wrapper
+  - https://leafletjs.com/
+  - https://react-leaflet.js.org/
+
+- `weathericons`
+
+  - Icons used to interpret weather codes
+  - https://erikflowers.github.io/weather-icons/
+
+- `i18n-iso-countries`
+
+  - ISO 3166 code to full country name convertor
+  - https://www.npmjs.com/package/i18n-iso-countries
+
+- `jest`, `ts-jest`
+
+  - Testing framework
+  - https://jestjs.io/
+
+## Data Sources
+
+- Open-Meteo
+
+  - Current weather, forecasts, historical data, geocoding
+  - https://open-meteo.com/
+
+- OpenWeatherMap
+
+  - Reverse geocoding
+  - https://openweathermap.org/api
+
+- WeatherAPI
+
+  - Current weather for major cities
+  - https://www.weatherapi.com/
+
+- OpenStreetMap
+
+  - Map data for the map components
+  - https://www.openstreetmap.org/about
