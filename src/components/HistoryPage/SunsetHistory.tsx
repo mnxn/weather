@@ -187,7 +187,7 @@ function SunsetHistory(props: SunsetHistoryProps) {
         <Typography component="h2" variant="h4" marginBlockEnd={1}>
           Sunrise/Sunset Times
         </Typography>
-        <Box height={350}>
+        <Box height={{ xs: 250, sm: 300, md: 350 }}>
           <Bar
             aria-label="Previous Year Sunset/Sunrise History Bar Chart"
             data={data}

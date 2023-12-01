@@ -65,7 +65,7 @@ export const BarChartContainer = ({
         <Typography component="h2" variant="h4" marginBlockEnd={3}>
           {title}
         </Typography>
-        <Box height={350}>
+        <Box height={{ xs: 250, sm: 300, md: 350 }}>
           <Bar
             aria-label={ariaLabel}
             data={{
