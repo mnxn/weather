@@ -68,8 +68,8 @@ export default function MapPreview({
       <Box position="absolute" zIndex={999} bottom="8px" left="8px">
         <Paper sx={{ borderRadius: 5 }}>
           <IconButton
-            LinkComponent={Link}
-            href="/Maps"
+            component={Link}
+            to="/maps"
             aria-label="Go to Maps Page"
             color="inherit"
           >

@@ -1,4 +1,8 @@
 import { ThemeProvider } from "@emotion/react";
+import L from "leaflet";
+import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
+import iconUrl from "leaflet/dist/images/marker-icon.png";
+import shadowUrl from "leaflet/dist/images/marker-shadow.png";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
@@ -23,6 +27,22 @@ async function loadAxeCore() {
 if (!import.meta.env.PROD) {
   void loadAxeCore();
 }
+
+// Leaflet Marker icons need to be set explicitly or they will 404 in production.
+// The integer values are from https://stackoverflow.com/a/51232969
+// They are necessary for the marker to be placed properly on the map.
+L.Marker.prototype.setIcon(
+  L.icon({
+    iconRetinaUrl,
+    iconUrl,
+    shadowUrl,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41],
+  }),
+);
 
 const theme = createTheme({
   palette: {
