@@ -61,7 +61,7 @@
   - Current weather, forecasts, historical data, geocoding
   - https://open-meteo.com/
 
-- OpenWeatherMap
+- OpenWeather
 
   - Reverse geocoding
   - https://openweathermap.org/api
