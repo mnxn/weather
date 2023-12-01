@@ -29,11 +29,18 @@ if (!import.meta.env.PROD) {
 }
 
 // Leaflet Marker icons need to be set explicitly or they will 404 in production.
+// The integer values are from https://stackoverflow.com/a/51232969
+// They are necessary for the marker to be placed properly on the map.
 L.Marker.prototype.setIcon(
   L.icon({
     iconRetinaUrl,
     iconUrl,
     shadowUrl,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41],
   }),
 );
 
