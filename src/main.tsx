@@ -35,6 +35,15 @@ const theme = createTheme({
       textTransform: "none",
     },
   },
+  components: {
+    MuiSkeleton: {
+      defaultProps: {
+        sx: {
+          boxShadow: 1,
+        },
+      },
+    },
+  },
 });
 
 const root = document.getElementById("root");

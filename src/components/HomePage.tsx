@@ -67,7 +67,7 @@ function HomePage({
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             {combinedData === null ? (
-              <Skeleton variant="rectangular" height={280} />
+              <Skeleton variant="rounded" height={280} />
             ) : (
               <CurrentWeather
                 time={combinedData.current.time}
@@ -93,7 +93,7 @@ function HomePage({
         </Grid>
 
         {combinedData === null ? (
-          <Skeleton variant="rectangular" height={380} />
+          <Skeleton variant="rounded" height={380} />
         ) : (
           <HourlyForecast
             times={combinedData.hourly.time}
@@ -107,7 +107,7 @@ function HomePage({
           {Array.from({ length: FUTURE_FORECAST_DAYS }, (_, index) => (
             <Grid item key={index} xs={6} sm={4} md={2}>
               {combinedData === null ? (
-                <Skeleton variant="rectangular" height={225} />
+                <Skeleton variant="rounded" height={225} />
               ) : (
                 // Skip current day since the current weather component
                 // already shows the same information.
