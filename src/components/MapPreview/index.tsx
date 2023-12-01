@@ -75,16 +75,16 @@ const MapPreview = ({
           left: "8px",
         }}
       >
-        <Link to="/Maps" style={{ textDecoration: "none" }}>
-          <Paper sx={{ borderRadius: 5 }}>
-            <IconButton
-              aria-label="Go to MapsPage"
-              sx={{ bgcolor: "white", color: "black" }}
-            >
-              <OpenInFullIcon />
-            </IconButton>
-          </Paper>
-        </Link>
+        <Paper sx={{ borderRadius: 5 }}>
+          <IconButton
+            LinkComponent={Link}
+            href="/Maps"
+            aria-label="Go to Maps Page"
+            sx={{ bgcolor: "white", color: "black" }}
+          >
+            <OpenInFullIcon />
+          </IconButton>
+        </Paper>
       </Box>
     </Box>
   );
