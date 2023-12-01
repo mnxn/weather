@@ -1,5 +1,5 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
-import { blue } from "@mui/material/colors";
+import { blue, common } from "@mui/material/colors";
 
 import HighLowTemps from "./HighLowTemps";
 import { WmoCode, weatherDescription, weatherIconClass } from "./WmoCode";
@@ -29,7 +29,7 @@ export default function DailyForecast(props: DailyForecastProps) {
           fontSize={50}
           alignSelf="stretch"
           bgcolor={blue[100]}
-          color="black"
+          color={common.black}
           textAlign="center"
           paddingBlock={2}
           marginBlock={1}

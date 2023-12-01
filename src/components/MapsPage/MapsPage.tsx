@@ -12,6 +12,7 @@ import {
   Typography,
   debounce,
 } from "@mui/material";
+import { common } from "@mui/material/colors";
 
 import {
   WeatherLocationProps,
@@ -181,7 +182,7 @@ function MajorCityBox({ data, units }: MajorCityBoxProps) {
 
   return (
     <Box
-      bgcolor="white"
+      bgcolor={common.white}
       borderRadius={1}
       boxShadow={1}
       width="100%"
@@ -217,7 +218,7 @@ function WeatherItem({ primary, secondary }: WeatherItemProps) {
       primary={primary}
       secondary={secondary}
       sx={{
-        backgroundColor: "white",
+        backgroundColor: common.white,
         borderRadius: 1,
         boxShadow: 1,
         px: 3,
