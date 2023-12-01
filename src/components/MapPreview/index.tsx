@@ -80,7 +80,7 @@ const MapPreview = ({
             LinkComponent={Link}
             href="/Maps"
             aria-label="Go to Maps Page"
-            sx={{ bgcolor: "white", color: "black" }}
+            color="inherit"
           >
             <OpenInFullIcon />
           </IconButton>
