@@ -1,4 +1,8 @@
 import { ThemeProvider } from "@emotion/react";
+import L from "leaflet";
+import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
+import iconUrl from "leaflet/dist/images/marker-icon.png";
+import shadowUrl from "leaflet/dist/images/marker-shadow.png";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
@@ -23,6 +27,15 @@ async function loadAxeCore() {
 if (!import.meta.env.PROD) {
   void loadAxeCore();
 }
+
+// Leaflet Marker icons need to be set explicitly or they will 404 in production.
+L.Marker.prototype.setIcon(
+  L.icon({
+    iconRetinaUrl,
+    iconUrl,
+    shadowUrl,
+  }),
+);
 
 const theme = createTheme({
   palette: {
