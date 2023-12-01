@@ -28,7 +28,7 @@ export default function Footer() {
 
         <Link href="https://www.weatherapi.com/" title="Free Weather API">
           <img
-            src="//cdn.weatherapi.com/v4/images/weatherapi_logo.png"
+            src="https://cdn.weatherapi.com/v4/images/weatherapi_logo.png"
             alt="Weather data by WeatherAPI.com"
             width={107}
             height={50}
