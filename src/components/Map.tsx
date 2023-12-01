@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 
-function Map() {
+export default function Map() {
   return (
     <Box
       display="flex"
@@ -14,5 +14,3 @@ function Map() {
     </Box>
   );
 }
-
-export default Map;

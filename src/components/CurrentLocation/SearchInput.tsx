@@ -34,10 +34,10 @@ export interface SearchRefProps {
   searchRef: MutableRefObject<HTMLInputElement | null>;
 }
 
-const SearchInput = ({
+export default function SearchInput({
   searchRef,
   setWeatherLocation,
-}: SearchRefProps & WeatherLocationProps) => {
+}: SearchRefProps & WeatherLocationProps) {
   const [options, setOptions] = useState<CityLocation[]>([]);
 
   const fetchData = React.useMemo(
@@ -92,6 +92,4 @@ const SearchInput = ({
       )}
     />
   );
-};
-
-export default SearchInput;
+}

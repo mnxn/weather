@@ -11,7 +11,7 @@ export interface DailyForecastProps {
   low: number;
 }
 
-function DailyForecast(props: DailyForecastProps) {
+export default function DailyForecast(props: DailyForecastProps) {
   // Include time so the constructor does not convert timezones.
   const date = new Date(`${props.date}T00:00`);
 
@@ -42,5 +42,3 @@ function DailyForecast(props: DailyForecastProps) {
     </Paper>
   );
 }
-
-export default DailyForecast;

@@ -13,7 +13,7 @@ import { UnitProps } from "./UnitButton";
 
 const FUTURE_FORECAST_DAYS = 6;
 
-function HomePage({
+export default function HomePage({
   searchRef,
   locationExpanded,
   setLocationExpanded,
@@ -25,7 +25,7 @@ function HomePage({
   const [combinedData, setCombinedData] = useState<CombinedData | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       const data = await fetchCombinedData(
         units.temperature === "C" ? "celsius" : "fahrenheit",
         weatherLocation.latitude,
@@ -35,7 +35,7 @@ function HomePage({
       );
 
       setCombinedData(data);
-    };
+    }
 
     void fetchData();
   }, [weatherLocation.latitude, weatherLocation.longitude, units.temperature]);
@@ -128,5 +128,3 @@ function HomePage({
     </Container>
   );
 }
-
-export default HomePage;

@@ -23,14 +23,14 @@ function everyNth<T>(array: T[], n: number): T[] {
 
 const DAYS = 7;
 
-const HistoryPage = ({
+function HistoryPage({
   searchRef,
   locationExpanded,
   setLocationExpanded,
   units,
   weatherLocation,
   setWeatherLocation,
-}: LocationFocusProps & UnitProps & WeatherLocationProps) => {
+}: LocationFocusProps & UnitProps & WeatherLocationProps) {
   const [chartData, setChartData] = useState<FormattedData>({
     monthly: {
       labels: [],
@@ -52,7 +52,7 @@ const HistoryPage = ({
   });
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       const weatherData = await fetchHistoricalWeatherData(
         units.temperature === "C" ? "celsius" : "fahrenheit",
         weatherLocation.latitude,
@@ -61,20 +61,20 @@ const HistoryPage = ({
       );
       const formattedData = formatChartData(weatherData);
       setChartData(formattedData);
-    };
+    }
 
     void fetchData();
   }, [weatherLocation.latitude, weatherLocation.longitude, units.temperature]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       const data = await fetchSunsetData(
         weatherLocation.latitude,
         weatherLocation.longitude,
         2022,
       );
       setSunsetData(data);
-    };
+    }
 
     void fetchData();
   }, [weatherLocation.latitude, weatherLocation.longitude]);
@@ -143,6 +143,6 @@ const HistoryPage = ({
       </Stack>
     </Container>
   );
-};
+}
 
 export default HistoryPage;

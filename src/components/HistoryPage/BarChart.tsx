@@ -38,13 +38,13 @@ interface BarChartContainerProps {
   options?: ChartOptions<"bar">;
 }
 
-export const BarChartContainer = ({
+export function BarChartContainer({
   title,
   ariaLabel,
   labels,
   datasets,
   options,
-}: BarChartContainerProps) => {
+}: BarChartContainerProps) {
   const chartOptions: ChartOptions<"bar"> = {
     maintainAspectRatio: false,
     plugins: {
@@ -79,4 +79,4 @@ export const BarChartContainer = ({
       </Box>
     </Paper>
   );
-};
+}

@@ -151,7 +151,7 @@ function getTimePoints(
   });
 }
 
-function SunsetHistory(props: SunsetHistoryProps) {
+export default function SunsetHistory(props: SunsetHistoryProps) {
   const data: ChartData<"bar", TimePoint[]> = {
     labels: props.times,
     datasets: [
@@ -199,5 +199,3 @@ function SunsetHistory(props: SunsetHistoryProps) {
     </Paper>
   );
 }
-
-export default SunsetHistory;

@@ -37,7 +37,7 @@ export interface CurrentLocationProps
   collapsible?: boolean;
 }
 
-function CurrentLocation({
+export default function CurrentLocation({
   collapsible = false,
   locationExpanded,
   setLocationExpanded,
@@ -117,5 +117,3 @@ function CurrentLocation({
     </Card>
   );
 }
-
-export default CurrentLocation;

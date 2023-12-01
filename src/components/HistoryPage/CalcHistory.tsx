@@ -18,9 +18,9 @@ export interface FormattedData {
 }
 
 // Function to calculate monthly temperature data
-export const calculateMonthlyData = (
+export function calculateMonthlyData(
   dailyData: HistoricalWeatherData["daily"],
-): MonthlyData => {
+): MonthlyData {
   const times = dailyData.time;
   const highestTemps = dailyData.temperature_2m_max;
   const lowestTemps = dailyData.temperature_2m_min;
@@ -57,12 +57,12 @@ export const calculateMonthlyData = (
     highestTemps: monthlyHighestTemps,
     lowestTemps: monthlyLowestTemps,
   };
-};
+}
 
 // Function to calculate weather distribution data
-export const calculateWeatherDistributionData = (
+export function calculateWeatherDistributionData(
   dailyData: HistoricalWeatherData["daily"],
-): WeatherDistributionData => {
+): WeatherDistributionData {
   const weatherDistribution: Record<string, number> = {
     Sunny: dailyData.weather_code.filter(
       (code) => code === WmoCode.ClearSky || code === WmoCode.MainlyClear,
@@ -89,9 +89,9 @@ export const calculateWeatherDistributionData = (
   const data = labels.map((weather) => weatherDistribution[weather]);
 
   return { labels, data };
-};
+}
 
-export const formatChartData = (data: HistoricalWeatherData): FormattedData => {
+export function formatChartData(data: HistoricalWeatherData): FormattedData {
   // Calculate temperature and weather distribution data
   const monthlyData = calculateMonthlyData(data.daily);
   const weatherDistributionData = calculateWeatherDistributionData(data.daily);
@@ -100,4 +100,4 @@ export const formatChartData = (data: HistoricalWeatherData): FormattedData => {
     monthly: monthlyData,
     weatherDistribution: weatherDistributionData,
   };
-};
+}
