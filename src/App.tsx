@@ -4,6 +4,7 @@ import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { AppBar, Button, Container, Toolbar } from "@mui/material";
 
 import { WeatherLocation, defaultLocation } from "./WeatherLocation";
+import Footer from "./components/Footer";
 import HistoryPage from "./components/HistoryPage";
 import HomePage from "./components/HomePage";
 import { LocationJumpButton } from "./components/LocationJumpButton";
@@ -95,6 +96,7 @@ function App() {
           />
         </Routes>
       </main>
+      <Footer />
     </>
   );
 }
