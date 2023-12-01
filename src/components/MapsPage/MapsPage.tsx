@@ -128,9 +128,9 @@ const MapView = ({ center, onMapClicked }: MapViewProps) => {
         height: "500px",
         width: "100%",
         zIndex: "0",
-        border: "1px solid #e0e0e0",
-        borderRadius: "8px",
         overflow: "hidden",
+        borderRadius: 1,
+        boxShadow: 1,
       }}
     >
       <MapContainer
@@ -185,7 +185,8 @@ const MajorCityBox = ({ data, units }: MajorCityBoxProps) => {
     <Box
       sx={{
         backgroundColor: "white",
-        borderRadius: 2,
+        borderRadius: 1,
+        boxShadow: 1,
         width: "100%",
         px: 3,
         py: 2,
@@ -219,7 +220,8 @@ const WeatherItem: React.FC<WeatherItemProps> = ({ primary, secondary }) => (
     secondary={secondary}
     sx={{
       backgroundColor: "white",
-      borderRadius: 2,
+      borderRadius: 1,
+      boxShadow: 1,
       px: 3,
       py: 2,
       mb: 3,

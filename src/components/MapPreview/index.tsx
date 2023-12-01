@@ -42,9 +42,9 @@ const MapPreview = ({
         minHeight: "200px",
         height: "100%",
         width: "100%",
-        borderRadius: "8px",
+        borderRadius: 1,
         overflow: "hidden",
-        marginBottom: "16px",
+        boxShadow: 1,
       }}
     >
       <MapContainer
