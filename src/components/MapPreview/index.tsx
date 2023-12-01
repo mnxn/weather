@@ -37,15 +37,13 @@ export default function MapPreview({
 
   return (
     <Box
-      sx={{
-        position: "relative",
-        minHeight: "200px",
-        height: "100%",
-        width: "100%",
-        borderRadius: 1,
-        overflow: "hidden",
-        boxShadow: 1,
-      }}
+      position="relative"
+      minHeight="200px"
+      height="100%"
+      width="100%"
+      borderRadius={1}
+      overflow="hidden"
+      boxShadow={1}
     >
       <MapContainer
         style={{
@@ -67,14 +65,7 @@ export default function MapPreview({
         />
       </MapContainer>
 
-      <Box
-        sx={{
-          position: "absolute",
-          zIndex: 999,
-          bottom: "8px",
-          left: "8px",
-        }}
-      >
+      <Box position="absolute" zIndex={999} bottom="8px" left="8px">
         <Paper sx={{ borderRadius: 5 }}>
           <IconButton
             LinkComponent={Link}

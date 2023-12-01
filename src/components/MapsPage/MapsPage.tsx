@@ -124,14 +124,12 @@ interface MapViewProps {
 function MapView({ center, onMapClicked }: MapViewProps) {
   return (
     <Box
-      sx={{
-        height: "500px",
-        width: "100%",
-        zIndex: "0",
-        overflow: "hidden",
-        borderRadius: 1,
-        boxShadow: 1,
-      }}
+      height="500px"
+      width="100%"
+      zIndex={0}
+      overflow="hidden"
+      borderRadius={1}
+      boxShadow={1}
     >
       <MapContainer
         style={{
@@ -183,14 +181,12 @@ function MajorCityBox({ data, units }: MajorCityBoxProps) {
 
   return (
     <Box
-      sx={{
-        backgroundColor: "white",
-        borderRadius: 1,
-        boxShadow: 1,
-        width: "100%",
-        px: 3,
-        py: 2,
-      }}
+      bgcolor="white"
+      borderRadius={1}
+      boxShadow={1}
+      width="100%"
+      paddingInline={3}
+      paddingBlock={2}
     >
       <Typography variant="h6" component="h2" gutterBottom>
         {location?.name}
@@ -284,10 +280,12 @@ function MajorCitiesConditions({ units, setUnits }: UnitProps) {
     <Stack
       direction={isXMobileScreen ? "column" : "row"}
       spacing={2}
-      sx={{ mb: 3, justifyContent: "center", width: "100%" }}
+      marginBottom={3}
+      justifyContent="center"
+      width="100%"
     >
       {cityNames.map((city) => (
-        <Box key={city} sx={{ width: "100%" }}>
+        <Box key={city} width="100%">
           {weatherData[city] && (
             <MajorCityBox
               data={weatherData[city]}
