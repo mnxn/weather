@@ -1,11 +1,11 @@
 import { LatLng } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import React from "react";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import { Link } from "react-router-dom";
 
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
-import { Box, IconButton, debounce } from "@mui/material";
+import { Box, IconButton, Paper, debounce } from "@mui/material";
 
 import {
   WeatherLocationProps,
@@ -42,9 +42,9 @@ const MapPreview = ({
         minHeight: "200px",
         height: "100%",
         width: "100%",
-        borderRadius: "8px",
+        borderRadius: 1,
         overflow: "hidden",
-        marginBottom: "16px",
+        boxShadow: 1,
       }}
     >
       <MapContainer
@@ -58,6 +58,7 @@ const MapPreview = ({
         scrollWheelZoom={false}
       >
         <TileLayer {...tileLayer} />
+        <Marker position={center} />
         <InteractiveMap
           center={center}
           onMapClicked={(latLng: LatLng) => {
@@ -74,14 +75,16 @@ const MapPreview = ({
           left: "8px",
         }}
       >
-        <Link to="/Maps" style={{ textDecoration: "none" }}>
+        <Paper sx={{ borderRadius: 5 }}>
           <IconButton
-            aria-label="Go to MapsPage"
-            sx={{ bgcolor: "white", color: "black" }}
+            LinkComponent={Link}
+            href="/Maps"
+            aria-label="Go to Maps Page"
+            color="inherit"
           >
             <OpenInFullIcon />
           </IconButton>
-        </Link>
+        </Paper>
       </Box>
     </Box>
   );

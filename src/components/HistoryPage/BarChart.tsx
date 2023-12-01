@@ -26,6 +26,7 @@ ChartJS.register(
 
 interface BarChartContainerProps {
   title: string;
+  ariaLabel?: string;
   labels: string[];
   datasets: {
     label: string;
@@ -39,6 +40,7 @@ interface BarChartContainerProps {
 
 export const BarChartContainer = ({
   title,
+  ariaLabel,
   labels,
   datasets,
   options,
@@ -63,8 +65,9 @@ export const BarChartContainer = ({
         <Typography component="h2" variant="h4" marginBlockEnd={3}>
           {title}
         </Typography>
-        <Box height={350}>
+        <Box height={{ xs: 250, sm: 300, md: 350 }}>
           <Bar
+            aria-label={ariaLabel}
             data={{
               labels,
               datasets,

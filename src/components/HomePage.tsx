@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Container, Grid, Skeleton, Stack } from "@mui/material";
+import { Container, Grid, Skeleton, Stack, Typography } from "@mui/material";
 
 import { WeatherLocationProps } from "../WeatherLocation";
 import { CombinedData, fetchCombinedData } from "../api/OpenMeteo";
@@ -42,7 +42,19 @@ function HomePage({
 
   return (
     <Container sx={{ padding: 0 }}>
-      <Stack gap={2} padding={{ xs: 1, md: 2 }}>
+      <Typography
+        variant="h2"
+        component="h1"
+        textAlign="center"
+        marginBlock={3}
+      >
+        Weather Dashboard
+      </Typography>
+      <Stack
+        gap={2}
+        paddingInline={{ xs: 1, md: 2 }}
+        marginBottom={{ xs: 1, md: 2 }}
+      >
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={4}>
             <CurrentLocation
@@ -55,7 +67,7 @@ function HomePage({
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             {combinedData === null ? (
-              <Skeleton variant="rectangular" height="100%" />
+              <Skeleton variant="rounded" height={280} />
             ) : (
               <CurrentWeather
                 time={combinedData.current.time}
@@ -81,7 +93,10 @@ function HomePage({
         </Grid>
 
         {combinedData === null ? (
-          <Skeleton variant="rectangular" height={380} />
+          <Skeleton
+            variant="rounded"
+            sx={{ height: { xs: 304, sm: 330, md: 380 } }}
+          />
         ) : (
           <HourlyForecast
             times={combinedData.hourly.time}
@@ -95,7 +110,7 @@ function HomePage({
           {Array.from({ length: FUTURE_FORECAST_DAYS }, (_, index) => (
             <Grid item key={index} xs={6} sm={4} md={2}>
               {combinedData === null ? (
-                <Skeleton variant="rectangular" height={225} />
+                <Skeleton variant="rounded" height={234} />
               ) : (
                 // Skip current day since the current weather component
                 // already shows the same information.

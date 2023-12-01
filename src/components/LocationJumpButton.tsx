@@ -17,6 +17,7 @@ export function LocationJumpButton({
 
   return (
     <Button
+      aria-label="Focus Current Location Search Input"
       color="inherit"
       variant="outlined"
       startIcon={isXMobileScreen ? undefined : <Place />}

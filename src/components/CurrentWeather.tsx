@@ -39,22 +39,24 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({
     <Card sx={{ height: "100%" }}>
       <CardHeader
         action={
-          <Box
-            className={`wi ${weatherIconClass(weather)}`}
-            fontSize={50}
-            paddingTop={1.5}
-            paddingInline={1.5}
-          />
+          <Stack
+            gap={1}
+            alignItems="center"
+            position="relative"
+            top={10}
+            right={15}
+          >
+            <Box className={`wi ${weatherIconClass(weather)}`} fontSize={50} />
+            {/* Set height to 0 so it doesn't affect the stack height. */}
+            <Box height={0}>{weatherDescription(weather)}</Box>
+          </Stack>
         }
         title={`${temperature} °${units.temperature}`}
         subheader={`As of ${timeString}`}
       />
       <CardContent sx={{ paddingTop: 0 }}>
         <Stack gap={2}>
-          <Stack direction="row" justifyContent="space-between">
-            <HighLowTemps high={maxTemperature} low={minTemperature} />
-            {weatherDescription(weather)}
-          </Stack>
+          <HighLowTemps high={maxTemperature} low={minTemperature} />
           <Chip label={`Humidity: ${humidity}%`} />
           <Chip label={`Wind Speed: ${windSpeed} m/s`} />
           <Chip label={`Cloud Cover: ${cloudCover}%`} />

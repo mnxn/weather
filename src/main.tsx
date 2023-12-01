@@ -7,12 +7,17 @@ import "weathericons/css/weather-icons.min.css";
 import { createTheme } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+
 import App from "./App.tsx";
 import "./index.css";
 
 async function loadAxeCore() {
   const axe = await import("@axe-core/react");
-  await axe.default(React, ReactDOM, 1000);
+  await axe.default(React, ReactDOM, 5000);
 }
 
 if (!import.meta.env.PROD) {
@@ -28,6 +33,15 @@ const theme = createTheme({
   typography: {
     button: {
       textTransform: "none",
+    },
+  },
+  components: {
+    MuiSkeleton: {
+      defaultProps: {
+        sx: {
+          boxShadow: 1,
+        },
+      },
     },
   },
 });
