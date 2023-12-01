@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { useLayoutEffect, useRef, useState } from "react";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
 
 import { AppBar, Button, Container, Toolbar } from "@mui/material";
 
@@ -17,6 +17,12 @@ function App() {
 
   const [locationExpanded, setLocationExpanded] = useState<boolean>(false);
   const searchRef = useRef<HTMLInputElement | null>(null);
+
+  const location = useLocation();
+  useLayoutEffect(() => {
+    // Scroll to top when the route changes.
+    document.documentElement.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <>
